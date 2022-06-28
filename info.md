@@ -1,17 +1,12 @@
 ### DevSecOps Verification Standard Information
-* [Incubator Project](#)
-* [Type of Project](#)
-* [Version 0.0.0](#)
+* [Documentation](#)
+* [Current Version 1.0.0](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/v1/DevSecOps-VerificationStandard-v1.xlsx)
 * [Builder](#)
-* [Breaker](#)
-
-### Downloads or Social Links
-* [Download](#)
-* [Meetup](#)
+* [Defender](#)
 
 ### Code Repository
-* [repo](#)
+* [repo](https://github.com/OWASP/www-project-devsecops-verification-standard)
 
 ### Change Log
-* [changes](#)
+* [changes](https://github.com/OWASP/www-project-devsecops-verification-standard/releases)
 
