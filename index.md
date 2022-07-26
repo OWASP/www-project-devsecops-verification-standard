@@ -3,7 +3,7 @@
 layout: col-sidebar
 title: OWASP DevSecOps Verification Standard
 tags: DSOVS
-level: 1
+level: 2
 type: documentation
 pitch: The DSOVS is a framework to identify gaps in implementing security within software development lifecyle
 
