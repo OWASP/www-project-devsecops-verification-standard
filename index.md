@@ -34,6 +34,7 @@ For each phase, there are streams that the DSOVS assesses:
 * Design
   * DES-001 Security Architecture Design Reviews
   * DES-002 Threat Modelling
+  * DES-003 Secure Documentation
 * Code/Build
   * CODE-001 Secure Development Environment
   * CODE-002 Hardcoded Secrets Detection
@@ -66,3 +67,4 @@ For each phase, there are streams that the DSOVS assesses:
   * OPR-004 Application Security Logging
   * OPR-005 Vulnerability Disclosure
   * OPR-006 Certificate Management
+  * OPR-007 Attack Surface Management
