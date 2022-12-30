@@ -68,7 +68,7 @@ Once we have the base project in `main` we will work on translations.
 ### Code/Build Phase
 🚧 [CODE-001 Secure Development Environment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/genesis/v1/document/CODE-001-Secure-Development-Environment.md)
 
-🚧 [CODE-002 Hardcoded Secrets Detection](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/genesis/v1/document/CODE-002-Hardcoded-Secrets-Detection.md)
+✅ [CODE-002 Hardcoded Secrets Detection](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/genesis/v1/document/CODE-002-Hardcoded-Secrets-Detection.md)
 
 🚧 [CODE-003 Manual Secure Code Review](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/genesis/v1/document/CODE-003-Manual-Secure-Code-Review.md)
 
