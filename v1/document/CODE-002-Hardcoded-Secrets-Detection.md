@@ -38,6 +38,172 @@ Apart from official OWASP Projects, the tools in this section have been chosen o
 
 If you have a suggestion for a notable tool please [💡 Suggest a Tool](https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/ideas) 
 
-## [OWASP ZAP](https://github.com/zaproxy/zaproxy)
+## [Gitleaks](https://github.com/awslabs/git-secrets)
 
-The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by a dedicated international team of volunteers. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. It's also a great tool fo
+Gitleaks is a SAST tool for detecting and preventing hardcoded secrets like passwords, api keys, and tokens in git repos. Gitleaks is an easy-to-use, all-in-one solution for detecting secrets, past or present, in your code.
+
+<a href="https://github.com/gitleaks/gitleaks-action"><img src="images/github.svg" width="20px"> GitHub Actions
+
+```
+name: gitleaks
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *" # run once a day at 4 AM
+jobs:
+  scan:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}} # Only requir
+```
+
+<a href="https://badshah.io/experiment/adding-gitleaks-to-gitlab-pipeline/"><img src="images/gitlab.svg" width="20px"> GitLab CI
+
+```
+stages:
+  - secrets-detection
+
+gitleaks:
+  stage: secrets-detection
+  image: 
+    name: "zricethezav/gitleaks"
+    entrypoint: [""]
+  script: gitleaks -v --pretty --repo-path . --commit-from=$CI_COMMIT_SHA --commit-to=$CI_COMMIT_BEFORE_SHA --branch=$CI_COMMIT_BRANCH
+```
+
+<a href="https://github.com/JoostVoskuil/azure-devops-gitleaks"><img src="images/azure.svg" width="40px"> Azure DevOps </a>
+
+```
+name: '2.0$(rev:.r)'
+
+trigger:
+- main
+- feature/*
+- features/*
+- bugfix/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: 'Build'
+  displayName: 'Build'
+  jobs:
+  - job: 
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '16.x'
+      displayName: 'Install Node.js'
+    
+    - template: build-and-test.yml
+      parameters:
+        path: task/v2
+        name: Gitleaks V2
+  
+    - task: TfxInstaller@3
+      displayName: 'Use Node CLI for Azure DevOps'
+      inputs:
+        version: '0.9.x'
+        checkLatest: true
+
+    - task: PackageAzureDevOpsExtension@3
+      displayName: 'Package Extension: $(Build.SourcesDirectory)'
+      name: 'packageStep'
+      inputs:
+        rootFolder: '$(Build.SourcesDirectory)'
+        outputPath: '$(Build.ArtifactStagingDirectory)/foxholenl-gitleaks.vsix'
+        publisherId: 'foxholenl'
+        extensionId: 'Gitleaks'
+        extensionName: 'Gitleaks'
+        extensionTag: '-build'
+        extensionVersion: '$(Build.BuildNumber)'
+        extensionVisibility: private
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish vsix'
+      inputs:
+        publishLocation: pipeline
+        targetPath: '$(packageStep.Extension.OutputPath)'
+        artifact: 'vsix'
+      condition: succeededOrFailed()
+
+- stage: Test
+  displayName: 'Publish to Marketplace (private)'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  dependsOn: 'Build'
+  jobs:
+    - deployment: 
+      environment: Test
+      strategy: 
+        runOnce:
+         deploy:
+          steps:
+
+          - task: TfxInstaller@3
+            displayName: 'Use Node CLI for Azure DevOps'
+            inputs:
+              version: '0.9.x'
+              checkLatest: true
+
+          - task: PublishAzureDevOpsExtension@3
+            name: 'PublishTest'
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'Marketplace'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/vsix/foxholenl-gitleaks.vsix'
+              publisherId: 'foxholenl'
+              extensionId: 'Gitleaks'
+              extensionTag: '-dev'
+              updateTasksVersion: false
+              extensionVisibility: 'privatepreview'
+              shareWith: 'foxholenl'
+              noWaitValidation: true
+
+- stage: Production
+  displayName: 'Publish to Marketplace (Public)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  dependsOn: 'Test'
+  jobs:
+    - deployment: 
+      environment: Production
+      strategy: 
+        runOnce:
+          deploy:
+            steps:
+            - task: TfxInstaller@3
+              displayName: 'Use Node CLI for Azure DevOps'
+              inputs:
+                version: '0.9.x'
+                checkLatest: true
+
+            - task: PublishAzureDevOpsExtension@3
+              name: 'PublishProd'
+              inputs:
+                connectTo: 'VsTeam'
+                connectedServiceName: 'Marketplace'
+                fileType: 'vsix'
+                vsixFile: '$(Pipeline.Workspace)/vsix/foxholenl-gitleaks.vsix'
+                publisherId: 'foxholenl'
+                extensionId: 'Gitleaks'
+                updateTasksVersion: false
+                extensionVisibility: 'public'
+                noWaitValidation:  true
+```
+
+## 🙏 Credits
+
+We could not do this without the amazing contributions made to the community so we'd like to take the time to show our appreciation to any external inspiration used. 
+
+* [Joost Voskuil](https://github.com/JoostVoskuil)
+* [Chandrapal Badshah](https://www.linkedin.com/in/bnchandrapal/?originalSubdomain=in)
