@@ -146,7 +146,38 @@ xml_report.xml
 
 Nuclei is used to send requests across targets based on a template, leading to zero false positives and providing fast scanning on a large number of hosts. Nuclei offers scanning for a variety of protocols, including TCP, DNS, HTTP, SSL, File, Whois, Websocket, Headless etc. With powerful and flexible templating, Nuclei can be used to model all kinds of security checks.
 
-<a href="https://github.com/projectdiscovery/nuclei"><img src="images/github.svg" width="20px"> GitHub Actions</a>
+<a href="https://github.com/projectdiscovery/nuclei-action"><img src="images/github.svg" width="20px"> GitHub Actions</a>
+
+```
+name: Nuclei - Vulnerability Scan
+
+on:
+    schedule:
+      - cron: '0 0 * * *'
+    workflow_dispatch:
+
+jobs:
+  nuclei-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Nuclei - Vulnerability Scan
+        uses: projectdiscovery/nuclei-action@main
+        with:
+          target: https://example.com
+
+      - name: GitHub Workflow artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuclei.log
+          path: nuclei.log
+
+      - name: GitHub Security Dashboard Alerts update
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: nuclei.sarif
+```
 
 ## 🙏 Credits
 
