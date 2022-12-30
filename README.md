@@ -35,11 +35,11 @@ Join our community today and be part of the journey
 * 🙋 [Ask Questions](https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/q-a)
 * 💡 [New Ideas](https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/ideas)
 
-## 📙 DSOVS  Translations
+## ✍🏽 DSOVS  Translations
 
 Once we have the base project in `main` we will work on translations. 
 
-## Table-of-Contents
+## 📖 Table-of-Contents
 
 ### Organisation Phase
 🚧 [ORG-001 Risk Assessment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/genesis/v1/document/ORG-001-Risk-Assessment.md)
