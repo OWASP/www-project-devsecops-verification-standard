@@ -78,7 +78,7 @@ jobs:
           cmd_options: '-a'
 ```
 
-<a href="https://gitlab.com/gitlab-org/security-products/dependencies/zaproxy"><img src="images/gitlab.svg" width="20px"> GitHub Actions
+<a href="https://gitlab.com/gitlab-org/security-products/dependencies/zaproxy"><img src="images/gitlab.svg" width="20px"> GitLab CI
 
 
 ```
@@ -95,7 +95,7 @@ dast:
 
 ```
 
-<a href="https://gitlab.com/gitlab-org/security-products/dependencies/zaproxy"><img src="images/azure.svg" width="40px"> Azure DevOps
+<a href="https://medium.com/adessoturkey/owasp-zap-security-tests-in-azure-devops-fe891f5402a4"><img src="images/azure.svg" width="40px"> Azure DevOps
 
 ```
 resources:
@@ -142,4 +142,14 @@ xml_report.xml
         testResultsFiles: 'converted_report.xml'
 ```
 
-## References
+## [Nuclei](https://github.com/projectdiscovery/nuclei)
+
+Nuclei is used to send requests across targets based on a template, leading to zero false positives and providing fast scanning on a large number of hosts. Nuclei offers scanning for a variety of protocols, including TCP, DNS, HTTP, SSL, File, Whois, Websocket, Headless etc. With powerful and flexible templating, Nuclei can be used to model all kinds of security checks.
+
+<a href="https://github.com/projectdiscovery/nuclei"><img src="images/github.svg" width="20px"> GitHub Actions</a>
+
+## 🙏 Credits
+
+We could not do this without the amazing contributions made to the community so we'd like to take the time to show our appreciation to any external inspiration used. 
+
+* [Manas Peçenek](https://www.linkedin.com/in/manas-pecenek-1812pr/)
