@@ -1,6 +1,6 @@
 ### DevSecOps Verification Standard Information
 * [Documentation](#)
-* [Current Version 1.0.0](https://github.com/OWASP/www-project-devsecops-verification-standard/raw/main/v1/DevSecOps-VerificationStandard-v1.xlsx)
+* [Current Version 1.1.0](https://github.com/OWASP/www-project-devsecops-verification-standard/raw/main/v1.1/DevSecOps-VerificationStandard-v1.1.xlsx)
 * [Builder](#)
 * [Defender](#)
 
