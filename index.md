@@ -17,13 +17,13 @@ The OWASP DevSecOps Verification Standard (DSOVS) is an open source framework th
 
 
 * 🧐 **Gap Analysis** 
-    * DSOVS can be used to identify gaps that exist within a single or multiple software projects by providing internal or external analysts with well defined categories that cover all steps of the software development lifecycle. 
+    * DSOVS can be used to identify gaps that exist within a single or multiple software projects by providing internal or external analysts' with a clearly defined standard that cover all areas of the secure software development lifecycle. 
 
 * 🗺️ **Maturity Roadmap** 
     * DSOVS can be used by developers, architects, security people and anyone else to identify existing DevSecOps maturity levels whilst mapping a clear path to work towards heightened maturity.
 
 * ⚠️ **During Third-party Risk Asessments** 
-    * DSOVS can be used to audit the software development lifecycle (SDLC) maturity of third-parties which is important as it ensures that their software development processes are up resilient and helps identify any potential vulnerabilities that exist due to people, processes or software.
+    * DSOVS can be used to audit the software development lifecycle (SDLC) maturity of third-parties which is important as it ensures that their software development processes are resilient and helps identify any potential vulnerabilities that exist due to people, processes or software.
 
 ## 💬 Connect with Us
 <li><a href="https://owasp.slack.com/messages/project-devsecops-verification-standard/details/"><img src="v1/document/images/slack_logo.png" width="14px">  #project-devsecops-verification-standard</a></li>
