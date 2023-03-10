@@ -134,5 +134,6 @@ steps:
 
 We could not do this without the amazing contributions made to the community so we'd like to take the time to show our appreciation to any external inspiration used. 
 
+* [Simar Singh](https://github.com/simar7)
 * [Teppei Fukuda](https://github.com/knqyf263)
 * [Yudhi Yudhistira](https://github.com/devsecurityops)
