@@ -9,7 +9,7 @@ pitch: The DSOVS is a framework to identify gaps in implementing security within
 
 # OWASP DevSecOps Verification Standard
 
-<img width="180px" align="right" style="float: right;" src="document/images/logo.svg"></a>
+<img width="180px" align="right" style="float: right;" src="document/images/logo.svg">
 
 The OWASP DevSecOps Verification Standard (DSOVS) is an open source framework that defines baseline requirements for any software project or organisation. You can use the DSOVS for:
 
