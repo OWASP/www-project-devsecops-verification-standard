@@ -35,7 +35,10 @@ Start-- code push -->CICD-Pipeline-- DAST Scan -->Target-Application--DAST Resul
 
 ## Level 3 - Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
 
-Level 3 of Dynamic Application Security (DAST) is the same as level 2, with the addition of all identified security vulnerabilities being recorded in a centralised issue tracking system and periodically reviewed to evaluate the effectiveness of the DAST tool. This means that the same type of automated scans are being performed, but the results are being collected, tracked and analysed for future use and improvement.
+Level 3 of Dynamic Application Security (DAST) is the same as level 2, with the addition of all identified security vulnerabilities being recorded in a centralised issue tracking system and periodically reviewed to evaluate the effectiveness of the DAST tool. This means that the same type of automated scans are being performed, but the results are being collected, tracked and analysed for future use and improvement. 
+
+Additionally, more mature organisations with DAST implementations often
+provide teams simplified configuration guidance, such as example CI/CD templates and common configuration options that are organisation specific, such as proxy configuration or fetching an OpenAPI Specification (OAS) file - making adoption of DAST amongst teams easier.
 
 ```mermaid
 graph LR; 
