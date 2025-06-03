@@ -85,7 +85,7 @@ For each phase, there are streams that the DSOVS assesses:## 📖 Table-of-Conte
 
 ✅ [TEST-002 Dynamic Application Security Testing (DAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-002-Dynamic-Application-Security-Testing-DAST.md)
 
-🚧 [TEST-003 Interactive Application Security Testing (IAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-003-Interactive-Application-Securit-Testing-IAST.md)
+🚧 [TEST-003 Interactive Application Security Testing (IAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-003-Interactive-Application-Security-Testing-IAST.md)
 
 🚧 [TEST-004 Penetration Testing](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-004-Penetration-Testing.md)
 
