@@ -1,0 +1,27 @@
+audience:
+  - builder
+  - defender
+community:
+  - name: project-devsecops-verification-standard
+    platform: slack
+    url: https://owasp.slack.com/archives/C04HD8ES72M
+leaders:
+  - name: Jamieson O'Reilly
+    email: jamieson.oreilly@owasp.org
+    github: orlyjamie
+  - name: Yudhi Yudhistira
+    email: yudhi.yudhistira@owasp.org
+    github: yyudhi
+level: 2
+name: OWASP DevSecOps Verification Standard
+pitch: The DSOVS is a framework to identify gaps in implementing security within software development lifecyle
+repositories:
+  - name: www-project-devsecops-verification-standard
+    url: https://github.com/OWASP/www-project-devsecops-verification-standard
+    description: OWASP Foundation Web Repository
+tags:
+  - DSOVS
+  - custom-tag-1
+  - custom-tag-2
+type: documentation
+website: https://owasp.org/www-project-devsecops-verification-standard
