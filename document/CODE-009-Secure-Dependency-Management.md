@@ -14,18 +14,27 @@ By properly managing dependencies, organizations can help mitigate risk from kno
 
 ## Level 0 - Direct use of public repositories for third-party dependencies and libraries
 
-lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+At this level, there is no structured process for identifying, managing, or tracking software dependencies in the development and deployment of applications. Organizations operating at this level may have a high degree of vulnerability to known security issues in their application stack. There is no systematic effort to ensure dependencies are secure and up-to-date, leaving applications exposed to risks.
 
-## Level 1 - Verity implementation of a private repository to manage third-party dependencies and libraries
+## Level 1 - Verity implementation of a private repository to manage third-party dependencies and libraries, with basic dependency management
 
-lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+At this stage, organizations begin implementing basic dependency management practices. They may have rudimentary tools or manual processes in place to identify and manage dependencies. However, these practices might be fragmented, and there is limited automation. While some attention is given to dependency security, it may not be comprehensive, and updates might be infrequent. Level 1 represents an initial effort to mitigate risks. A private registry is used, however it is configured as a proxy in front of public registries and repositories.
 
 ## Level 2 - Verify that only verified third-party dependencies and libraries can be used by the application
 
-lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Level 2 signifies the adoption of a centralized approach to dependency management within the DevSecOps workflow. Organizations use dedicated tools and processes to track, monitor, and manage dependencies. Security processes related to dependency management are defined and adopted, such as quality gates within CI/CD which prevent a 'High' or 'Critical' rated vulnerability in a third-party dependency from being deployed into Production, breaking the build. Exemption processes exist. 
+These tools may automatically identify vulnerabilities in dependencies and provide a systematic way to apply updates and patches. Dependency management is better integrated into the CI/CD pipeline, ensuring that applications are built and deployed with more secure dependencies. While this level represents a significant improvement in security, there is still room for more extensive automation and governance.
 
-## Level 3 - Verify implementation to monitor application uses of third-party dependencies and libraries with process to retire unused or vulnerable dependencies
+## Level 3 - End to end automation and verification of the implementation to monitor application uses of third-party dependencies and libraries with process to retire unused or vulnerable dependencies
 
-lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Level 3 represents the pinnacle of dependency management in DevSecOps.
+
+At this advanced level, organizations have achieved a state of fully automated and continuous dependency management. Tools and processes are seamlessly integrated into the CI/CD pipeline to ensure that applications are consistently built, deployed, and maintained with secure and up-to-date dependencies. Automated scans and checks for vulnerabilities are performed regularly, and any issues are promptly addressed. This level of maturity provides the highest degree of security and risk mitigation, ensuring that applications are always built and maintained with the latest security patches and updates, aligning perfectly with DevSecOps principles. Developer culture is tightly aligned to treating a vulnerability, especially where it relates to a third party dependency, as a product defect or bug and dealt with in a prioritised manner. 
+
+Generation of SBOM (Software Bill of Material) is integrated into CI/CD, serving as
+a comprehensive and structured list of all components and their dependencies
+within an application.
+
+
 
 ## References
