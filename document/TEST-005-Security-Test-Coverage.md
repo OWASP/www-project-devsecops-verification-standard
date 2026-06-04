@@ -6,7 +6,7 @@
 
 ## Summary
 
-Security test coverage capability is focused on lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Security testing must be strategically scoped, repeatable, and continuously improved. This is achieved by defining and documenting testing boundaries so teams understand which components are covered and which are intentionally excluded, minimizing blind spots. Where appropriate, security regression testing is implemented and integrated into the CI/CD pipeline to prevent reintroduction of previously resolved vulnerabilities. As new features, threat vectors, or changes to business logic emerge, the testing scope is reviewed and updated. To ensure effectiveness, test coverage is tracked and expanded over time.
 
 ## Level 0 - No security testing scope
 

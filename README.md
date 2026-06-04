@@ -59,6 +59,8 @@ For each phase, there are streams that the DSOVS assesses:## 📖 Table-of-Conte
 
 🚧 [DES-002 Threat Modelling](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/DES-002-Threat-Modelling.md)
 
+🚧 [DES-003 Secure Documentation](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/DES-003-Secure-Documentation.md)
+
 ### Code/Build Phase
 
 🚧 [CODE-001 Secure Development Environment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-001-Secure-Development-Environment.md)
@@ -75,7 +77,7 @@ For each phase, there are streams that the DSOVS assesses:## 📖 Table-of-Conte
 
 🚧 [CODE-007 Inline IDE Secure Code Analysis](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-007-Inline-IDE-Secure-Code-Analysis.md)
 
-🚧[CODE-008 Container Security Scanning](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-008-Container-Security-Scanning.md)
+🚧 [CODE-008 Container Security Scanning](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-008-Container-Security-Scanning.md)
 
 🚧 [CODE-009 Secure Dependency Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-009-Secure-Dependency-Management.md)
 
