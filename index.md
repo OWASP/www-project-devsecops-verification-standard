@@ -26,14 +26,14 @@ The OWASP DevSecOps Verification Standard (DSOVS) is an open source framework th
 
 ## 🧮 Self-Assessment Tool
 
-Rate your maturity against every DSOVS control and generate a report with the [**interactive Self-Assessment**](assessment/). It runs entirely in your browser — your answers are saved locally on your device and never leave it. You can also export your results as JSON or print them to PDF.
+Try it live at **[dsovs.com](https://dsovs.com)**, or run it from the [`assessment/`](assessment/) folder. Rate your maturity against every DSOVS control and generate a report; it runs entirely in your browser, so your answers are saved locally on your device and never leave it. You can export your results as JSON or print them to PDF.
 
 Building your own tooling? Every control is also published as machine-readable data: the [JSON API](dist/dsovs.json) is generated from the source-of-truth files under [`data/controls/`](data/controls/).
 
 ## 💬 Connect with Us
 
 <li><a href="https://owasp.slack.com/messages/project-devsecops-verification-standard/details/"><img src="document/images/slack_logo.png" width="14px">  #project-devsecops-verification-standard</a></li>
-<li><a href="https://www.linkedin.com/in/realjvo/"><img src="document/images/linkedin.svg" width="14px"> @realjvo </a> (Jamieson Vincenti O'Reilly, Project Lead)</li><li><a href="https://www.linkedin.com/in/yudhiy/"><img src="document/images/linkedin.svg" width="14px"> @yudhiy </a> (Yudhi Yudhistira, Project Lead)</li>
+<li><a href="https://www.linkedin.com/in/theonejvo/"><img src="document/images/linkedin.svg" width="14px"> @theonejvo </a> (Jamieson Vincenti O'Reilly, Project Lead)</li><li><a href="https://www.linkedin.com/in/yudhiy/"><img src="document/images/linkedin.svg" width="14px"> @yudhiy </a> (Yudhi Yudhistira, Project Lead)</li>
 
 ## 🎉 Get Involved
 

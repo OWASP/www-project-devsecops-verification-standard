@@ -1,0 +1,90 @@
+/* Landing-page styles. Reuses tokens, .topbar, .card, .btn, .sitefoot from styles.css */
+
+a.brand { text-decoration: none; }
+
+.top-actions { display: flex; align-items: center; gap: 18px; }
+.toplink { font-size: 14px; color: var(--text-2); text-decoration: none; }
+.toplink:hover { color: var(--text); }
+.btn.sm { padding: 8px 16px; font-size: 14px; }
+
+.lwrap { max-width: 1040px; margin: 0 auto; padding: 24px 24px 64px; }
+
+/* Hero */
+.lhero { text-align: center; padding: 56px 0 60px; }
+.lpill {
+  display: inline-block; font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--text-2); background: var(--card); border: 1px solid var(--border-subtle);
+  border-radius: 980px; padding: 5px 13px; margin-bottom: 22px;
+}
+.lhero h1 { font-size: 54px; line-height: 1.04; letter-spacing: -0.03em; font-weight: 600; margin: 0 0 18px; }
+.lhero-sub { font-size: 20px; line-height: 1.5; color: var(--text-2); max-width: 660px; margin: 0 auto 30px; }
+.lhero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.lhero-stat { margin-top: 26px; font-family: var(--mono); font-size: 13px; color: var(--text-3); }
+
+/* Use cases */
+.luse { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+.lcard { padding: 26px; }
+.lico {
+  width: 44px; height: 44px; border-radius: 12px; margin-bottom: 16px;
+  background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; color: var(--text);
+}
+.lico svg { width: 22px; height: 22px; }
+.lcard h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+.lcard p { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 0; }
+
+/* Self-assessment band */
+.lband {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; align-items: center;
+  padding: 40px; margin: 28px 0 64px; background: var(--text); border: none;
+}
+.lband-text h2 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: #fff; margin: 0 0 12px; }
+.lband-text p { font-size: 16px; line-height: 1.55; color: rgba(255,255,255,0.72); margin: 0 0 22px; max-width: 48ch; }
+.lband .btn.primary { background: #fff; color: var(--text); }
+.lband .btn.primary:hover { background: #f0f0f2; }
+.lband-levels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.llv {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+  padding: 14px 16px; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 500;
+}
+.llv span { display: block; font-size: 26px; font-weight: 600; color: #fff; letter-spacing: -0.02em; margin-bottom: 2px; }
+
+/* Standard / table of contents */
+.lsec-head { margin-bottom: 22px; }
+.lsec-head h2 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 10px; }
+.lsec-head p { font-size: 16px; line-height: 1.55; color: var(--text-2); max-width: 68ch; margin: 0; }
+
+.toc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.tphase { padding: 22px; }
+.tphase-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.tphase-head h3 { font-size: 17px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+.tphase-head .c { font-family: var(--mono); font-size: 12px; color: var(--text-3); }
+.tchips { margin-top: 10px; }
+.tchip {
+  display: flex; gap: 12px; align-items: baseline; padding: 8px 0; text-decoration: none;
+  border-top: 1px solid var(--border-subtle); font-size: 14px; color: var(--text-2);
+}
+.tchip:first-child { border-top: none; }
+.tchip:hover { color: var(--text); }
+.tchip .cc { font-family: var(--mono); font-size: 11.5px; color: var(--text-3); flex: none; min-width: 62px; }
+.tchip:hover .cc { color: var(--text-2); }
+
+/* Get involved / connect */
+.linvolved { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 64px; }
+.linvolved h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+.linvolved p { font-size: 14.5px; color: var(--text-2); margin: 0 0 16px; }
+.llist { list-style: none; margin: 0; padding: 0; }
+.llist li { border-top: 1px solid var(--border-subtle); }
+.llist li:first-child { border-top: none; }
+.llist a { display: flex; align-items: center; gap: 11px; padding: 11px 0; font-size: 14.5px; color: var(--text-2); text-decoration: none; }
+.llist a:hover { color: var(--text); }
+.li-ico { width: 17px; height: 17px; color: var(--text-3); flex: none; }
+.llist a:hover .li-ico { color: var(--text-2); }
+
+@media (max-width: 860px) {
+  .luse { grid-template-columns: 1fr; }
+  .lband { grid-template-columns: 1fr; padding: 30px; }
+  .lband-levels { grid-template-columns: repeat(4, 1fr); }
+  .toc { grid-template-columns: 1fr; }
+  .linvolved { grid-template-columns: 1fr; }
+  .lhero h1 { font-size: 40px; }
+}
