@@ -1,0 +1,80 @@
+# OWASP DevSecOps Verification Standard (DSOVS)
+
+> An open framework for measuring security maturity across the whole software development lifecycle. 39 controls across 7 phases, each rated on four maturity levels (0-3) with the verification evidence an assessor would check.
+
+DSOVS is used for gap analysis, building a security maturity roadmap, and assessing third-party SDLC maturity. The whole standard is generated from a single machine-readable source of truth, so the documentation, the JSON API and the self-assessment tool never drift apart.
+
+## For agents
+
+- [DSOVS JSON API](https://dsovs.com/dsovs.json): the complete standard as structured JSON. Each control has its phase, type, summary, four maturity levels (with descriptions and verification evidence), notable tools with CI examples, and framework mappings. Start here for programmatic use.
+- [Full standard as Markdown](https://dsovs.com/llms-full.txt): every control inlined for a single fetch.
+- To assess a target, infer a level (0-3) per control from its code, CI config and practices, then emit the same shape the [self-assessment tool](https://dsovs.com/assess) exports: id, code, title, phase, level, notes.
+
+## Organisation
+
+- [ORG-001 Risk Assessment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/ORG-001-Risk-Assessment.md): process control
+- [ORG-002 Security Training](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/ORG-002-Security-Training.md): process control
+- [ORG-003 Security Champion](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/ORG-003-Security-Champion.md): process control
+- [ORG-004 Security Reporting](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/ORG-004-Security-Reporting.md): process control
+
+## Requirements
+
+- [REQ-001 Security Policy and Regulatory Compliance](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REQ-001-Security-Policy-and-Regulatory-Compliance.md): process control
+- [REQ-002 Security Requirements and Standards](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REQ-002-Security-Requirements-and-Standards.md): process control
+- [REQ-003 Security User Stories and Acceptance Criterias](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REQ-003-Security-User-Stories-and-Acceptance-Criteria.md): process control
+- [REQ-004 Security Issues Tracking](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REQ-004-Security-Issues-Tracking.md): process control
+
+## Design
+
+- [DES-001 Security Architecture Design Reviews](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/DES-001-Secure-Architecture-Design-Reviews.md): process control
+- [DES-002 Threat Modelling](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/DES-002-Threat-Modelling.md): tool control
+
+## Code/Build
+
+- [CODE-001 Secure Development Environment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-001-Secure-Development-Environment.md): tool control
+- [CODE-002 Hardcoded Secrets Detection](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-002-Hardcoded-Secrets-Detection.md): tool control
+- [CODE-003 Manual Secure Code Review](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-003-Manual-Secure-Code-Review.md): process control
+- [CODE-004 Static Application Security Testing (SAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-004-Static-Application-Security-Testing-SAST.md): tool control
+- [CODE-005 Software Composition Analysis (SCA)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-005-Software-Composition-Analysis-SCA.md): tool control
+- [CODE-006 Software License Compliance](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-006-Software-License-Compliance.md): tool control
+- [CODE-007 Inline IDE Secure Code Analysis](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-007-Inline-IDE-Secure-Code-Analysis.md): tool control
+- [CODE-008 Container Security Scanning](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-008-Container-Security-Scanning.md): tool control
+- [CODE-009 Secure Dependency Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/CODE-009-Secure-Dependency-Management.md): tool control
+
+## Test
+
+- [TEST-001 Security Test Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-001-Security-Test-Management.md): process control
+- [TEST-002 Dynamic Application Security Testing (DAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-002-Dynamic-Application-Security-Testing-DAST.md): tool control
+- [TEST-003 Interactive Application Security Testing (IAST)](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-003-Interactive-Application-Security-Testing-IAST.md): tool control
+- [TEST-004 Penetration Testing](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-004-Penetration-Testing.md): process control
+- [TEST-005 Security Test Coverage](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/TEST-005-Security-Test-Coverage.md): process control
+
+## Release/Deploy
+
+- [REL-001 Artifact Signing](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-001-Artifact-Signing.md): tool control
+- [REL-002 Secure Artifact Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-002-Secure-Artifact-Management.md): tool control
+- [REL-003 Secret Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-003-Secret-Management.md): tool control
+- [REL-004 Secure Configuration](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-004-Secure-Configuration.md): tool control
+- [REL-005 Security Policy Enforcement](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-005-Security-Policy-Enforcement.md): tool control
+- [REL-006 Infrastructure-as-Code (IaC) Secure Deployment](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-006-Infrastructure-as-Code-Secure-Deployment.md): tool control
+- [REL-007 Compliance Scanning](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-007-Compliance-Scanning.md): tool control
+- [REL-008 Secure Release Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/REL-008-Secure-Release-Management.md): process control
+
+## Operate/Monitor
+
+- [OPR-001 Environment Hardening](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-001-Environment-Hardening.md): tool control
+- [OPR-002 Application Hardening](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-002-Application-Hardening.md): tool control
+- [OPR-003 Environment Security Logging](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-003-Environment-Security-Logging.md): tool control
+- [OPR-004 Application Security Logging](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-004-Application-Security-Logging.md): tool control
+- [OPR-005 Vulnerability Disclosure](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-005-Responsible-Disclosure.md): tool control
+- [OPR-006 Certificate Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-006-Certificate-Management.md): tool control
+- [OPR-007 Attack Surface Management](https://github.com/OWASP/www-project-devsecops-verification-standard/blob/main/document/OPR-007-Attack-Surface-Management.md): tool control
+
+## Resources
+
+- [Self-assessment tool](https://dsovs.com/assess): rate maturity in the browser and generate a report; runs entirely client-side
+- [Project on GitHub](https://github.com/OWASP/www-project-devsecops-verification-standard)
+
+## Optional
+
+- [Landing page](https://dsovs.com/)
