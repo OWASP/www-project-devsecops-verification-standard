@@ -1,0 +1,90 @@
+id: DSOVS-TEST-004
+code: TEST-004
+title: Penetration Testing
+phase: Test
+slug: TEST-004-Penetration-Testing
+status: complete
+type: process
+
+summary: |
+  Penetration testing is manual, human-driven security testing in which skilled testers attempt to find and exploit weaknesses the way a real attacker would. It goes well beyond automated scanning: a tester reasons about business logic, chains together several lower-severity issues, and explores paths that tools cannot understand, surfacing vulnerabilities before malicious actors can.
+
+  This kind of testing provides genuine insight into the security posture of a system. Rather than a list of isolated scanner findings, it produces a picture of how an application could realistically be compromised, which helps organisations make informed decisions about where to invest in defences.
+
+  By revealing potential risks in context, penetration testing allows organisations to design and implement strategies that prevent security incidents, and to validate that their existing controls actually hold up under pressure.
+
+levels:
+  - level: 0
+    title: Penetration testing activity is ad-hoc and not scheduled
+    description: |
+      At this level there is no planned penetration testing. If any manual testing happens at all, it is sporadic and reactive, perhaps prompted by an incident or an individual's initiative. There is no defined scope, no regular cadence and no expectation that significant changes will be tested, so the organisation has little assurance about the security posture of its applications.
+    evidence: []
+
+  - level: 1
+    title: Verify that annual penetration testing activity is performed
+    description: |
+      At this stage penetration testing is carried out on request or on a roughly annual basis, often to satisfy a compliance requirement or a customer expectation. A tester is engaged, given a scope, and produces a report of findings, which is a clear improvement on the ad-hoc situation at Level 0 because at least some human-led testing happens predictably.
+
+      The limitation is timing and coverage. A single annual engagement is easily outpaced by the rate of change in modern software, so meaningful changes shipped between tests may never receive manual scrutiny, and remediation of findings is not always tracked through to closure.
+    evidence:
+      - A penetration test report dated within the last twelve months exists for the application.
+      - A scope document or statement of work defines what was assessed for the engagement.
+      - Interview confirms a recurring (at least annual) cadence is planned or contractually required.
+    diagram: |
+      graph LR; Annual-Request-- pentest -->Application-- findings -->Report;
+
+  - level: 2
+    title: Verify that penetration testing is performed per release or per feature
+    description: |
+      Here penetration testing is scheduled and scoped around the software delivery process rather than the calendar. Significant releases and substantial new features are assessed before or shortly after they ship, with a defined scope agreed for each engagement. This ties manual testing to the moments when risk is actually introduced, so important changes are reviewed by a human while they are still fresh.
+
+      Because testing is now repeatable and aligned to delivery, coverage is far more consistent than an annual snapshot. Findings are reported back to the responsible teams and feed into the development lifecycle, although the depth and continuity of tracking can still vary between engagements.
+    evidence:
+      - Multiple test reports exist that correspond to specific releases or features rather than a calendar cadence.
+      - A documented policy or release checklist requires a penetration test for significant releases or features.
+      - Findings are demonstrably reported back to the responsible development teams.
+    diagram: |
+      graph LR; Release-Scope-- pentest -->Application-- findings -->Report-- reported to -->Development-Teams;
+
+  - level: 3
+    title: Verify that penetration testing is performed per feature regardless of release cycle and findings are recorded to a centralised issue tracker system
+    description: |
+      At the highest level penetration testing is a continuous, measured programme. Features are assessed as they are built, independent of the release cycle, and the activity is run as an ongoing capability rather than a series of disconnected projects. Every finding is recorded in a centralised issue tracking system and managed alongside the organisation's other security issues.
+
+      Crucially, the loop is closed: remediation is tracked through to resolution and fixes are retested to confirm they hold. Metrics drawn from the tracker, such as time-to-remediate and recurring issue classes, let the organisation measure the programme's effectiveness and continuously improve both its testing and its underlying engineering practices.
+    evidence:
+      - Penetration test findings are recorded as tickets in a centralised issue tracker with severity and ownership.
+      - Evidence of retesting shows that remediated findings were re-verified and confirmed fixed.
+      - Programme metrics (e.g. time-to-remediate, recurring issue classes) are produced from the tracker and reviewed.
+    diagram: |
+      graph LR; Per-Feature-Scope-- continuous pentest -->Application-- findings -->Centralised-Issue-Tracker-- remediation -->Retest-- metrics -->Continuous-Improvement;
+
+further_reading:
+  - url: https://owasp.org/www-project-web-security-testing-guide/
+    note: OWASP Web Security Testing Guide (WSTG)
+  - url: http://www.pentest-standard.org/
+    note: Penetration Testing Execution Standard (PTES)
+  - url: https://csrc.nist.gov/publications/detail/sp/800-115/final
+    note: NIST SP 800-115 - Technical Guide to Information Security Testing and Assessment
+
+tools:
+  - name: Metasploit
+    url: https://www.metasploit.com/
+    description: |
+      Metasploit is a widely used exploitation framework that assists a tester in developing and executing exploit code against a target. It aids a skilled practitioner rather than replacing the judgement and attacker mindset that a penetration test depends on.
+  - name: OWASP ZAP
+    url: https://github.com/zaproxy/zaproxy
+    description: |
+      OWASP ZAP (Zed Attack Proxy) is an open source web application security testing proxy commonly used to assist a tester in intercepting, inspecting and manipulating application traffic during a manual assessment.
+
+mappings:
+  owasp_samm:
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "PW.8 Test Executable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements"
+    - "RV.1 Identify and Confirm Vulnerabilities on an Ongoing Basis"
+  iso_27001:
+    - "A.8.8 Management of technical vulnerabilities"
+    - "A.8.29 Security testing in development and acceptance"

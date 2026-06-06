@@ -1,0 +1,79 @@
+id: DSOVS-ORG-001
+code: ORG-001
+title: Risk Assessment
+phase: Organisation
+slug: ORG-001-Risk-Assessment
+status: complete
+type: process
+
+summary: |
+  Risk assessment is a process of analyzing the risks associated with an organization, project, system or business process that could have an impact on its success.
+
+  It is an important part of DevSecOps because it helps identify any potential vulnerabilities or threats that may affect the security and performance of the system or process.
+
+  Risk assessment enables organizations to develop better security practices, prioritize remediation efforts, and proactively address potential risks before they become problems.
+
+levels:
+  - level: 0
+    title: No risk assessment activities performed
+    description: |
+      There is no evidence that the organisation performs any form of risk assessment across its projects, systems, or business processes. Potential vulnerabilities and threats are neither identified nor analysed, so decisions about features and architecture are made without any structured understanding of the security risks they introduce. As a result, the organisation cannot prioritise remediation effort or anticipate problems before they materialise.
+    evidence: []
+
+  - level: 1
+    title: Verify that risk assessment exercise is performed on request
+    description: |
+      Risk assessment is carried out only on an ad-hoc basis, typically in response to a specific request, a notable incident, or a particular concern raised by a stakeholder. While these exercises can surface useful insights, they are reactive and inconsistent, and there is no guarantee that every feature or change receives the same scrutiny. Because the activity depends on someone asking for it, significant risks can go unexamined whenever a request is not made.
+    evidence:
+      - At least one completed risk assessment report exists with an associated request or ticket that triggered it.
+      - The report documents identified threats, their likelihood and impact, and resulting prioritisation.
+      - Interview with stakeholders confirms how a risk assessment is requested and who performs it.
+    diagram: |
+      graph LR; Stakeholder-- on request -->Risk-Assessment-- findings -->Prioritised-Backlog;
+
+  - level: 2
+    title: Verify that security subject matter expert within software development team performs risk assessment on each feature
+    description: |
+      A security subject matter expert embedded within the software development team assesses the risk of each feature as it is designed and built. This brings security analysis directly into the development workflow, allowing threats and vulnerabilities to be considered consistently for every change rather than only when prompted. The expert's involvement helps the team weigh design decisions against their security implications early, so that remediation can be prioritised before features are released.
+    evidence:
+      - A named security SME is identified within the development team and their role is documented.
+      - Feature tickets or design records show a completed risk assessment attached to each feature.
+      - A repeatable risk assessment template or methodology is defined and applied per feature.
+      - Interview with the team confirms the SME reviews every feature before release.
+    diagram: |
+      graph LR; Each-Feature-- assessed by -->Security-SME-- risk profile -->Prioritised-Backlog;
+
+  - level: 3
+    title: Verify that periodic review schedule is defined for the development team to review the risk profile.
+    description: |
+      In addition to assessing individual features, the development team follows a defined, periodic schedule to review the overall risk profile and keep it current as the system, its dependencies, and the threat landscape evolve. Each review revisits previously accepted risks and confirms whether earlier decisions remain valid. Risk decisions are recorded and tracked over time, giving the organisation a clear, auditable view of how its risk posture is changing and where attention is needed next.
+    evidence:
+      - A documented review schedule (e.g. calendar invites or policy) defines how often the risk profile is reviewed.
+      - A maintained risk register shows risk decisions recorded and tracked over time, including revisited accepted risks.
+      - Minutes or records from at least one periodic review demonstrate the schedule is followed.
+      - Audit trail links changes in the risk posture to specific review cycles.
+    diagram: |
+      graph LR; Each-Feature-- assessed by -->Security-SME-- risk profile -->Prioritised-Backlog; Periodic-Review-- revisits -->Risk-Profile-- keeps current -->Prioritised-Backlog;
+
+further_reading:
+  - url: https://evaluator.tidyrisk.org/
+    note: Risk assessment tool.
+  - url: https://csrc.nist.gov/Projects/ssdf
+    note: NIST Secure Software Development Framework (SSDF), a set of fundamental, sound, and secure software development practices based on established secure software development practice documents from organizations such as BSA, OWASP, and SAFECode.
+  - url: https://www.synopsys.com/blogs/software-security/software-risk-analysis/
+    note: Synopsys - A practitioner-oriented overview of software risk analysis that explains how to identify, assess, and prioritise security risks throughout the software development life cycle.
+  - url: https://owasp.org/www-community/OWASP_Risk_Rating_Methodology
+    note: OWASP Risk Rating Methodology - A structured approach for estimating the severity of security risks by scoring the likelihood and impact of each issue, helping teams rank and prioritise remediation consistently.
+
+mappings:
+  owasp_samm:
+    - "Governance > Risk Profile"
+    - "Design > Threat Assessment"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "PO.1 Define Security Requirements for Software Development"
+    - "PW.1 Design Software to Meet Security Requirements and Mitigate Security Risks"
+  iso_27001:
+    - "Clause 6.1.2 Information security risk assessment"
+    - "A.8.8 Management of technical vulnerabilities"

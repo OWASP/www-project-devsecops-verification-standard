@@ -1,0 +1,88 @@
+id: DSOVS-TEST-001
+code: TEST-001
+title: Security Test Management
+phase: Test
+slug: TEST-001-Security-Test-Management
+status: complete
+type: process
+
+summary: |
+  Security test management is concerned with how the environments and data used for security testing are provisioned, separated and maintained. Effective security testing depends on having somewhere safe to run intrusive checks, and on that environment behaving closely enough to production that the results are meaningful and trustworthy.
+
+  A central concern is isolation. Security tests can be destructive, generate large volumes of traffic, or deliberately attempt to exploit weaknesses, so they should never run against live production systems or against real customer data. At the same time, an environment that drifts too far from production produces misleading results: vulnerabilities present in production may be missed, and findings raised in the test environment may not be reproducible where it matters.
+
+  As this capability matures, organisations move from ad-hoc, manually prepared environments towards environments that are kept aligned with production, populated with realistic but non-sensitive test data, and ultimately provisioned and refreshed on demand. The goal is to make high-fidelity, repeatable security testing cheap and routine rather than a bespoke effort each time.
+
+levels:
+  - level: 0
+    title: Test environment is different from prod and test data is not prepared
+    description: |
+      At this level there is no managed approach to security test environments or test data. Testing, where it happens at all, may rely on whatever environment is convenient, and that environment differs from production in ways that are neither understood nor controlled. Configuration, dependencies and topology diverge arbitrarily, so any security testing performed against it gives little assurance about the real production system.
+
+      No deliberate test data is prepared. Testers either work with empty or trivial datasets that fail to exercise realistic code paths, or worse, resort to copies of production data containing sensitive information without proper handling. In both cases the foundations needed for credible, repeatable security testing are absent.
+    evidence: []
+
+  - level: 1
+    title: Verify that the environment used for testing is different from production environment and test data is prepared
+    description: |
+      At this level the organisation deliberately separates testing from production. Security testing is carried out in a dedicated environment that is isolated from live systems and customers, so intrusive or destructive checks can be performed without putting production stability or real data at risk.
+
+      Test data is also prepared rather than left to chance. A purpose-built dataset is created to exercise the application's important functionality and security-relevant paths, and it avoids exposing real sensitive or personally identifiable information. This gives testers a stable, repeatable baseline and removes the temptation to test against raw production copies. The environment and data are still largely set up by hand and may be created once and reused, but the essential separation and intent are now in place.
+    evidence:
+      - A dedicated, named test environment exists that is documented as separate from production.
+      - Network or access controls demonstrate the test environment is isolated from live systems and customers.
+      - A prepared test dataset exists and review confirms it contains no real sensitive or personally identifiable information.
+      - Interview confirms security testing is performed against the test environment rather than production.
+    diagram: |
+      graph LR; Test-Environment-- separated from -->Production; Test-Environment-- uses -->Prepared-Test-Data-- runs -->Security-Tests;
+
+  - level: 2
+    title: Verify that the test environment is maintained and configured to align with changes to production environment and test data is prepared
+    description: |
+      This level improves on the previous one by keeping the test environment deliberately aligned with production over time. Rather than being stood up once and allowed to drift, the environment is actively maintained so that configuration, dependencies, infrastructure and topology track changes made to production. As production evolves, the test environment is updated to match, which keeps security testing representative and reduces the risk of false confidence or unreproducible findings.
+
+      Prepared, non-sensitive test data continues to underpin testing, and it is curated to remain relevant as the application changes. Because the environment now mirrors production more faithfully, results carry greater weight: a vulnerability found in test is a strong indication of one in production, and a clean result is more credible. Maintaining this alignment typically requires documented configuration and a process to propagate production changes into the test environment.
+    evidence:
+      - A documented process exists for propagating production configuration and dependency changes into the test environment.
+      - Configuration management or change records show the test environment being updated to track production changes.
+      - The prepared test dataset is curated and updated as the application evolves.
+      - Comparison of test and production configuration shows them aligned within a defined tolerance.
+    diagram: |
+      graph LR; Production-- changes propagated -->Aligned-Test-Environment-- uses -->Prepared-Test-Data-- runs -->Security-Tests;
+
+  - level: 3
+    title: Verify that the test environment is identical to production and test data is created on-demands
+    description: |
+      At the highest level of maturity, the test environment is effectively identical to production, and both the environment and its data can be provisioned on demand. Infrastructure-as-code, automated provisioning and configuration management are used to spin up a faithful replica of production whenever it is needed, eliminating manual drift and removing the need to keep a long-lived environment carefully patched by hand.
+
+      Test data is likewise generated on demand, producing realistic, fit-for-purpose datasets that are free of real sensitive information and tailored to the test at hand. This makes thorough security testing fast, repeatable and consistent: teams can create a clean, production-equivalent environment and dataset for any test run, exercise it intensively, and tear it down afterwards. The result is high-fidelity security testing that scales with the organisation and integrates naturally into routine delivery.
+    evidence:
+      - Infrastructure-as-code definitions exist that provision a production-equivalent test environment on demand.
+      - Pipeline or automation logs show an environment being spun up and torn down for a test run.
+      - Test data is generated on demand by an automated mechanism, and review confirms it is free of real sensitive information.
+      - The same IaC source is demonstrably used to provision both production and the test replica.
+    diagram: |
+      graph LR; Infrastructure-as-Code-- provisions on-demand -->Identical-Test-Environment-- generates on-demand -->Test-Data-- runs -->Security-Tests-- teardown -->Infrastructure-as-Code;
+
+further_reading:
+  - url: https://owasp.org/www-project-web-security-testing-guide/
+    note: guidance on planning and executing web application security testing, including the testing environment.
+  - url: https://owaspsamm.org/model/verification/
+    note: the Security Testing and Requirements-driven Testing practices that this capability supports.
+  - url: https://csrc.nist.gov/Projects/ssdf
+    note: practices for preparing environments and protecting test data within the secure development lifecycle.
+  - url: https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/
+    note: background on avoiding the use of real production/sensitive data in test environments.
+
+mappings:
+  owasp_samm:
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+    - "V14 Configuration"
+  nist_ssdf:
+    - "PO.3 Implement Supporting Toolchains"
+    - "RV.1 Identify and Confirm Vulnerabilities"
+  iso_27001:
+    - "A.8.31 Separation of development, test and production environments"
+    - "A.8.33 Test information"

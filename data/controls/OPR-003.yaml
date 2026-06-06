@@ -1,0 +1,122 @@
+id: DSOVS-OPR-003
+code: OPR-003
+title: Environment Security Logging
+phase: Operate/Monitor
+slug: OPR-003-Environment-Security-Logging
+status: complete
+type: tool
+
+summary: |
+  Environment Security Logging is a method of tracking and logging any changes that are made to an environment's security configurations.
+
+  This includes anything from changing firewall rules to user accounts being created or deleted.
+
+  It is an important part of DevSecOps because it helps identify security vulnerabilities and potential threats in an environment before they can be exploited by malicious actors.
+
+  By having a comprehensive log of system changes, DevSecOps teams can quickly respond to any suspicious activity or anomalies. Additionally, environment security logging helps with compliance requirements, ensuring that all necessary security measures are being taken.
+
+levels:
+  - level: 0
+    title: No centralised logging for security events
+    description: |
+      At this level of maturity the environment produces little or no security telemetry, and whatever logs do exist are scattered across individual hosts, cloud accounts and network devices without any consistent collection. Operating system audit trails, cloud control-plane events, firewall and load-balancer records, and container runtime activity are either disabled or left in their local defaults.
+
+      Because nothing is gathered in a common place, investigating an incident means logging into machines one at a time and hoping the relevant records have not already rotated away. There is no reliable way to reconstruct who changed a security group, created a privileged account, or restarted a workload, which leaves the team effectively blind to malicious or accidental changes in the environment.
+    evidence: []
+
+  - level: 1
+    title: Verify that environment security events are logged and monitored in a centralised location
+    description: |
+      At level one the important sources of environment telemetry are switched on and their logs are deliberately captured. Host-level audit logs, cloud provider audit trails such as CloudTrail or Activity Log, VPC and network flow logs, and container runtime events are retained rather than discarded, so the raw material needed to answer security questions exists.
+
+      Review of these logs, however, is still largely manual and reactive. Engineers query the logs on demand, usually after an alert from another system or during an incident or audit, rather than as part of a continuous process. The data is available and trustworthy enough to support an investigation, but coverage gaps and the human effort involved mean that suspicious activity can sit unnoticed until someone goes looking for it.
+    evidence:
+      - Cloud audit trails (e.g. CloudTrail, Azure Activity Log) and host audit logging are confirmed enabled across accounts and hosts.
+      - VPC/network flow logs and container runtime event logging are configured and retained rather than discarded.
+      - A sample query against the collected logs can answer who created a privileged account or changed a security group.
+      - Interview confirms which engineers query the logs and how investigations are initiated.
+    diagram: |
+      graph LR; Hosts-- writes logs -->Local-Logs; Cloud-- writes logs -->Local-Logs; Network-- writes logs -->Local-Logs; Containers-- writes logs -->Local-Logs; Local-Logs-- on-demand review -->Analyst;
+
+  - level: 2
+    title: Verify implementation of alert and notification to development team for abuse and anomalies
+    description: |
+      At level two the captured telemetry is shipped to a central platform, typically a SIEM or equivalent log analytics stack, where events from across hosts, cloud accounts, network and container layers are normalised and stored together. With everything in one place the team can write detection rules and dashboards that watch for known-bad patterns such as disabled audit logging, new privileged identities, security-group changes opening sensitive ports, or unexpected outbound connections from a workload.
+
+      Crucially, these detections are wired to notifications so that the right development or operations team is alerted automatically when an anomaly or abuse pattern fires, instead of relying on someone happening to inspect a dashboard. The shift from on-demand review to automated, near-real-time alerting is what distinguishes this level: the environment now actively surfaces issues rather than merely recording them.
+    evidence:
+      - A central SIEM or log analytics platform aggregates and normalises host, cloud, network and container telemetry.
+      - Detection rules exist for patterns such as disabled audit logging, new privileged identities or security-group changes opening sensitive ports.
+      - Alerts are wired to a notification channel that automatically reaches the responsible development or operations team.
+      - Evidence of a past alert firing and being delivered to the team in near real time.
+    diagram: |
+      graph LR; Hosts-->Log-Shipper; Cloud-->Log-Shipper; Network-->Log-Shipper; Containers-->Log-Shipper; Log-Shipper-- aggregates -->SIEM-- detection rules -->Alerts-- notifies -->Team;
+
+  - level: 3
+    title: Verify that development team have ability to monitor and analyse environment security events
+    description: |
+      At level three logging is treated as an engineered, continuously improving capability. Detections are correlated across multiple sources so that a single suspicious sequence, for example an unusual cloud API call followed by a container spawning an unexpected process, is recognised as one incident rather than a handful of disconnected alerts. Coverage is measured against the environment's assets so the team can demonstrate which systems, accounts and event types are actually being collected, and can close gaps deliberately.
+
+      Retention and integrity controls underpin the whole pipeline: logs are kept for a defined period to satisfy investigation and compliance needs, and they are protected from tampering through write-once storage, access controls and integrity checks so that an attacker cannot quietly erase their tracks. Finally, the detection content is tuned on an ongoing basis, with noisy rules refined, new threats modelled, and effectiveness reviewed, so that signal-to-noise improves over time and the team retains genuine, analyst-ready visibility into the security state of the environment.
+    evidence:
+      - Correlation rules link events across sources so a multi-step sequence is recognised as a single incident.
+      - A documented coverage map shows which systems, accounts and event types are collected, with a process to close gaps.
+      - Retention periods and tamper-protection controls (write-once storage, access controls, integrity checks) are documented and verifiable.
+      - A periodic review tunes detection content and records changes to noisy or new rules.
+    diagram: |
+      graph LR; SIEM-- correlated detections -->Correlation-- measured coverage -->Centralised-Issue-Tracker; Centralised-Issue-Tracker-- continuous tuning -->SIEM;
+
+tools:
+  - name: Wazuh
+    url: https://github.com/wazuh/wazuh
+    description: |
+      Wazuh is an open source security platform that unifies host-based intrusion detection, log analysis, file integrity monitoring and cloud security monitoring. Agents collect operating system and application telemetry, evaluate it against a rule set, and forward matches to a central manager, making it a practical foundation for centralised environment logging with alerting and compliance mapping.
+    integrations:
+      - platform: config
+        code: |
+          # Wazuh rule: alert when an audit log is cleared on a monitored host
+          <group name="audit,integrity_monitoring,">
+            <rule id="100200" level="12">
+              <if_sid>80700</if_sid>
+              <field name="audit.command">auditctl</field>
+              <description>Audit configuration was modified on $(agent.name)</description>
+              <mitre>
+                <id>T1562.001</id>
+              </mitre>
+            </rule>
+          </group>
+
+  - name: Falco
+    url: https://github.com/falcosecurity/falco
+    description: |
+      Falco is a CNCF runtime security project that watches kernel-level system calls (and Kubernetes audit events) to detect anomalous behaviour inside containers and on hosts in real time. It ships with a maintained rule set and emits structured alerts that integrate cleanly with downstream SIEM and notification pipelines.
+    integrations:
+      - platform: config
+        code: |
+          # Falco rule: detect a shell spawned inside a container
+          - rule: Terminal shell in container
+            desc: A shell was used as the entrypoint/exec in a container
+            condition: >
+              spawned_process and container
+              and shell_procs and proc.tty != 0
+            output: >
+              Shell spawned in container (user=%user.name container=%container.id
+              image=%container.image.repository proc=%proc.cmdline)
+            priority: WARNING
+            tags: [container, shell, mitre_execution]
+
+  - name: Elastic Stack / OpenSearch
+    url: https://github.com/opensearch-project/OpenSearch
+    description: |
+      The Elastic Stack and its open source fork OpenSearch provide the aggregation, search and visualisation layer that ties host, cloud, network and container telemetry together. Beats and Logstash (or the OpenSearch equivalents) ship and parse logs into a central store, while the bundled SIEM/security analytics features add correlation rules, dashboards and alerting on top of the indexed data.
+
+mappings:
+  owasp_samm:
+    - "Operations > Operational Management"
+    - "Operations > Environment Management"
+  nist_ssdf:
+    - "RV.1 Identify and Confirm Vulnerabilities"
+    - "RV.3 Analyze Vulnerabilities to Identify Their Root Causes"
+  iso_27001:
+    - "A.8.15 Logging"
+    - "A.8.16 Monitoring activities"

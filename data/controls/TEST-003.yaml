@@ -1,0 +1,93 @@
+id: DSOVS-TEST-003
+code: TEST-003
+title: Interactive Application Security Testing (IAST)
+phase: Test
+slug: TEST-003-Interactive-Application-Security-Testing-IAST
+status: complete
+type: tool
+
+summary: |
+  Interactive Application Security Testing (IAST) works from inside a running application. An instrumentation agent is attached to the application at runtime and observes code as it actually executes while the software is exercised by functional or automated tests. Because the agent can see the source code, data flow, configuration, libraries and HTTP traffic all at once, it can confirm whether a suspected weakness is genuinely reachable and exploitable.
+
+  This inside-out perspective lets IAST combine the strengths of SAST and DAST. Like SAST it can pinpoint the exact line of vulnerable code, and like DAST it only reports issues that occur during real execution. The result is high-accuracy findings with very low false-positive rates, produced as a natural by-product of the testing teams are already running.
+
+  By surfacing vulnerabilities earlier and tying them directly to the code that caused them, IAST helps developers and security teams triage and resolve issues quickly, across the entire application stack and for both known and previously unseen weaknesses.
+
+levels:
+  - level: 0
+    title: No tool to perform interactive application security testing
+    description: |
+      At this level there is no IAST capability in place. No runtime instrumentation or agent is attached to the application, so no security analysis is gathered while the software runs. Any vulnerabilities that depend on real execution behaviour go undetected by this class of tooling, and the organisation relies solely on other techniques such as static or dynamic analysis.
+    evidence: []
+
+  - level: 1
+    title: Verify use of tool to perform on-demand scan to identify insecure code when the running application is being functionally tested
+    description: |
+      At this stage an IAST agent is available and used, but only on a case-by-case basis. A team will manually attach the agent to a running instance of the application and then exercise it through functional testing to observe what the instrumentation reports. This already improves on Level 0, because issues are now confirmed against live execution rather than missed entirely.
+
+      However, the activity is ad-hoc and depends on someone remembering to run it. The agent is not part of any automated test run, and the findings are typically not recorded or reported in a consistent way, so coverage and follow-up vary from one effort to the next.
+    evidence:
+      - An IAST agent is installed and available to the team.
+      - Evidence that the agent has been attached to a running application and exercised through functional testing at least once.
+      - At least one set of IAST findings produced on demand is available for review.
+      - Interview confirms who attaches the agent and when it is run.
+    diagram: |
+      graph LR; Functional-Test-- exercises -->Instrumented-Application-- IAST Findings -->Tester;
+
+  - level: 2
+    title: Verify the implementation of the interactive application security testing tool into the build pipeline to perform automated scans and report status to the build
+    description: |
+      Here the IAST agent is integrated into the build pipeline and attached automatically whenever the application is launched for its automated test suite. As integration, end-to-end and QA tests drive the running application, the agent continuously observes execution and detects vulnerabilities in the background, then reports the outcome back to the build.
+
+      This removes the manual, on-demand nature of Level 1. Every pipeline run that exercises the application produces consistent IAST coverage and feeds the result into the build status, so security analysis happens repeatably without anyone having to remember to trigger it.
+    evidence:
+      - Pipeline configuration shows the IAST agent being attached automatically when the application is launched for testing.
+      - Build logs show the agent observing execution during automated tests and reporting status back to the build.
+      - IAST results are tied to a build outcome (e.g. a threshold that flags or fails the build).
+    diagram: |
+      graph LR;
+      Start-- code push -->CICD-Pipeline-- attach IAST agent -->Instrumented-Application;
+      CICD-Pipeline-- run automated tests -->Instrumented-Application-- IAST Findings -->CICD-Pipeline;
+      Instrumented-Application-- Code Deployment -->Finish
+
+  - level: 3
+    title: Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
+    description: |
+      Level 3 builds on the automated integration of Level 2 by ensuring that every finding flows automatically into a centralised issue tracking system, alongside vulnerabilities discovered by other means. Issues are managed, prioritised and remediated through the same workflow the organisation uses for the rest of its security work, so nothing slips through the gaps.
+
+      In addition, the effectiveness of the IAST tooling is reviewed periodically. Teams examine which weaknesses the agent is catching, tune its configuration and coverage, and feed lessons back into the process so the capability keeps improving over time rather than standing still.
+    evidence:
+      - IAST findings are automatically created in a centralised issue tracker with severity and ownership.
+      - A documented schedule exists for reviewing the IAST tool's effectiveness, coverage and configuration.
+      - Metrics show IAST findings being triaged and remediated through the same workflow as other security findings.
+    diagram: |
+      graph LR;
+      Start-- code push -->CICD-Pipeline-- attach IAST agent -->Instrumented-Application;
+      CICD-Pipeline-- run automated tests -->Instrumented-Application-- IAST Findings -->Centralised-Issue-Tracker;
+      Instrumented-Application-- Code Deployment -->Finish
+
+tools:
+  - name: Contrast Community Edition
+    url: https://www.contrastsecurity.com/contrast-community-edition
+    description: |
+      Contrast Community Edition (CE) provides runtime IAST (and runtime protection) for a single application, free of charge. The agent is attached to the application process rather than invoked as a separate scan step, so it observes vulnerabilities while your existing functional and automated tests exercise the app.
+    integrations:
+      - platform: cli
+        label: JVM agent attachment
+        code: |
+          java -javaagent:/opt/contrast/contrast-agent.jar \
+               -Dcontrast.config.path=/etc/contrast/contrast_security.yaml \
+               -jar my-application.jar
+
+mappings:
+  owasp_samm:
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+    - "V14 Configuration"
+  nist_ssdf:
+    - "PW.8 Test Executable Code to Identify Vulnerabilities"
+    - "RV.1 Identify and Confirm Vulnerabilities"
+  iso_27001:
+    - "A.8.8 Management of technical vulnerabilities"
+    - "A.8.29 Security testing in development and acceptance"

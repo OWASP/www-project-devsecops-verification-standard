@@ -1,0 +1,159 @@
+id: DSOVS-CODE-006
+code: CODE-006
+title: Software License Compliance
+phase: Code/Build
+slug: CODE-006-Software-License-Compliance
+status: complete
+type: tool
+
+summary: |
+  Software license compliance is the process of ensuring that software applications, and the open-source components they depend on, are used in accordance with the terms of their respective license agreements.
+
+  It is an important part of DevSecOps because it helps ensure that developers consume third-party software in a legal and ethical manner, while also preventing potential copyright or intellectual property infringements. Modern applications pull in large transitive dependency trees, and a single permissively licensed package can introduce a copyleft or otherwise restrictive license deep in the graph.
+
+  By monitoring software license compliance, teams can be confident that third-party components are legally obtained, properly attributed, and free of obligations that conflict with how the application is distributed. License scanning also surfaces components with unknown or missing licenses, which often correlate with poorly maintained code and associated security risk.
+
+levels:
+  - level: 0
+    title: No tool to perform open-source software license compliance analysis
+    description: |
+      At this level there is no capability to identify the licenses of the open-source components used in the application. Dependencies are added freely and their license obligations are unknown, so the organisation has no visibility into whether it is meeting attribution requirements or whether copyleft and other restrictive licenses have been introduced. License risk is effectively invisible and is only discovered, if at all, during legal disputes, acquisition due diligence, or customer audits.
+    evidence: []
+
+  - level: 1
+    title: Verify use of tool to perform on-demand scan for license violations when using third-party components in the application
+    description: |
+      A license scanning tool is available and is run manually, typically by a developer or release engineer before pulling in a new dependency or preparing a release. The tool inventories the components in use and reports the license attached to each, allowing obligations and conflicts to be assessed against an approved policy.
+
+      This is a clear improvement on Level 0 because license information becomes visible and decisions can be made deliberately. However, because scanning is on-demand and depends on someone remembering to run it, coverage is inconsistent. Results may not be recorded, and dependencies added between scans can slip through unnoticed.
+    evidence:
+      - A license scanning tool is installed and available to developers or release engineers.
+      - At least one on-demand scan report exists listing components and their detected licenses.
+      - An approved/denied license policy exists against which scan results are assessed.
+      - Interview confirms who runs the scan and at what point in the workflow.
+    diagram: |
+      graph LR; Build-- License Scan -->Dependencies-->Results;
+
+  - level: 2
+    title: Verify the implementation of the third-party software licence scanning tool into the build pipeline to perform automated scans and report status to the build
+    description: |
+      License scanning is integrated into the build pipeline so that every build automatically inventories all direct and transitive dependencies and evaluates their licenses against the organisation's policy. The build reports the result, and a disallowed or unknown license can fail the build or raise a warning, providing fast and consistent feedback to developers.
+
+      This removes the reliance on manual effort that limited Level 1. Because the scan runs on every build, newly introduced dependencies are caught automatically and policy is applied uniformly across all projects that use the pipeline, giving the organisation continuous and repeatable visibility of its license posture.
+    evidence:
+      - Pipeline configuration shows a license scanning stage that runs automatically on each build.
+      - Build logs show the scan inventorying direct and transitive dependencies and reporting status to the build.
+      - A disallowed or unknown license causes the build to fail or raise a warning per defined policy.
+      - The same policy is applied uniformly across projects that use the pipeline.
+    diagram: |
+      graph LR;
+      Build-- code push -->CICD-Pipeline-- License Scan -->Dependencies--License Results -->CICD-Pipeline; CICD-Pipeline-- Code Deployment -->Finish
+
+  - level: 3
+    title: Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
+    description: |
+      Level 3 builds on the automated pipeline scanning of Level 2 by routing all findings into a centralised issue tracking or governance system. Every license violation, policy exception, and remediation is recorded, tracked over time, and made available for reporting across the whole portfolio rather than living only in transient build logs.
+
+      The organisation periodically reviews the effectiveness of the tool and its policy: it examines false positives, tunes the approved and denied license lists, validates that the dependency inventory (and any generated SBOM) is accurate, and confirms that obligations such as attribution are actually being met. This measured, continuously improved approach ensures license compliance scales with the organisation and adapts to new components and changing legal requirements.
+    evidence:
+      - License findings, policy exceptions, and remediations are automatically recorded in a centralised issue tracker or governance system.
+      - A documented schedule exists for reviewing tool effectiveness, tuning approved/denied license lists, and validating the dependency inventory or SBOM.
+      - Metrics show license findings being triaged and remediated over time across the portfolio.
+      - Evidence confirms attribution and other license obligations are being met.
+    diagram: |
+      graph LR;
+      Build-- code push -->CICD-Pipeline-- License Scan -->Dependencies--License Results -->Policy-Gate-- recorded -->Centralised-Issue-Tracker; CICD-Pipeline-- Code Deployment -->Finish
+
+tools:
+  - name: ScanCode Toolkit
+    url: https://github.com/nexB/scancode-toolkit
+    description: |
+      ScanCode Toolkit is a widely used open-source tool that detects licenses, copyrights, package metadata, and dependencies in source code and binaries. It is highly accurate, produces machine-readable output (JSON, SPDX, CycloneDX), and is well suited to building a detailed, auditable inventory of the licenses present in a codebase.
+    integrations:
+      - platform: github-actions
+        code: |
+          name: scancode-license-scan
+          on:
+            pull_request:
+            push:
+            workflow_dispatch:
+          jobs:
+            scan:
+              name: scancode
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                - name: Set up Python
+                  uses: actions/setup-python@v5
+                  with:
+                    python-version: "3.11"
+                - name: Install ScanCode Toolkit
+                  run: pip install scancode-toolkit
+                - name: Run license and copyright scan
+                  run: |
+                    scancode --license --copyright --package \
+                      --json-pp scancode-results.json .
+                - name: Upload results
+                  uses: actions/upload-artifact@v4
+                  with:
+                    name: scancode-results
+                    path: scancode-results.json
+
+  - name: Trivy
+    url: https://github.com/aquasecurity/trivy
+    description: |
+      Trivy is an open-source scanner from Aqua Security that, in addition to vulnerability detection, can scan project dependencies and report the licenses they use. It classifies findings by severity according to a configurable license policy and can fail the build when forbidden or restricted licenses are detected, making it a convenient single tool for combined license and security scanning.
+    integrations:
+      - platform: github-actions
+        link: https://github.com/aquasecurity/trivy-action
+        code: |
+          name: trivy-license-scan
+          on:
+            pull_request:
+            push:
+            workflow_dispatch:
+          jobs:
+            scan:
+              name: trivy-license
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+                - name: Run Trivy license scan
+                  uses: aquasecurity/trivy-action@master
+                  with:
+                    scan-type: fs
+                    scanners: license
+                    severity: HIGH,CRITICAL
+                    exit-code: "1"
+                    path: .
+      - platform: gitlab-ci
+        link: https://aquasecurity.github.io/trivy/latest/tutorials/integrations/gitlab-ci/
+        code: |
+          stages:
+            - license-compliance
+
+          trivy-license:
+            stage: license-compliance
+            image:
+              name: aquasec/trivy:latest
+              entrypoint: [""]
+            script:
+              - trivy fs --scanners license --severity HIGH,CRITICAL --exit-code 1 .
+
+  - name: FOSSA
+    url: https://fossa.com/
+    description: |
+      FOSSA is a commercial platform for open-source license compliance and vulnerability management. It provides automated dependency analysis, policy enforcement, attribution and notice file generation, and SBOM export, and integrates with CI pipelines to record findings centrally and report on license obligations across an organisation's portfolio.
+
+mappings:
+  owasp_samm:
+    - "Operations > Environment Management"
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "PW.4 Reuse Existing, Well-Secured Software When Feasible"
+    - "PO.1 Define Security Requirements for Software Development"
+  iso_27001:
+    - "A.5.32 Intellectual property rights"
+    - "A.8.8 Management of technical vulnerabilities"

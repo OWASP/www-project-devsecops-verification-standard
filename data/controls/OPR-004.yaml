@@ -1,0 +1,99 @@
+id: DSOVS-OPR-004
+code: OPR-004
+title: Application Security Logging
+phase: Operate/Monitor
+slug: OPR-004-Application-Security-Logging
+status: complete
+type: tool
+
+summary: |
+  Application Security Logging is a process of collecting, analyzing and managing log data related to application security events.
+
+  It helps to detect security breaches, identify unauthorized access attempts, or monitor the performance and effectiveness of application security controls.
+
+  It is an important element of DevSecOps because it provides visibility into the security posture of applications.
+
+  This makes it easier to spot potential threats and respond swiftly in order to minimize damage.
+
+  Additionally, application security logging can also be used to detect and investigate suspicious behavior and quickly take corrective action to mitigate risk.
+
+levels:
+  - level: 0
+    title: No centralised logging for security events
+    description: |
+      At this level applications emit little in the way of security-relevant logging, and what they do produce is inconsistent and local to each service. Events that matter for security, such as authentication attempts, authorisation decisions, input validation failures and significant state changes, are either not recorded at all or buried in generic debug output that nobody collects.
+
+      Without deliberate, structured security logging there is no dependable trail to show who did what within the application. When an account is compromised or a flaw is exploited, the team has no way to reconstruct the sequence of events, and the absence of any guidance also means developers risk the opposite failure mode of logging passwords, tokens or personal data in plain text.
+    evidence: []
+
+  - level: 1
+    title: Verify that application security events are logged and monitored in a centralised location
+    description: |
+      At level one the application deliberately logs security-relevant events. Following guidance such as the OWASP Logging Cheat Sheet and ASVS V7, the team identifies the events worth recording, including successful and failed logins, access-control failures, input validation and output encoding failures, session lifecycle changes, and use of higher-risk functionality, and emits them in a consistent, structured format with enough context to be useful.
+
+      Equal care is taken over what must never appear in logs: credentials, session tokens, API keys and sensitive personal data are excluded or masked at the point of logging. At this level review is still mostly manual and on demand, with developers or responders querying the logs when investigating a specific issue rather than monitoring them continuously, but the events being captured are meaningful and safe to retain.
+    evidence:
+      - A documented list of security-relevant events (logins, access-control failures, validation failures, session changes) the application logs.
+      - Sample log records show events emitted in a consistent, structured format with sufficient context.
+      - Code or configuration confirms credentials, tokens, API keys and sensitive personal data are excluded or masked at the point of logging.
+      - Interview confirms how developers query logs when investigating a specific issue.
+    diagram: |
+      graph LR; AuthN-AuthZ-Events-- writes logs -->Local-Logs; Validation-Failures-- writes logs -->Local-Logs; Local-Logs-- on-demand review -->Developer;
+
+  - level: 2
+    title: Verify implementation of alert and notification to development team for abuse and anomalies
+    description: |
+      At level two application security logs are forwarded to a central platform where events from every service are aggregated, normalised and stored together, typically a SIEM or log analytics stack. This consolidated view lets the team reason about behaviour across the whole application rather than one instance at a time, and to spot patterns such as credential-stuffing, repeated authorisation failures, or a spike in input validation rejections that would be invisible in isolated logs.
+
+      Detection rules built on this data are connected to alerting, so that abuse and anomalies automatically notify the responsible development team in near real time. The move from passively storing application events to actively alerting on suspicious patterns is the defining step at this level, turning the log stream into an early-warning system rather than a forensic archive consulted only after the fact.
+    evidence:
+      - Application security logs from every service are forwarded to a central SIEM or log analytics platform and normalised.
+      - Detection rules exist for abuse patterns such as credential-stuffing, repeated authorisation failures or input validation spikes.
+      - Alerts automatically notify the responsible development team in near real time via a defined channel.
+      - Evidence of a past anomaly alert being raised and delivered to the team.
+    diagram: |
+      graph LR; AuthN-AuthZ-Events-->Log-Shipper; Validation-Failures-->Log-Shipper; Log-Shipper-- aggregates -->SIEM-- detection rules -->Alerts-- notifies -->Team;
+
+  - level: 3
+    title: Verify that development team have ability to monitor and analyse application security events
+    description: |
+      At level three application security logging is a measured and continuously refined discipline. Detections are correlated across events and with environment telemetry so that a meaningful attack narrative, for example a series of failed authorisations followed by a successful privilege change and an unusual data export, is recognised as a single incident. Coverage is tracked against the application's features and trust boundaries, so the team can show which security events are instrumented and can prioritise closing the gaps.
+
+      Underpinning this are retention and integrity controls: logs are kept for a defined period and protected against tampering so they remain trustworthy evidence, while continuing to exclude secrets and sensitive personal data. The team also tunes detection content on an ongoing basis, reducing noisy or low-value alerts and adding coverage for new abuse cases as the application evolves, giving developers genuine, analyst-ready insight into how their application is being used and attacked.
+    evidence:
+      - Correlation rules link application events (and environment telemetry) so an attack narrative is recognised as a single incident.
+      - A coverage map ties instrumented security events to the application's features and trust boundaries, with gaps prioritised.
+      - Retention periods and tamper-protection controls are documented, and logs continue to exclude secrets and sensitive personal data.
+      - A periodic review tunes detection content, reducing noisy alerts and adding coverage for new abuse cases.
+    diagram: |
+      graph LR; SIEM-- correlated detections -->Correlation-- measured coverage -->Centralised-Issue-Tracker; Centralised-Issue-Tracker-- continuous tuning -->SIEM;
+
+tools:
+  - name: OWASP Security Logging
+    url: https://github.com/javabeanz/owasp-security-logging
+    description: |
+      The OWASP Security Logging project provides logging libraries (with bindings for Logback and Log4j2) that make it easier to emit consistent, security-relevant events from application code. It adds helpers for marking security events, masking sensitive values and enriching log entries with contextual metadata, which supports the structured, secret-free logging that the levels above require.
+
+      Structured-logging libraries more generally (for example logback/log4j2 with JSON encoders in the JVM ecosystem, structlog in Python, or Serilog in .NET) are also worth adopting, because emitting events as structured, parseable records is what allows a central platform to search, correlate and alert on them reliably.
+
+further_reading:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html
+    note: OWASP Logging Cheat Sheet
+  - url: https://owasp.org/www-project-application-security-verification-standard/
+    note: OWASP Application Security Verification Standard (ASVS) - V7 Logging and Error Handling
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html
+    note: OWASP Logging Vocabulary Cheat Sheet
+  - url: https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/
+    note: OWASP Top 10 - A09:2021 Security Logging and Monitoring Failures
+
+mappings:
+  owasp_samm:
+    - "Operations > Operational Management"
+  owasp_asvs:
+    - "V7 Logging and Error Handling"
+  nist_ssdf:
+    - "RV.1 Identify and Confirm Vulnerabilities"
+    - "RV.3 Analyze Vulnerabilities to Identify Their Root Causes"
+  iso_27001:
+    - "A.8.15 Logging"
+    - "A.8.16 Monitoring activities"

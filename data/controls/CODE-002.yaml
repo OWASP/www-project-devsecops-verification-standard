@@ -1,0 +1,229 @@
+id: DSOVS-CODE-002
+code: CODE-002
+title: Hardcoded Secrets Detection
+phase: Code/Build
+slug: CODE-002-Hardcoded-Secrets-Detection
+status: complete
+type: tool
+
+summary: |
+  Hardcoded secrets scanning is a security process used in DevSecOps that involves scanning code for hardcoded passwords, tokens, and other identifying information.
+
+  The goal of hardcoded secrets scanning is to identify and replace any insecurely stored credentials or secrets, as these can be exploited by malicious actors.
+
+  The process typically involves scanning source code, configuration files, and other related artifacts for secrets, which are then checked against appropriate levels of access control.
+
+  Any secrets that are deemed insecure are then reported to the relevant parties and can be replaced with more secure alternatives.
+
+levels:
+  - level: 0
+    title: No tool to perform hardcoded secret scanning
+    description: |
+      At this level of security maturity, there are no tools available to perform secret scanning.
+    evidence: []
+
+  - level: 1
+    title: Verify use of tool to perform on-demand scan to identify hardcoded secrets in the source code
+    description: |
+      At this stage, a secrets detection tool is present but the scanning is performed on a case-by-case basis. It is not automated and the results may not be reported or recorded.
+    evidence:
+      - A secrets detection tool is installed and available to developers.
+      - At least one on-demand scan report against the source repository is available.
+      - Interview confirms who runs the scan and how it is triggered.
+
+  - level: 2
+    title: Verify the implementation of the hardcoded secrets scanning tool into the build pipeline to perform automated scans and report status to the build
+    description: |
+      Here, secrets scanning is implemented into the software build pipeline. This means that whenever a build is executed, an automated secrets scan will be triggered and the results will be reported.
+    evidence:
+      - Pipeline configuration shows a secrets scanning stage that runs automatically on each build or push.
+      - Build logs show the secrets scan executing and reporting status back to the build.
+      - A detected secret causes the build to fail or be flagged.
+
+  - level: 3
+    title: Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
+    description: |
+      Level 3 of secrets scannnig is the same as level 2, with the addition of all identified security vulnerabilities being recorded in a centralised issue tracking system and periodically reviewed to evaluate the effectiveness of the secrets detection tool. This means that the same type of automated scans are being performed, but the results are being collected, tracked and analysed for future use and improvement.
+    evidence:
+      - Findings are automatically created in a centralised issue tracker with severity and ownership.
+      - A documented schedule exists for reviewing the tool's effectiveness and tuning its rules and allow-lists.
+      - Metrics show secrets findings being triaged and remediated over time.
+
+tools:
+  - name: Gitleaks
+    url: https://github.com/awslabs/git-secrets
+    description: |
+      Gitleaks is a SAST tool for detecting and preventing hardcoded secrets like passwords, api keys, and tokens in git repos. Gitleaks is an easy-to-use, all-in-one solution for detecting secrets, past or present, in your code.
+    integrations:
+      - platform: github-actions
+        link: https://github.com/gitleaks/gitleaks-action
+        code: |
+          name: gitleaks
+          on:
+            pull_request:
+            push:
+            workflow_dispatch:
+            schedule:
+              - cron: "0 4 * * *" # run once a day at 4 AM
+          jobs:
+            scan:
+              name: gitleaks
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v3
+                  with:
+                    fetch-depth: 0
+                - uses: gitleaks/gitleaks-action@v2
+                  env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}} # Only requir
+      - platform: gitlab-ci
+        link: https://badshah.io/experiment/adding-gitleaks-to-gitlab-pipeline/
+        code: |
+          stages:
+            - secrets-detection
+
+          gitleaks:
+            stage: secrets-detection
+            image:
+              name: "zricethezav/gitleaks"
+              entrypoint: [""]
+            script: gitleaks -v --pretty --repo-path . --commit-from=$CI_COMMIT_SHA --commit-to=$CI_COMMIT_BEFORE_SHA --branch=$CI_COMMIT_BRANCH
+      - platform: azure-devops
+        link: https://github.com/JoostVoskuil/azure-devops-gitleaks
+        code: |
+          name: '2.0$(rev:.r)'
+
+          trigger:
+          - main
+          - feature/*
+          - features/*
+          - bugfix/*
+
+          pool:
+            vmImage: 'ubuntu-latest'
+
+          stages:
+          - stage: 'Build'
+            displayName: 'Build'
+            jobs:
+            - job:
+              steps:
+              - task: NodeTool@0
+                inputs:
+                  versionSpec: '16.x'
+                displayName: 'Install Node.js'
+
+              - template: build-and-test.yml
+                parameters:
+                  path: task/v2
+                  name: Gitleaks V2
+
+              - task: TfxInstaller@3
+                displayName: 'Use Node CLI for Azure DevOps'
+                inputs:
+                  version: '0.9.x'
+                  checkLatest: true
+
+              - task: PackageAzureDevOpsExtension@3
+                displayName: 'Package Extension: $(Build.SourcesDirectory)'
+                name: 'packageStep'
+                inputs:
+                  rootFolder: '$(Build.SourcesDirectory)'
+                  outputPath: '$(Build.ArtifactStagingDirectory)/foxholenl-gitleaks.vsix'
+                  publisherId: 'foxholenl'
+                  extensionId: 'Gitleaks'
+                  extensionName: 'Gitleaks'
+                  extensionTag: '-build'
+                  extensionVersion: '$(Build.BuildNumber)'
+                  extensionVisibility: private
+
+              - task: PublishPipelineArtifact@1
+                displayName: 'Publish vsix'
+                inputs:
+                  publishLocation: pipeline
+                  targetPath: '$(packageStep.Extension.OutputPath)'
+                  artifact: 'vsix'
+                condition: succeededOrFailed()
+
+          - stage: Test
+            displayName: 'Publish to Marketplace (private)'
+            condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+            dependsOn: 'Build'
+            jobs:
+              - deployment:
+                environment: Test
+                strategy:
+                  runOnce:
+                   deploy:
+                    steps:
+
+                    - task: TfxInstaller@3
+                      displayName: 'Use Node CLI for Azure DevOps'
+                      inputs:
+                        version: '0.9.x'
+                        checkLatest: true
+
+                    - task: PublishAzureDevOpsExtension@3
+                      name: 'PublishTest'
+                      inputs:
+                        connectTo: 'VsTeam'
+                        connectedServiceName: 'Marketplace'
+                        fileType: 'vsix'
+                        vsixFile: '$(Pipeline.Workspace)/vsix/foxholenl-gitleaks.vsix'
+                        publisherId: 'foxholenl'
+                        extensionId: 'Gitleaks'
+                        extensionTag: '-dev'
+                        updateTasksVersion: false
+                        extensionVisibility: 'privatepreview'
+                        shareWith: 'foxholenl'
+                        noWaitValidation: true
+
+          - stage: Production
+            displayName: 'Publish to Marketplace (Public)'
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+            dependsOn: 'Test'
+            jobs:
+              - deployment:
+                environment: Production
+                strategy:
+                  runOnce:
+                    deploy:
+                      steps:
+                      - task: TfxInstaller@3
+                        displayName: 'Use Node CLI for Azure DevOps'
+                        inputs:
+                          version: '0.9.x'
+                          checkLatest: true
+
+                      - task: PublishAzureDevOpsExtension@3
+                        name: 'PublishProd'
+                        inputs:
+                          connectTo: 'VsTeam'
+                          connectedServiceName: 'Marketplace'
+                          fileType: 'vsix'
+                          vsixFile: '$(Pipeline.Workspace)/vsix/foxholenl-gitleaks.vsix'
+                          publisherId: 'foxholenl'
+                          extensionId: 'Gitleaks'
+                          updateTasksVersion: false
+                          extensionVisibility: 'public'
+                          noWaitValidation:  true
+
+mappings:
+  owasp_samm:
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V2 Authentication"
+    - "V14 Configuration"
+  nist_ssdf:
+    - "PW.7 Review and/or Analyze Human-Readable Code"
+    - "RV.1 Identify and Confirm Vulnerabilities"
+  iso_27001:
+    - "A.8.8 Management of technical vulnerabilities"
+    - "A.5.17 Authentication information"
+
+credits:
+  - name: Joost Voskuil
+    url: https://github.com/JoostVoskuil
+  - name: Chandrapal Badshah
+    url: https://www.linkedin.com/in/bnchandrapal/?originalSubdomain=in
