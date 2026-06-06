@@ -33,7 +33,7 @@ Building your own tooling? Every control is also published as machine-readable d
 ## 💬 Connect with Us
 
 <li><a href="https://owasp.slack.com/messages/project-devsecops-verification-standard/details/"><img src="document/images/slack_logo.png" width="14px">  #project-devsecops-verification-standard</a></li>
-<li><a href="https://www.linkedin.com/in/realjvo/"><img src="document/images/linkedin.svg" width="14px"> @realjvo </a> (Jamieson Vincenti O'Reilly, Project Lead)</li><li><a href="https://www.linkedin.com/in/yudhiy/"><img src="document/images/linkedin.svg" width="14px"> @yudhiy </a> (Yudhi Yudhistira, Project Lead)</li>
+<li><a href="https://www.linkedin.com/in/theonejvo/"><img src="document/images/linkedin.svg" width="14px"> @theonejvo </a> (Jamieson Vincenti O'Reilly, Project Lead)</li><li><a href="https://www.linkedin.com/in/yudhiy/"><img src="document/images/linkedin.svg" width="14px"> @yudhiy </a> (Yudhi Yudhistira, Project Lead)</li>
 
 ## 🎉 Get Involved
 

@@ -3,79 +3,100 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DSOVS Self-Assessment</title>
-  <meta name="description" content="Self-assess your software development lifecycle against the OWASP DevSecOps Verification Standard. Everything stays in your browser." />
+  <title>OWASP DevSecOps Verification Standard</title>
+  <meta name="description" content="An open-source framework to identify gaps in implementing security across the software development lifecycle." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/ef/OWASP_black_logo.svg" alt="OWASP" width="86" height="28" />
+        <span class="brand-divider" aria-hidden="true"></span>
         <span class="brand-mark">DSOVS</span>
         <span class="brand-sub">DevSecOps Verification Standard</span>
-      </div>
-      <nav class="view-switch" aria-label="Views">
-        <button class="seg" data-view="assess" aria-pressed="true">Assessment</button>
-        <button class="seg" data-view="report" aria-pressed="false">Report</button>
+      </a>
+      <nav class="top-actions" aria-label="Primary">
+        <a class="toplink" href="#standard">The standard</a>
+        <a class="toplink" href="https://github.com/OWASP/www-project-devsecops-verification-standard" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn primary sm" href="assess.html">Self-Assessment</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- ASSESSMENT VIEW -->
-    <section id="view-assess">
-      <div class="hero">
-        <h1>Self-Assessment</h1>
-        <p class="lede">Rate each control against the four DSOVS maturity levels, capture evidence and notes, then generate a report. Your answers never leave this browser &mdash; they are saved locally on this device.</p>
+  <main class="lwrap">
+    <section class="lhero">
+      <span class="lpill">OWASP Project</span>
+      <h1>The DevSecOps Verification Standard</h1>
+      <p class="lhero-sub">An open-source framework that defines baseline security requirements for any software project or organisation, so you can find the gaps in your secure development lifecycle and chart a path to close them.</p>
+      <div class="lhero-cta">
+        <a class="btn primary" href="assess.html">Start the self-assessment &rarr;</a>
+        <a class="btn ghost" href="#standard">Explore the standard</a>
       </div>
+      <div class="lhero-stat" id="hero-stat">7 phases &middot; 39 controls &middot; 4 maturity levels</div>
+    </section>
 
-      <div class="setup card">
-        <div class="field">
-          <label for="org">Organisation / project</label>
-          <input id="org" type="text" placeholder="e.g. Acme Payments" autocomplete="off" />
-        </div>
-        <div class="field">
-          <label for="assessor">Assessor</label>
-          <input id="assessor" type="text" placeholder="Your name" autocomplete="off" />
-        </div>
-        <div class="field">
-          <label for="date">Date</label>
-          <input id="date" type="date" />
-        </div>
-        <div class="field">
-          <label for="target">Target level</label>
-          <select id="target">
-            <option value="1">Level 1</option>
-            <option value="2" selected>Level 2</option>
-            <option value="3">Level 3</option>
-          </select>
-        </div>
+    <section class="luse">
+      <div class="lcard card">
+        <h3>Gap Analysis</h3>
+        <p>Identify the gaps in one or many software projects by giving internal or external analysts a clearly defined standard that covers every area of the secure development lifecycle.</p>
       </div>
-
-      <div class="progress-bar card" id="progress">
-        <div class="progress-meta">
-          <span id="progress-count">0 of 0 assessed</span>
-          <span id="progress-pct" class="muted">0%</span>
-        </div>
-        <div class="track"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="lcard card">
+        <h3>Maturity Roadmap</h3>
+        <p>Developers, architects and security teams can pinpoint their current DevSecOps maturity and map a clear path toward a higher, measurable level.</p>
       </div>
-
-      <nav class="phase-nav" id="phase-nav" aria-label="Jump to phase"></nav>
-
-      <div id="controls"></div>
-
-      <div class="footer-actions">
-        <button class="btn ghost" id="reset">Reset all answers</button>
-        <button class="btn primary" id="goto-report">Generate report &rarr;</button>
+      <div class="lcard card">
+        <h3>Third-party Risk</h3>
+        <p>Audit the SDLC maturity of third parties to confirm their development processes are resilient and to surface risks arising from people, processes or software.</p>
       </div>
     </section>
 
-    <!-- REPORT VIEW -->
-    <section id="view-report" hidden>
-      <div id="report"></div>
+    <section class="lband card">
+      <div class="lband-text">
+        <h2>Assess yourself in the browser</h2>
+        <p>Rate every control against the four maturity levels, attach screenshots as evidence, and generate a shareable report - an executive summary, maturity charts, a prioritised roadmap and an evidence pack. Everything stays on your device.</p>
+        <a class="btn primary" href="assess.html">Open the self-assessment &rarr;</a>
+      </div>
+      <div class="lband-levels" aria-hidden="true">
+        <div class="llv"><span>0</span>Initial</div>
+        <div class="llv"><span>1</span>Basic</div>
+        <div class="llv"><span>2</span>Managed</div>
+        <div class="llv"><span>3</span>Optimised</div>
+      </div>
+    </section>
+
+    <section id="standard" class="lstandard">
+      <div class="lsec-head">
+        <h2>The standard</h2>
+        <p>Controls are grouped by lifecycle phase. Each defines four maturity levels, from absent (0) through to measured and continuously improved (3). Open any control to read its full definition.</p>
+      </div>
+      <div id="toc" class="toc"></div>
+    </section>
+
+    <section class="linvolved">
+      <div class="lcard card">
+        <h3>Get involved</h3>
+        <p>The DSOVS evolves as processes and technologies change. Contributions and feedback are welcome.</p>
+        <ul class="llist">
+          <li><a href="https://github.com/OWASP/www-project-devsecops-verification-standard/issues" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg><span>Report errors (typos, grammar)</span></a></li>
+          <li><a href="https://github.com/OWASP/www-project-devsecops-verification-standard/pulls" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" x2="6" y1="9" y2="21"/></svg><span>Propose changes with a pull request</span></a></li>
+          <li><a href="https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/q-a" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>Ask questions</span></a></li>
+          <li><a href="https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/ideas" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg><span>Share new ideas</span></a></li>
+        </ul>
+      </div>
+      <div class="lcard card">
+        <h3>Connect with us</h3>
+        <p>Join the community and be part of the journey.</p>
+        <ul class="llist">
+          <li><a href="https://owasp.slack.com/messages/project-devsecops-verification-standard/details/" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg><span>#project-devsecops-verification-standard</span></a></li>
+          <li><a href="https://www.linkedin.com/in/theonejvo/" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg><span>Jamieson Vincenti O'Reilly - Project Lead</span></a></li>
+          <li><a href="https://www.linkedin.com/in/yudhiy/" target="_blank" rel="noopener"><svg class="li-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg><span>Yudhi Yudhistira - Project Lead</span></a></li>
+        </ul>
+      </div>
     </section>
   </main>
 
@@ -85,6 +106,6 @@
   </footer>
 
   <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script src="home.js"></script>
 </body>
 </html>

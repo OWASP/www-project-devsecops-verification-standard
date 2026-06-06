@@ -7,3 +7,13 @@ _site/
 .venv/
 __pycache__/
 *.pyc
+
+# Cloudflare / Wrangler (never commit deploy secrets)
+.wrangler/
+.dev.vars
+.dev.vars.*
+wrangler.toml.local
+.env
+.env.*
+node_modules/
+*.log

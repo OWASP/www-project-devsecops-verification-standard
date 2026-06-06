@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DSOVS Self-Assessment</title>
+  <meta name="description" content="Self-assess your software development lifecycle against the OWASP DevSecOps Verification Standard. Everything stays in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" title="Back to the DSOVS home">
+        <img class="brand-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/ef/OWASP_black_logo.svg" alt="OWASP" width="86" height="28" />
+        <span class="brand-divider" aria-hidden="true"></span>
+        <span class="brand-mark">DSOVS</span>
+        <span class="brand-sub">DevSecOps Verification Standard</span>
+      </a>
+      <div class="top-right">
+        <button class="topreset" id="topreset" type="button" title="Clear all saved answers, notes and screenshots stored in this browser">Reset</button>
+        <nav class="view-switch" aria-label="Views">
+          <button class="seg" data-view="assess" aria-pressed="true">Assessment</button>
+          <button class="seg" data-view="report" aria-pressed="false">Report</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ASSESSMENT VIEW -->
+    <section id="view-assess">
+      <aside class="rail" id="rail" aria-label="Jump to phase"></aside>
+      <div class="hero">
+        <h1>Self-Assessment</h1>
+        <p class="lede">Rate each control against the four DSOVS maturity levels, capture evidence and notes, then generate a report. Your answers never leave this browser - they are saved locally on this device.</p>
+      </div>
+
+      <div class="setup card">
+        <div class="field">
+          <label for="org">Organisation / project</label>
+          <input id="org" type="text" placeholder="e.g. Acme Payments" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="assessor">Assessor</label>
+          <input id="assessor" type="text" placeholder="Your name" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="date">Date</label>
+          <input id="date" type="date" />
+        </div>
+        <div class="field">
+          <label for="target">Target level</label>
+          <select id="target">
+            <option value="1">Level 1</option>
+            <option value="2" selected>Level 2</option>
+            <option value="3">Level 3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="progress-bar card" id="progress">
+        <div class="progress-meta">
+          <span id="progress-count">0 of 0 assessed</span>
+          <span id="progress-pct" class="muted">0%</span>
+        </div>
+        <div class="track"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+
+      <nav class="phase-nav" id="phase-nav" aria-label="Jump to phase"></nav>
+
+      <div id="controls"></div>
+
+      <div class="footer-actions">
+        <button class="btn ghost" id="reset">Reset all answers</button>
+        <button class="btn primary" id="goto-report">Generate report &rarr;</button>
+      </div>
+    </section>
+
+    <!-- REPORT VIEW -->
+    <section id="view-report" hidden>
+      <div id="report"></div>
+    </section>
+  </main>
+
+  <footer class="sitefoot">
+    <span>OWASP DevSecOps Verification Standard</span>
+    <a href="https://github.com/OWASP/www-project-devsecops-verification-standard" target="_blank" rel="noopener">Project on GitHub</a>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
