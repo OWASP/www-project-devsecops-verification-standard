@@ -22,17 +22,31 @@ A license scanning tool is available and is run manually, typically by a develop
 
 This is a clear improvement on Level 0 because license information becomes visible and decisions can be made deliberately. However, because scanning is on-demand and depends on someone remembering to run it, coverage is inconsistent. Results may not be recorded, and dependencies added between scans can slip through unnoticed.
 
+```mermaid
+graph LR; Build-- License Scan -->Dependencies-->Results;
+```
+
 ## Level 2 - Verify the implementation of the third-party software licence scanning tool into the build pipeline to perform automated scans and report status to the build
 
 License scanning is integrated into the build pipeline so that every build automatically inventories all direct and transitive dependencies and evaluates their licenses against the organisation's policy. The build reports the result, and a disallowed or unknown license can fail the build or raise a warning, providing fast and consistent feedback to developers.
 
 This removes the reliance on manual effort that limited Level 1. Because the scan runs on every build, newly introduced dependencies are caught automatically and policy is applied uniformly across all projects that use the pipeline, giving the organisation continuous and repeatable visibility of its license posture.
 
+```mermaid
+graph LR;
+Build-- code push -->CICD-Pipeline-- License Scan -->Dependencies--License Results -->CICD-Pipeline; CICD-Pipeline-- Code Deployment -->Finish
+```
+
 ## Level 3 - Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
 
 Level 3 builds on the automated pipeline scanning of Level 2 by routing all findings into a centralised issue tracking or governance system. Every license violation, policy exception, and remediation is recorded, tracked over time, and made available for reporting across the whole portfolio rather than living only in transient build logs.
 
 The organisation periodically reviews the effectiveness of the tool and its policy: it examines false positives, tunes the approved and denied license lists, validates that the dependency inventory (and any generated SBOM) is accurate, and confirms that obligations such as attribution are actually being met. This measured, continuously improved approach ensures license compliance scales with the organisation and adapts to new components and changing legal requirements.
+
+```mermaid
+graph LR;
+Build-- code push -->CICD-Pipeline-- License Scan -->Dependencies--License Results -->Policy-Gate-- recorded -->Centralised-Issue-Tracker; CICD-Pipeline-- Code Deployment -->Finish
+```
 
 # Notable Tools
 

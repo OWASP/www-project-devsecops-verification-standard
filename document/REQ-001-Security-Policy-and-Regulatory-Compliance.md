@@ -24,17 +24,29 @@ The organisation has identified the applicable laws, regulations, and contractua
 
 At this level the activity is still largely manual and informal. Audits may be triggered by a calendar reminder or an upcoming deadline rather than embedded in the way the project is run, and the translation of obligations into concrete security policy may be inconsistent. Nevertheless, the documentation provides a foundation that later levels build upon.
 
+```mermaid
+graph LR; Regulations-- documented in -->Security-Policy-- periodic audit -->Compliance-Baseline;
+```
+
 ## Level 2 - Verify implementation of real-time compliance verification and the findings are automatically recorded to a centralised issue tracker system
 
 Compliance verification is integrated into the software development lifecycle rather than performed as a stand-alone exercise. Applicable obligations have been translated into explicit security policy that the project is expected to meet, and adherence is checked continuously as changes are made, so that deviations are surfaced close to the point at which they are introduced.
 
 Findings are routed into a centralised issue tracker so that compliance gaps are managed alongside other engineering work, with clear ownership and traceability. This consistent, integrated approach means that compliance is treated as a routine property of delivery rather than an event, and the project can show an ongoing record of how it has met its obligations.
 
+```mermaid
+graph LR; Regulations-- mapped to -->Security-Policy-- verified in -->SDLC-- findings -->Centralised-Issue-Tracker;
+```
+
 ## Level 3 - Verify that compliance status is enforced and periodic review schedule is defined
 
 Compliance status is actively enforced and is governed by a defined periodic review schedule. The organisation does not merely detect deviations but maintains controls that keep the project within its policy boundaries, and the set of applicable obligations is revisited on a regular cadence so that new regulations, contractual changes, or shifts in the threat landscape are reflected in policy promptly.
 
 At this level the effectiveness of the compliance programme itself is measured and improved. Metrics such as the time taken to remediate findings, recurrence rates, and audit outcomes are tracked over time and used to refine the controls and the policy. Compliance thereby becomes a continuously improving capability that is aligned with the organisation's risk appetite rather than a static checklist.
+
+```mermaid
+graph LR; Regulations-- enforced via -->Security-Policy-- measured by -->Metrics-- scheduled review -->Security-Policy;
+```
 
 ## Further reading
 - [NIST SP 800-218 Secure Software Development Framework (SSDF)](https://csrc.nist.gov/projects/ssdf) - Practices such as PO (Prepare the Organization) cover defining security requirements and meeting regulatory expectations across the lifecycle.

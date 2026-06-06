@@ -24,17 +24,29 @@ At level one, threat modelling starts to take place, but informally and only whe
 
 This is a clear step forward from never modelling threats at all, because at least some applications now benefit from a deliberate, structured look at how they could be attacked. The limitation is that the practice depends on a specialist's availability and on someone remembering to ask, so it is applied unevenly and many features are still built with no threat analysis behind them.
 
+```mermaid
+graph LR; Design-- ad-hoc engagement -->Security-Analyst-- identify threats -->Threat-Model-- findings -->Team;
+```
+
 ## Level 2 - Verify that threat modelling is performed by development team on features
 
 At level two, threat modelling becomes part of the normal development flow and is carried out by the development teams themselves as they build features, rather than being outsourced to a security analyst. As a feature is designed, the team works through what could go wrong, what an attacker might target, and which mitigations belong in the design, capturing the resulting actions alongside their other work.
 
 The important advance is one of ownership and scale: because the teams who understand the feature best perform the analysis as a routine activity, far more of the product gets modelled, threats are identified while the design can still be changed cheaply, and developers steadily build an instinct for thinking like an attacker. Security specialists can then focus on coaching and on the highest-risk areas rather than being a bottleneck.
 
+```mermaid
+graph LR; Feature-- identify threats -->Development-Team-- builds -->Threat-Model-- mitigations -->Backlog;
+```
+
 ## Level 3 - Verify that periodic review schedule is defined to keep the threat model artifacts current
 
 At level three, threat models are treated as living artifacts maintained on a defined, periodic review schedule. Rather than being produced once when a feature is first built and then forgotten, models are revisited on a regular cadence and whenever the system changes meaningfully, so that assets, trust boundaries, threats, and mitigations stay aligned with the application as it actually exists.
 
 This is a mature, measured practice in which threat modelling continuously informs the organisation's security posture. Keeping the artifacts current means newly emerging threats can be reflected back into existing designs, controls can be verified as still appropriate, and the organisation retains an accurate, auditable picture of the risks facing each system over its whole lifetime.
+
+```mermaid
+graph LR; Schedule-- periodic review -->Development-Team-- update -->Threat-Model-- refreshed mitigations -->Backlog; Threat-Model-- next cadence -->Schedule;
+```
 
 # Notable Tools
 

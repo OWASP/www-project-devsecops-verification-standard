@@ -24,17 +24,29 @@ At this level the organisation deliberately separates testing from production. S
 
 Test data is also prepared rather than left to chance. A purpose-built dataset is created to exercise the application's important functionality and security-relevant paths, and it avoids exposing real sensitive or personally identifiable information. This gives testers a stable, repeatable baseline and removes the temptation to test against raw production copies. The environment and data are still largely set up by hand and may be created once and reused, but the essential separation and intent are now in place.
 
+```mermaid
+graph LR; Test-Environment-- separated from -->Production; Test-Environment-- uses -->Prepared-Test-Data-- runs -->Security-Tests;
+```
+
 ## Level 2 - Verify that the test environment is maintained and configured to align with changes to production environment and test data is prepared
 
 This level improves on the previous one by keeping the test environment deliberately aligned with production over time. Rather than being stood up once and allowed to drift, the environment is actively maintained so that configuration, dependencies, infrastructure and topology track changes made to production. As production evolves, the test environment is updated to match, which keeps security testing representative and reduces the risk of false confidence or unreproducible findings.
 
 Prepared, non-sensitive test data continues to underpin testing, and it is curated to remain relevant as the application changes. Because the environment now mirrors production more faithfully, results carry greater weight: a vulnerability found in test is a strong indication of one in production, and a clean result is more credible. Maintaining this alignment typically requires documented configuration and a process to propagate production changes into the test environment.
 
+```mermaid
+graph LR; Production-- changes propagated -->Aligned-Test-Environment-- uses -->Prepared-Test-Data-- runs -->Security-Tests;
+```
+
 ## Level 3 - Verify that the test environment is identical to production and test data is created on-demands
 
 At the highest level of maturity, the test environment is effectively identical to production, and both the environment and its data can be provisioned on demand. Infrastructure-as-code, automated provisioning and configuration management are used to spin up a faithful replica of production whenever it is needed, eliminating manual drift and removing the need to keep a long-lived environment carefully patched by hand.
 
 Test data is likewise generated on demand, producing realistic, fit-for-purpose datasets that are free of real sensitive information and tailored to the test at hand. This makes thorough security testing fast, repeatable and consistent: teams can create a clean, production-equivalent environment and dataset for any test run, exercise it intensively, and tear it down afterwards. The result is high-fidelity security testing that scales with the organisation and integrates naturally into routine delivery.
+
+```mermaid
+graph LR; Infrastructure-as-Code-- provisions on-demand -->Identical-Test-Environment-- generates on-demand -->Test-Data-- runs -->Security-Tests-- teardown -->Infrastructure-as-Code;
+```
 
 ## Further reading
 - [OWASP Web Security Testing Guide (WSTG)](https://owasp.org/www-project-web-security-testing-guide/) - guidance on planning and executing web application security testing, including the testing environment.

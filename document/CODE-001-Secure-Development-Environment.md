@@ -28,17 +28,31 @@ At this stage the organisation has produced written hardening standards or a sec
 
 The standard exists as guidance and is applied manually. Developers are expected to read the checklist and configure their own environments accordingly, and compliance is reviewed on an ad-hoc basis rather than being enforced automatically. This is an improvement over Level 0 because there is now a shared, documented baseline that everyone can be measured against, even if adherence still relies on individual effort.
 
+```mermaid
+graph LR; Developer-- follows checklist -->Dev-Environment;
+```
+
 ## Level 2 - Verify implementation of harden template for development environment
 
 Here the hardening standard is no longer just a document to follow by hand; it is implemented as a reusable, pre-configured template. This might take the form of a managed and golden machine image, a configuration-management profile (for example Ansible, Chef, or an MDM policy), or a containerised development environment such as a Dev Container that ships with the approved tooling and security settings baked in.
 
 Because the secure baseline is delivered as a template, every developer starts from the same hardened state and the controls are applied consistently and repeatably instead of depending on each person to remember the checklist. Onboarding becomes faster and configuration drift between environments is significantly reduced.
 
+```mermaid
+graph LR;
+Developer-- provisions -->Hardened-Template-- pre-commit hooks -->Commit-- code push -->CICD-Pipeline; CICD-Pipeline-- Build -->Finish
+```
+
 ## Level 3 - Verify that the security policies are enforced to align with in the development environment hardening standards
 
 At the highest level of maturity the hardening standards are actively enforced rather than merely provided. Policies are applied and continuously monitored through tooling such as MDM/endpoint management, policy-as-code, and pre-commit or CI checks, so that non-compliant environments are detected and either remediated automatically or blocked from interacting with source code and pipelines.
 
 Compliance status is tracked centrally, giving the organisation visibility into which environments meet the baseline and which do not. The effectiveness of the hardening standards is reviewed periodically and the templates and policies are improved over time to keep pace with new threats, changes in tooling, and the organisation's risk appetite. This builds on Level 2 by closing the gap between having a hardened template and guaranteeing it is consistently in force.
+
+```mermaid
+graph LR;
+Developer-- provisions -->Hardened-Template-- code push -->CICD-Pipeline-- Policy Check -->Source-Code--Compliance Status -->Centralised-Issue-Tracker; CICD-Pipeline-- Build -->Finish
+```
 
 # Notable Tools
 

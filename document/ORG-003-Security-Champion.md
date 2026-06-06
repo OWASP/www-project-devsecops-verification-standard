@@ -24,13 +24,25 @@ The organisation has no recognised application security capability and no indivi
 
 A central application security function or team has been established to provide subject matter expertise to the wider organisation. Development teams can reach out to this group for guidance on threats, secure design, and remediation, which gives the organisation a consistent and authoritative source of security knowledge. While this represents a meaningful improvement over having no capability at all, the expertise remains concentrated in a single team and is delivered on request, so coverage across individual development teams is uneven and reactive rather than embedded in day-to-day delivery.
 
+```mermaid
+graph LR; Development-Team-- requests guidance -->Central-AppSec-Team;
+```
+
 ## Level 2 - Verify that a dedicated security champion appointed to work within each development team
 
 The organisation has moved security expertise closer to where software is built by appointing a dedicated security champion within each development team. These champions are embedded developers who advocate for security inside their own teams, act as the first point of contact for security questions, and create a direct link back to the central application security function. Because every team now has a named individual responsible for promoting secure practices, security guidance is applied more consistently and earlier in the lifecycle, and issues are increasingly identified by the teams themselves rather than only during centralised review.
 
+```mermaid
+graph LR; Development-Team-- includes -->Security-Champion-- liaises with -->Central-AppSec-Team;
+```
+
 ## Level 3 - Verify that the multiple security subject matter experts can be the champion within the development team
 
 Security expertise has matured to the point where multiple subject matter experts within a team are capable of acting as the security champion, removing reliance on any single person. The champion role is supported, rotated, and measured, with the organisation actively developing the depth of its security talent and tracking the effectiveness of the programme. This redundancy and ongoing investment make the security champion capability resilient and continuously improving, allowing the organisation to scale secure development practices as teams grow and to refine the programme in line with its evolving risk profile.
+
+```mermaid
+graph LR; Development-Team-- includes -->Champion-A & Champion-B-- rotated and measured -->Central-AppSec-Team;
+```
 
 ## Further reading
 - [OWASP Security Culture Project](https://owasp.org/www-project-security-culture/) - Guidance on building a security culture, including how to establish and run a security champions programme.

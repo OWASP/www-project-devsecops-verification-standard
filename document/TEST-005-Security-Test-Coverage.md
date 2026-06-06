@@ -24,17 +24,29 @@ At this level the organisation explicitly defines what security testing is inten
 
 This is the first step towards meaningful coverage. With scope defined, it becomes possible to reason about whether testing has addressed everything it was meant to, and to make deliberate, recorded decisions about exclusions rather than leaving gaps by accident. Coverage at this stage is still understood largely qualitatively and assessed by hand, but the boundaries that make measurement possible are now in place.
 
+```mermaid
+graph LR; Attack-Surface-- defines -->In-Scope; Attack-Surface-- defines -->Out-of-Scope; In-Scope-- guides -->Security-Tests;
+```
+
 ## Level 2 - Verify implementation of security regression testing
 
 This level improves on the previous one by ensuring that security coverage is not lost over time. Security regression testing is implemented so that previously identified vulnerabilities, and the security requirements already verified, are re-tested as the application changes. Fixes are confirmed to stay fixed, and controls that once passed are checked again after each significant change.
 
 By turning past findings and verified requirements into a repeatable test suite, coverage becomes cumulative rather than a snapshot. Mapping these regression tests to security requirements - for example to ASVS controls - makes the growing body of covered behaviour explicit and prevents previously assured areas from quietly regressing. Coverage is now measured against a baseline of requirements rather than merely scoped, giving a clearer view of what is consistently protected.
 
+```mermaid
+graph LR; Security-Requirements-- mapped to -->Regression-Tests-- coverage measured -->Coverage-Report;
+```
+
 ## Level 3 - Verify that security test coverage is continuously monitored and increased
 
 At the highest level of maturity, security test coverage is continuously monitored and deliberately expanded over time. The proportion of the codebase, attack surface and security requirements exercised by testing is tracked as a metric, mapped against a framework such as ASVS, and reviewed so that gaps are visible and trends are understood.
 
 Building on the regression testing of the previous level, the organisation treats coverage as something to be actively improved rather than merely maintained. Identified gaps drive new tests, coverage targets are set and monitored, and the effectiveness of the testing is periodically reassessed against evolving threats and requirements. This turns security testing into a measured, continuously improving capability in which the organisation can state with confidence how much of its application is assured and demonstrate that the figure is rising.
+
+```mermaid
+graph LR; Security-Requirements-- mapped to -->Security-Tests-- coverage measured -->Coverage-Report-- gaps drive -->New-Tests-- continuously improved -->Security-Tests;
+```
 
 ## Further reading
 - [OWASP Application Security Verification Standard (ASVS)](https://owasp.org/www-project-application-security-verification-standard/) - a framework of security requirements that testing coverage can be mapped against and measured.

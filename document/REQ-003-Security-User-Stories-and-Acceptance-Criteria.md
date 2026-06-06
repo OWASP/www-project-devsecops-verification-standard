@@ -26,17 +26,29 @@ The organisation has created a reusable template for security user stories and a
 
 Compared with Level 0, security is now expressed in artefacts that live alongside functional stories instead of relying purely on individual memory. Adoption may still be uneven and the depth of each story can vary, but the team has a deliberate, repeatable mechanism for surfacing security needs early in the requirements stage.
 
+```mermaid
+graph LR; Template-- shapes -->Security-User-Story-- captured in -->Backlog;
+```
+
 ## Level 2 - Verify that security use or misuse cases are defined as feature's acceptance criteria
 
 Security expectations are no longer captured only as standalone stories; they are written directly into the acceptance criteria that define when a feature is complete. Each relevant feature carries explicit, testable security conditions describing both the desired protective behaviour and the misuse scenarios that must be prevented.
 
 This is a meaningful step up from Level 1 because security becomes a non-negotiable part of the definition of done rather than an optional supporting artefact. Developers know what they must build to pass, testers have unambiguous criteria to validate against, and a feature cannot be considered finished until its security acceptance criteria are demonstrably satisfied.
 
+```mermaid
+graph LR; Security-User-Story-- defines -->Acceptance-Criteria-- validated by -->Tests-- gate -->Definition-of-Done;
+```
+
 ## Level 3 - Verify that periodic review schedule is defined for the development team to review the security user stories template and scope of the acceptance criteria
 
 The practice is now actively maintained through a defined, recurring review cycle. On a regular cadence the development team revisits the security user story template and the scope of the acceptance criteria to confirm they still reflect current threats, lessons learned from incidents, and changes to the application and its regulatory context.
 
 This level builds on Level 2 by treating the security requirements process itself as something to be measured and continuously improved rather than left static. Feedback from testing results, vulnerabilities found in production, and evolving attack techniques is fed back into the templates, so the criteria stay relevant and the overall quality of security requirements steadily increases over time.
+
+```mermaid
+graph LR; Acceptance-Criteria-- validated by -->Tests-- feedback -->Scheduled-Review-- refines -->Template;
+```
 
 ## Further reading
 - https://owasp.org/www-project-application-security-verification-standard/ — OWASP ASVS provides a catalogue of verifiable security requirements that can be turned directly into security user stories and acceptance criteria.

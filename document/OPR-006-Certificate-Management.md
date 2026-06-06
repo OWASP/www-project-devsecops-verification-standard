@@ -26,17 +26,29 @@ At Level 1, ownership of the full certificate life cycle moves to the developmen
 
 The team uses on-demand tooling to generate certificate signing requests, request certificates from a certificate authority, and install them where they are needed. The process is still largely human-driven and triggered when someone notices an upcoming expiry or a new endpoint, but accountability is now clear and the team can choose appropriate key sizes and signature algorithms rather than inheriting whatever a remote team configured. This shortens the feedback loop and reduces the chance of a certificate being forgotten, even though it does not yet remove the manual effort.
 
+```mermaid
+graph LR; Team-- CSR -->CA-- certificate -->Service-- manual tracking -->Team;
+```
+
 ## Level 2 - Verify implementation of automated PKI life-cycle management
 
 Level 2 replaces the manual, on-demand work with automated PKI life-cycle management. Certificate issuance and renewal are driven by tooling that requests, validates, installs and rotates certificates without human intervention, typically through a protocol such as ACME and a controller that watches for certificates approaching expiry and renews them well in advance.
 
 Because renewal is continuous and automatic, the entire class of expiry-related outages is largely designed out, and rotating certificates frequently becomes practical rather than painful. Automation also enforces consistency: every certificate is issued with approved key types, algorithms and validity periods, private keys are generated and stored in a controlled way, and short-lived certificates can be adopted safely. This is a clear improvement over Level 1, where strong practices depended on the team remembering to apply them each time.
 
+```mermaid
+graph LR; ACME-Client-- CSR -->CA-- certificate -->Service-- nearing expiry -->Auto-Renew-- rotate -->Service;
+```
+
 ## Level 3 - Verify implementation of end-to-end secure communication
 
 At Level 3, automated certificate management is extended into a centralised, measured capability that underpins end-to-end secure communication across the estate. Every certificate, whether protecting an external endpoint or internal service-to-service traffic, is tracked in a central inventory that records its issuer, key parameters, deployment location and expiry, giving a single source of truth across teams.
 
 This central view is actively monitored and measured. Dashboards and alerts surface upcoming expiries, weak or non-compliant cryptography and certificates issued outside policy, and these signals feed into the same tracking and reporting used for other security findings. The configuration and effectiveness of the certificate management programme are reviewed periodically so that algorithms, validity periods and automation coverage are tightened over time. The result is encrypted communication along the full path between components, continuously verified rather than assumed, building on the automation of Level 2 with oversight, metrics and continuous improvement.
+
+```mermaid
+graph LR; ACME-Client-- certificate -->Service-- registers -->Central-Inventory-- expiry monitoring -->Alerts; Central-Inventory-- nearing expiry -->Auto-Rotate-- rotate -->Service;
+```
 
 # Notable Tools 
 

@@ -24,17 +24,31 @@ At this stage the organisation has introduced a dedicated, centralised secret st
 
 Usage at this level is typically manual or on-demand: developers and operators fetch secrets when configuring an application or environment, and access is granted to the store rather than to scattered files. While this is a significant improvement over plaintext storage, retrieval and injection are not yet fully automated within the pipeline, and rotation is performed reactively rather than on a schedule.
 
+```mermaid
+graph LR; Operator-- manual retrieval -->Secret-Store-- secret -->Application;
+```
+
 ## Level 2 - Verify periodic review and rotation schedule of secrets
 
 At this level secret retrieval is automated and integrated into the delivery pipeline, so that applications receive their secrets at deploy or run time directly from the central store without manual handling. The pipeline authenticates to the secret manager, pulls the values it needs, and injects them into the running workload, keeping plaintext credentials out of build logs, images, and manifests.
 
 In addition, secrets are subject to a defined review and rotation schedule. Credentials are rotated periodically and re-issued automatically, and access policies are reviewed so that only the workloads and identities that need a secret can read it. This limits the useful lifetime of any leaked credential and reduces the blast radius of a compromise.
 
+```mermaid
+graph LR;
+Pipeline-- authenticates and requests -->Secret-Store-- injects rotated secret -->Application; Secret-Store-- scheduled rotation -->Secret-Store
+```
+
 ## Level 3 - Verify implementation of dynamic secrets or secretless process to avoid secrets to be stored within the application
 
 At the highest level of maturity, secret management is centralised, access-controlled, and fully audited, and the organisation moves toward dynamic secrets or a secretless model so that long-lived credentials are never stored within the application at all. Rather than handing an application a static password, the secret manager issues short-lived, on-demand credentials that are generated when needed and automatically expire shortly afterwards, or the workload authenticates using its own platform identity so that no shared secret changes hands.
 
 Every issuance and access is logged for audit, policies enforce least-privilege access per workload identity, and the effectiveness of rotation and revocation is continuously reviewed. Because credentials are ephemeral and tightly scoped, a leaked value is of little use to an attacker, and the organisation achieves strong, traceable, and continuously improved control over its secrets.
+
+```mermaid
+graph LR;
+Workload-- platform identity -->Secret-Store-- short-lived dynamic credential -->Application; Secret-Store-- every access logged -->Centralised-Audit-Tracker
+```
 
 # Notable Tools
 

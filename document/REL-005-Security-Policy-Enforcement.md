@@ -26,17 +26,29 @@ At this level the organisation has defined and documented security policies that
 
 The policies exist as written guidance and are applied manually, with engineers and reviewers expected to check changes against them before release. This provides a shared understanding of what is and is not allowed, but enforcement is dependent on human review, so policy violations can still slip through when checks are skipped or misunderstood.
 
+```mermaid
+graph LR; Deploy-Request-- Manual Review -->Reviewer-- checks against -->Security-Policy-- approved -->Cluster;
+```
+
 ## Level 2 - Verify implementation of guardrails and gates to enforce security policies
 
 At this level the documented policies are expressed as code and validated automatically within the pipeline. Policy-as-code checks run against manifests, infrastructure definitions and build artifacts on every change, evaluating them against the agreed guardrails and reporting any violations back to the build.
 
 Because the same rules are applied consistently to every change, enforcement no longer relies on individual reviewers remembering each requirement. Non-compliant changes are surfaced early and predictably, and the policy set becomes a living artifact that is versioned and tested alongside the systems it protects.
 
+```mermaid
+graph LR; Deploy-Request-- code push -->CICD-Pipeline-- evaluated by -->Policy-as-Code-- pass or fail -->CICD-Pipeline; CICD-Pipeline-- Deploy -->Cluster;
+```
+
 ## Level 3 - Verify the chain of authorisation is implemented as part of the process of infrastructure changes deployment
 
 At this level security policies are enforced as hard gates at admission and deploy time, so non-compliant changes are actively blocked rather than merely flagged. A clear chain of authorisation governs infrastructure changes, ensuring that deployments are admitted only when they satisfy policy and have passed the required approvals. Enforcement decisions are centrally tracked, giving full visibility of what was allowed, what was denied and why.
 
 These centralised metrics drive continuous improvement: recurring violations, exceptions and emerging risks inform regular refinement of the policy set and the authorisation workflow. The result is a measured, self-correcting enforcement capability in which policies evolve with the environment and consistently prevent unsafe changes from reaching production.
+
+```mermaid
+graph LR; Deploy-Request-- evaluated by -->Admission-Controller-- allow -->Cluster; Admission-Controller-- deny -->Blocked; Admission-Controller-- decisions -->Central-Metrics;
+```
 
 # Notable Tools
 

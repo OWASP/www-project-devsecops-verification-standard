@@ -24,17 +24,31 @@ At this stage an engineer hardens the application manually against a defined bas
 
 This is a clear improvement because the running application is now compared against an objective standard. However, the work is ad hoc and relies on individual diligence, so hardening is applied inconsistently across services and configuration can drift back to insecure defaults between manual checks.
 
+```mermaid
+graph LR; Engineer-- manual config review -->Application-- headers, TLS, least privilege -->Engineer;
+```
+
 ## Level 2 - Verify that the vulnerability scanning tool is scheduled to perform automated scans and report status to system owner through a centralised issue tracking system
 
 Here, application hardening is codified and verified automatically within the pipeline. Secure defaults are baked into base images, deployment manifests and configuration templates, and the pipeline checks that they hold, for example by asserting that the expected security headers are present, that TLS meets the required policy, and that the container does not run as root.
 
 Because these checks are automated and can gate a release, every deployment is held to the same hardened baseline rather than depending on whoever shipped it. The status of each check is reported back to the system owner and recorded centrally, giving a consistent, auditable view of each application's hardening posture.
 
+```mermaid
+graph LR;
+Start-- code push -->CICD-Pipeline-- hardening checks -->Application--Config Results -->CICD-Pipeline; CICD-Pipeline-- Hardened Release -->Finish
+```
+
 ## Level 3 - Verify implementation to apply automatic remediation at the time of vulnerability identified
 
 At the highest level of maturity, hardening is enforced and monitored continuously across the running estate. Deployed applications are checked on an ongoing basis for drift away from the approved configuration, such as a security header being dropped, a debug endpoint reappearing, or a TLS policy weakening, and deviations are detected as soon as they occur.
 
 Findings are consolidated into a centralised system where they are prioritised and trended over time, and remediation is applied automatically where it is safe to do so, for example by reapplying the hardened configuration or rejecting and redeploying a non-compliant release. The hardening standards themselves, including the required header set and TLS policy, are reviewed periodically so they keep pace with new guidance and emerging threats.
+
+```mermaid
+graph LR;
+Application-- continuous monitoring -->Drift-Detection-- config drift -->Centralised-Issue-Tracker-- auto remediation -->Application
+```
 
 # Notable Tools
 

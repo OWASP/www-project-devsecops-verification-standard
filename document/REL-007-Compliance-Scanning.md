@@ -24,17 +24,29 @@ At this stage a compliance scanning tool has been adopted and is run on demand a
 
 Because the scans are triggered manually and on a case-by-case basis, coverage is uneven and results may not be retained or acted upon in a structured way. The capability nonetheless gives teams a concrete, tool-backed view of their compliance posture at a point in time.
 
+```mermaid
+graph LR; Engineer-- on-demand scan -->System-- evaluated against -->Benchmark-Check-- results -->Report;
+```
+
 ## Level 2 - Verify that the compliance scanning tool is scheduled to perform automated scans and report status to system owner through a centralised issue tracking system
 
 At this level compliance scanning is automated and integrated into the delivery pipeline or run on a regular schedule, so every relevant build or environment is assessed without human intervention. The scan executes as a pipeline stage or scheduled job and its pass or fail status is reported back automatically.
 
 Findings are routed to the responsible system owner through a centralised issue tracking system, ensuring that compliance gaps are captured, assigned, and tracked through to resolution rather than being lost in ad-hoc reports. This gives the organisation continuous, consistent visibility of its compliance state across all in-scope systems.
 
+```mermaid
+graph LR; CICD-Pipeline-- automated scan -->System-- evaluated against -->Benchmark-Check-- results -->Issue-Tracker;
+```
+
 ## Level 3 - Verify that the mechanism to apply automatic remediation automatically exists at the time of vulnerability identified
 
 At the highest level the organisation not only detects compliance violations automatically but also remediates them. When a scan identifies a deviation from the benchmark, an automated remediation mechanism, such as a configuration-management playbook, policy-as-code controller, or remediation pipeline, brings the affected system back into a compliant state without manual effort.
 
 Compliance results and remediation actions are centrally tracked and measured, and the effectiveness of the benchmarks, scanning rules, and remediation logic is reviewed periodically and continuously improved. This closes the loop between detection and correction, keeping environments aligned with the required standards over time.
+
+```mermaid
+graph LR; CICD-Pipeline-- automated scan -->System-- evaluated against -->Benchmark-Check-- results -->Central-Tracker-- auto remediate -->System; Central-Tracker-- periodic review -->Continuous-Improvement;
+```
 
 # Notable Tools 
 

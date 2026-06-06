@@ -22,17 +22,29 @@ Security issues are now recorded in a single, centralised tracking system, ideal
 
 Crucially, these issues are brought into regular planning sessions and prioritised alongside other work. Compared with Level 0, security defects are no longer invisible to delivery; they are triaged, ranked by risk, and scheduled, which dramatically reduces the chance that important issues are simply lost.
 
+```mermaid
+graph LR; Security-Issue-- logged in -->Central-Backlog-- prioritised in -->Planning-Session;
+```
+
 ## Level 2 - Verify that the pre-allocated time is dedicated to development team work on security remediation or improvements
 
 Beyond simply tracking and prioritising issues, the team now reserves capacity specifically for security remediation and improvement. A defined portion of each iteration or release cycle is set aside so that fixing vulnerabilities and hardening the application is a planned, expected activity rather than something squeezed in only when time allows.
 
 This is an advance on Level 1 because prioritisation alone does not guarantee that security work actually gets done when feature pressure is high. By pre-allocating time, the organisation makes a deliberate, sustained commitment to working through the security backlog and prevents remediation from being perpetually deferred.
 
+```mermaid
+graph LR; Central-Backlog-- prioritised -->Dedicated-Time-- delivers -->Remediation;
+```
+
 ## Level 3 - Verify that the security remediation or improvement efforts and speed are continuously monitored and measured
 
 At the highest level the organisation continuously measures how its security remediation is performing. Metrics such as time to remediate, the age and volume of open issues, and trends in recurring vulnerability types are tracked over time and reviewed to understand whether the process is keeping pace with incoming risk.
 
 Building on the dedicated time established at Level 2, these measurements turn remediation into a managed, data-driven activity. The insights feed back into planning and process improvements, allowing the team to set and tune service-level targets, identify bottlenecks, and steadily improve both the speed and the quality of security fixes.
+
+```mermaid
+graph LR; Remediation-- measured by -->Metrics-- feedback -->Planning-Session-- tunes -->Remediation;
+```
 
 ## Further reading
 - https://github.com/DefectDojo/django-DefectDojo — OWASP DefectDojo is an open-source vulnerability management platform for centralising, deduplicating and tracking security findings.

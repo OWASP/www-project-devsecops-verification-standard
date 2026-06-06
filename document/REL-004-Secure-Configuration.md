@@ -26,17 +26,29 @@ At this level the organisation has documented hardening standards and a secure c
 
 The baseline is applied manually, with engineers expected to follow the documented standard when they build or change an environment. While this establishes a clear and maintained reference point, enforcement still relies on individual discipline and periodic review, so configuration drift and human error remain likely between checks.
 
+```mermaid
+graph LR; Engineer-- Manually Apply -->Hardening-Baseline-- Configures -->Environment;
+```
+
 ## Level 2 - Verify that the periodic review schedule for secure configuration baseline is in place and rebuild environment every application release using the latest configuration
 
 At this level the secure configuration baseline is validated automatically rather than by hand. Infrastructure and configuration are defined as code, and the pipeline runs policy and configuration checks against that code on every change, flagging insecure settings such as public storage, permissive network rules or missing encryption before they reach an environment.
 
 A periodic review schedule keeps the baseline current as new threats and platform features emerge, and environments are rebuilt from the latest approved configuration on each application release rather than being patched in place. This combination of automated validation and routine rebuilds sharply reduces drift and ensures that what is deployed reflects the intended secure state.
 
+```mermaid
+graph LR; Config-as-Code-- code push -->CICD-Pipeline-- validate -->Policy-Check-- pass or fail -->CICD-Pipeline; CICD-Pipeline-- Rebuild -->Environment;
+```
+
 ## Level 3 - Verify implementation to detect outdated configuration and prevent any configuration drift
 
 At this level secure configuration is enforced as a gate. Configuration policy is centrally defined and version controlled, and changes that violate the baseline are blocked in the pipeline or at deployment time rather than merely reported. Compliance results are tracked centrally so that the security posture of every environment is visible and measurable over time.
 
 Continuous monitoring detects outdated configuration and any drift in running environments, automatically remediating or rolling back deviations from the approved baseline. Trends and exceptions feed a continuous improvement loop in which the baseline, the detection rules and the enforcement policies are regularly refined, keeping the whole estate aligned with the organisation's security standards.
+
+```mermaid
+graph LR; Config-as-Code-- validate -->Policy-Gate-- pass -->Environment; Policy-Gate-- fail -->Blocked; Environment-- drift detected -->Compliance-Tracker-- remediate -->Environment;
+```
 
 # Notable Tools
 

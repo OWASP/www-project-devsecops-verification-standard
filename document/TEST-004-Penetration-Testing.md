@@ -22,17 +22,29 @@ At this stage penetration testing is carried out on request or on a roughly annu
 
 The limitation is timing and coverage. A single annual engagement is easily outpaced by the rate of change in modern software, so meaningful changes shipped between tests may never receive manual scrutiny, and remediation of findings is not always tracked through to closure.
 
+```mermaid
+graph LR; Annual-Request-- pentest -->Application-- findings -->Report;
+```
+
 ## Level 2 - Verify that penetration testing is performed per release or per feature
 
 Here penetration testing is scheduled and scoped around the software delivery process rather than the calendar. Significant releases and substantial new features are assessed before or shortly after they ship, with a defined scope agreed for each engagement. This ties manual testing to the moments when risk is actually introduced, so important changes are reviewed by a human while they are still fresh.
 
 Because testing is now repeatable and aligned to delivery, coverage is far more consistent than an annual snapshot. Findings are reported back to the responsible teams and feed into the development lifecycle, although the depth and continuity of tracking can still vary between engagements.
 
+```mermaid
+graph LR; Release-Scope-- pentest -->Application-- findings -->Report-- reported to -->Development-Teams;
+```
+
 ## Level 3 - Verify that penetration testing is performed per feature regardless of release cycle and findings are recorded to a centralised issue tracker system
 
 At the highest level penetration testing is a continuous, measured programme. Features are assessed as they are built, independent of the release cycle, and the activity is run as an ongoing capability rather than a series of disconnected projects. Every finding is recorded in a centralised issue tracking system and managed alongside the organisation's other security issues.
 
 Crucially, the loop is closed: remediation is tracked through to resolution and fixes are retested to confirm they hold. Metrics drawn from the tracker, such as time-to-remediate and recurring issue classes, let the organisation measure the programme's effectiveness and continuously improve both its testing and its underlying engineering practices.
+
+```mermaid
+graph LR; Per-Feature-Scope-- continuous pentest -->Application-- findings -->Centralised-Issue-Tracker-- remediation -->Retest-- metrics -->Continuous-Improvement;
+```
 
 ## Further reading
 

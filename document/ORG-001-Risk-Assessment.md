@@ -20,13 +20,25 @@ There is no evidence that the organisation performs any form of risk assessment 
 
 Risk assessment is carried out only on an ad-hoc basis, typically in response to a specific request, a notable incident, or a particular concern raised by a stakeholder. While these exercises can surface useful insights, they are reactive and inconsistent, and there is no guarantee that every feature or change receives the same scrutiny. Because the activity depends on someone asking for it, significant risks can go unexamined whenever a request is not made.
 
+```mermaid
+graph LR; Stakeholder-- on request -->Risk-Assessment-- findings -->Prioritised-Backlog;
+```
+
 ## Level 2 - Verify that security subject matter expert within software development team performs risk assessment on each feature
 
 A security subject matter expert embedded within the software development team assesses the risk of each feature as it is designed and built. This brings security analysis directly into the development workflow, allowing threats and vulnerabilities to be considered consistently for every change rather than only when prompted. The expert's involvement helps the team weigh design decisions against their security implications early, so that remediation can be prioritised before features are released.
 
+```mermaid
+graph LR; Each-Feature-- assessed by -->Security-SME-- risk profile -->Prioritised-Backlog;
+```
+
 ## Level 3 - Verify that periodic review schedule is defined for the development team to review the risk profile.
 
 In addition to assessing individual features, the development team follows a defined, periodic schedule to review the overall risk profile and keep it current as the system, its dependencies, and the threat landscape evolve. Each review revisits previously accepted risks and confirms whether earlier decisions remain valid. Risk decisions are recorded and tracked over time, giving the organisation a clear, auditable view of how its risk posture is changing and where attention is needed next.
+
+```mermaid
+graph LR; Each-Feature-- assessed by -->Security-SME-- risk profile -->Prioritised-Backlog; Periodic-Review-- revisits -->Risk-Profile-- keeps current -->Prioritised-Backlog;
+```
 
 ## Further reading
 

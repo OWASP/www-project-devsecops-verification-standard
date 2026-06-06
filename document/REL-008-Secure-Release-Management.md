@@ -24,17 +24,29 @@ At this stage a defined security checklist is applied to every release, covering
 
 This introduces a basic but consistent approval gate and audit trail across releases. Adherence is largely enforced through process and manual verification, but it establishes the discipline of controlled, authorised change as a precondition for release.
 
+```mermaid
+graph LR; Build-- manual checklist -->Approval-Gate-- approved -->Release-- audited -->Production; Production-- issue -->Rollback;
+```
+
 ## Level 2 - Verify implementation of security checklist in non-production stage releases
 
 At this level the security checklist is built into the delivery pipeline and enforced automatically against non-production stage releases, so that changes are validated in test, staging, or pre-production environments before they can progress towards production. Checklist items are implemented as automated gates within the pipeline, and a release that fails to satisfy them is blocked from promotion.
 
 By integrating the controls into the pipeline and exercising them in non-production stages first, the organisation catches policy and security failures early, maintains a verifiable record of each promotion decision, and aligns its release flow with supply-chain integrity expectations such as those described by the SLSA framework.
 
+```mermaid
+graph LR; Build-- automated checklist -->Pipeline-Gate-- passed -->Non-Prod-Release-- promoted -->Production; Production-- issue -->Rollback;
+```
+
 ## Level 3 - Verify that periodic review schedule is defined to review the security checklist
 
 At the highest level the release-management controls are not only automated and centrally tracked but also continuously improved. A defined, periodic review schedule governs the security checklist itself, ensuring that its items remain relevant as threats, regulations, and the organisation's architecture evolve, and that approval gates and rollback procedures are kept effective.
 
 Release and approval data is centrally tracked and measured, and insights from incidents, exceptions, and audit findings feed back into the checklist and change-management process. This creates a closed loop in which the secure release process is regularly assessed against authoritative guidance such as SLSA, OWASP SAMM, and the NIST Secure Software Development Framework, and refined over time.
+
+```mermaid
+graph LR; Build-- automated checklist -->Pipeline-Gate-- passed -->Release-- audited -->Production; Production-- issue -->Rollback; Production-- release data -->Central-Tracker-- periodic review -->Continuous-Improvement;
+```
 
 # Notable Tools 
 

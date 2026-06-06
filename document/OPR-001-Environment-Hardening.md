@@ -24,17 +24,31 @@ At this stage a hardening or configuration-assessment tool is available and is r
 
 This represents a meaningful improvement, because the environment is now being compared against an objective standard. However, scanning is ad hoc and depends on someone remembering to run it. Results are rarely recorded or tracked over time, so configuration drift between scans goes unnoticed and coverage across the estate is inconsistent.
 
+```mermaid
+graph LR; Operator-- runs benchmark scan -->Infrastructure-- checks vs CIS Baseline -->Operator;
+```
+
 ## Level 2 - Verify that the vulnerability scanning tool is scheduled to perform automated scans and report status to system owner through a centralised issue tracking system
 
 Here, hardening checks are integrated into the build and deployment pipeline so that they run automatically and consistently. Container images are scanned against a benchmark as they are built, infrastructure-as-code and host configurations are evaluated before promotion, and a build can be failed when a host or image falls below the required hardening threshold.
 
 Because the checks are automated and gated, every artifact is verified against the same baseline before it reaches production, removing reliance on individual engineers. Findings are surfaced back to the system owner and routed into a tracking system, giving teams a consistent, auditable record of the environment's compliance status.
 
+```mermaid
+graph LR;
+Start-- code push -->CICD-Pipeline-- benchmark scan -->Infrastructure--CIS Results -->CICD-Pipeline; CICD-Pipeline-- Hardened Deployment -->Finish
+```
+
 ## Level 3 - Verify implementation to apply automatic remediation at the time of vulnerability identified
 
 At the highest level of maturity, hardening becomes a continuous process rather than a point-in-time check. Running hosts, images and clusters are monitored continuously for configuration drift away from the approved baseline, and deviations are detected as soon as they occur rather than at the next manual review.
 
 Findings from every source are consolidated into a centralised system, where they are correlated, prioritised and trended over time. Where it is safe to do so, remediation is applied automatically the moment a deviation is identified, for example by reapplying a hardening profile or rebuilding a non-compliant node from a known-good image. The effectiveness of the hardening programme itself is reviewed periodically so that baselines, exceptions and automated controls are refined as the threat landscape and the estate evolve.
+
+```mermaid
+graph LR;
+Infrastructure-- continuous monitoring -->Drift-Detection-- compliance drift -->Centralised-Issue-Tracker-- auto remediation -->Infrastructure
+```
 
 # Notable Tools
 
