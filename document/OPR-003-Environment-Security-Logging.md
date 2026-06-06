@@ -26,17 +26,29 @@ At level one the important sources of environment telemetry are switched on and 
 
 Review of these logs, however, is still largely manual and reactive. Engineers query the logs on demand, usually after an alert from another system or during an incident or audit, rather than as part of a continuous process. The data is available and trustworthy enough to support an investigation, but coverage gaps and the human effort involved mean that suspicious activity can sit unnoticed until someone goes looking for it.
 
+```mermaid
+graph LR; Hosts-- writes logs -->Local-Logs; Cloud-- writes logs -->Local-Logs; Network-- writes logs -->Local-Logs; Containers-- writes logs -->Local-Logs; Local-Logs-- on-demand review -->Analyst;
+```
+
 ## Level 2 - Verify implementation of alert and notification to development team for abuse and anomalies
 
 At level two the captured telemetry is shipped to a central platform, typically a SIEM or equivalent log analytics stack, where events from across hosts, cloud accounts, network and container layers are normalised and stored together. With everything in one place the team can write detection rules and dashboards that watch for known-bad patterns such as disabled audit logging, new privileged identities, security-group changes opening sensitive ports, or unexpected outbound connections from a workload.
 
 Crucially, these detections are wired to notifications so that the right development or operations team is alerted automatically when an anomaly or abuse pattern fires, instead of relying on someone happening to inspect a dashboard. The shift from on-demand review to automated, near-real-time alerting is what distinguishes this level: the environment now actively surfaces issues rather than merely recording them.
 
+```mermaid
+graph LR; Hosts-->Log-Shipper; Cloud-->Log-Shipper; Network-->Log-Shipper; Containers-->Log-Shipper; Log-Shipper-- aggregates -->SIEM-- detection rules -->Alerts-- notifies -->Team;
+```
+
 ## Level 3 - Verify that development team have ability to monitor and analyse environment security events
 
 At level three logging is treated as an engineered, continuously improving capability. Detections are correlated across multiple sources so that a single suspicious sequence, for example an unusual cloud API call followed by a container spawning an unexpected process, is recognised as one incident rather than a handful of disconnected alerts. Coverage is measured against the environment's assets so the team can demonstrate which systems, accounts and event types are actually being collected, and can close gaps deliberately.
 
 Retention and integrity controls underpin the whole pipeline: logs are kept for a defined period to satisfy investigation and compliance needs, and they are protected from tampering through write-once storage, access controls and integrity checks so that an attacker cannot quietly erase their tracks. Finally, the detection content is tuned on an ongoing basis, with noisy rules refined, new threats modelled, and effectiveness reviewed, so that signal-to-noise improves over time and the team retains genuine, analyst-ready visibility into the security state of the environment.
+
+```mermaid
+graph LR; SIEM-- correlated detections -->Correlation-- measured coverage -->Centralised-Issue-Tracker; Centralised-Issue-Tracker-- continuous tuning -->SIEM;
+```
 
 # Notable Tools
 

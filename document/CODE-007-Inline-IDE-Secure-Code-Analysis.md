@@ -22,17 +22,31 @@ Developers install an IDE plugin or extension that performs secure code analysis
 
 This is a significant improvement on Level 0 because feedback now arrives at the moment code is written, shortening the loop dramatically. However, because configuration is local and per-developer, rule sets drift between team members, coverage is inconsistent, and there is no guarantee that everyone is checking against the same standard.
 
+```mermaid
+graph LR; Developer-IDE-- real-time analysis -->Inline-Findings-- fix -->Developer-IDE;
+```
+
 ## Level 2 - Verify implementation of centralised managed rules for integrated development environment (IDE) plugin
 
 The IDE plugins are connected to a centrally managed configuration, so that every developer's editor enforces the same organisation-defined rule set. Rules, severities, and policies are maintained in one place (for example a shared server, configuration file, or policy repository) and distributed to all developers automatically.
 
 This addresses the inconsistency of Level 1. Security standards are applied uniformly across the team regardless of individual setup, new or updated rules propagate to everyone without manual effort, and the organisation gains confidence that all developers are receiving the same, current security guidance in their IDE.
 
+```mermaid
+graph LR;
+Central-Rules-- pushed to IDEs -->Developer-IDE-- real-time analysis -->Inline-Findings-- fix -->Developer-IDE
+```
+
 ## Level 3 - Verify a mechanism to prevent insecure changes to be stored to source code repository
 
 Level 3 builds on the centrally managed inline analysis of Level 2 by adding an enforcement gate that prevents insecure changes from reaching the source code repository. The same rules that provide inline feedback are enforced at commit or push time, typically through pre-commit hooks, server-side hooks, or branch protection that blocks code containing unresolved security findings or hardcoded secrets.
 
 This ensures that inline analysis is not merely advisory: insecure code cannot be silently committed even if a developer ignores the in-editor warnings. The effectiveness of the rules and the gate is monitored and periodically reviewed, with findings tracked and rule sets continuously improved, giving the organisation a measured, consistently enforced control at the earliest point in the lifecycle.
+
+```mermaid
+graph LR;
+Central-Rules-- pushed to IDEs -->Developer-IDE-- real-time analysis -->Inline-Findings-- fix -->Developer-IDE; Developer-IDE-- commit -->Commit-Gate-- findings recorded -->Centralised-Issue-Tracker
+```
 
 # Notable Tools
 

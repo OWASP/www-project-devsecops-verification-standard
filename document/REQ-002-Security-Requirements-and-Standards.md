@@ -24,17 +24,29 @@ A set of security requirements has been documented with reference to industry st
 
 At this level the requirements and the audit remain largely informal and detached from day-to-day delivery. Reviews tend to occur on a schedule or ahead of a release rather than being woven into design and development, so the requirements may lag behind the code and best practices may be applied unevenly across teams.
 
+```mermaid
+graph LR; OWASP-ASVS-- documents -->Security-Requirements-- periodic audit -->Alignment-Check;
+```
+
 ## Level 2 - Verify that real-time verification to industry security standards and technology best-practices is performed
 
 Security requirements are consistently applied and verification against industry standards is integrated into the software development lifecycle. Requirements derived from standards such as ASVS and MASVS are treated as first-class acceptance criteria, considered during design and checked continuously as the application evolves rather than only at periodic checkpoints.
 
 This integration means deviations from the agreed standards are surfaced close to the point at which they are introduced and can be addressed before they reach production. Security requirements thereby become a routine, expected part of how features are built and reviewed, providing an ongoing view of how well the application aligns with best practice.
 
+```mermaid
+graph LR; OWASP-ASVS-- defines -->Security-Requirements-- acceptance criteria -->SDLC-- verified by -->Tests;
+```
+
 ## Level 3 - Verify that applicable standards and best practices are enforced and periodic review schedule is defined
 
 The applicable standards and best practices are actively enforced, and a defined periodic review schedule keeps the chosen requirements current. The organisation maintains controls that hold the project to its agreed requirements, and revisits the selected standards and the targeted ASVS or MASVS levels on a regular cadence so that emerging threats, new technologies, and updated guidance are reflected promptly.
 
 At this level the requirements programme is itself measured and improved. The organisation tracks indicators such as coverage of requirements, the rate at which deviations are found and fixed, and how requirements perform against real findings, and uses these to refine both the requirements and the way they are verified. Security requirements thus become a continuously improving capability aligned with the organisation's risk appetite.
+
+```mermaid
+graph LR; OWASP-ASVS-- enforced as -->Security-Requirements-- measured by -->Coverage-Metrics-- scheduled review -->OWASP-ASVS;
+```
 
 ## Further reading
 - [OWASP Application Security Verification Standard (ASVS)](https://owasp.org/www-project-application-security-verification-standard/) - A catalogue of testable web application security requirements organised into verification levels, ideal for defining requirements early.

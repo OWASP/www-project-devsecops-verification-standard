@@ -24,17 +24,31 @@ At this stage the organisation has adopted a central repository or registry wher
 
 While this consolidation brings basic order and accountability, the process is still largely manual and trust is implicit. Artifacts are stored, but their integrity is not yet systematically verified before use, and retention is managed on an as-needed basis. The registry provides a foundation, but its protections depend on individuals following the agreed conventions.
 
+```mermaid
+graph LR; Build-- manual publish -->Artifact-Registry-- manual pull -->Deploy;
+```
+
 ## Level 2 - Verify implementation of artifact integrity check before release to any environment
 
 At this level integrity verification is automated and built directly into the delivery pipeline. As artifacts are published and consumed, their checksums or digests are recorded and validated, so that any artifact promoted to a test, staging, or production environment is confirmed to be exactly the one produced by the trusted build, with no tampering in transit or at rest.
 
 These checks are enforced rather than optional, typically combined with vulnerability scanning of images and packages as they enter the registry. By failing the pipeline when an integrity check or scan does not pass, the organisation ensures that only verified, known-good artifacts move forward, closing the gap between building software and releasing it.
 
+```mermaid
+graph LR;
+Build-- publishes -->CICD-Pipeline-- integrity check and scan -->Artifact-Registry; Artifact-Registry-- Pass -->Deploy; Artifact-Registry-- Fail -->Blocked
+```
+
 ## Level 3 - Verify implementation to archiving process for artifacts
 
 At the highest level of maturity the registry is centrally governed, access-controlled, and fully audited, and a defined archiving and retention process governs the entire lifecycle of every artifact. Released builds and their associated metadata, including provenance, signatures, and scan results, are retained according to policy so that any previously shipped version can be retrieved, verified, and redeployed when required.
 
 Permissions are managed centrally with least-privilege access, and all push, pull, promotion, and deletion activity is logged for audit. Retention and immutability rules are continuously reviewed against compliance and operational needs, ensuring that the artifact store remains a trustworthy, traceable system of record that supports rollback, forensic investigation, and long-term reproducibility.
+
+```mermaid
+graph LR;
+Build-- signs and publishes -->Governed-Registry-- access-controlled scan and integrity -->Deploy; Governed-Registry-- provenance and retention -->Centralised-Audit-Tracker
+```
 
 # Notable Tools
 

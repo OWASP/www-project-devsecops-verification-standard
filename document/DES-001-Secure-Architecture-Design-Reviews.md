@@ -26,17 +26,29 @@ At level one, security architecture design reviews begin to happen, but on an in
 
 This is a meaningful improvement over having no reviews at all, because at least some designs now receive security scrutiny and the findings are captured in a place the team already works from. However, coverage depends entirely on individuals choosing to initiate a review, so it remains inconsistent and many changes still ship without ever being examined.
 
+```mermaid
+graph LR; Design-- ad-hoc review -->Security-Analyst-- findings -->Backlog;
+```
+
 ## Level 2 - Verify that security architecture design review is performed prior to development activity is finalised and action items are created in the development team's backlog
 
 At level two, design review is no longer an occasional favour from a security analyst but a standard, expected activity that development teams perform themselves as part of building a feature. Reviews take place before the design is finalised and development is committed, so that security concerns can shape the architecture while changing it is still cheap. As with the previous level, the resulting action items are recorded in the team's backlog and tracked through to resolution.
 
 The key advance is that responsibility shifts onto the teams who own the work and is built into the normal flow of delivery, rather than relying on a central specialist being available. This makes coverage far more consistent and timely, catches issues earlier in the lifecycle, and helps developers internalise secure design thinking as a routine part of their craft.
 
+```mermaid
+graph LR; Feature-Design-- review before finalised -->Development-Team-- findings -->Backlog-- shapes -->Feature-Design;
+```
+
 ## Level 3 - Verify that all security features have been addressed in the design
 
 At level three, design review is governed by a periodic review schedule that keeps architecture and design artifacts current as systems evolve. Rather than reviewing only at the point a feature is first designed, the organisation revisits its designs on a defined cadence to confirm that every relevant security feature, control, and trust assumption is still addressed and still accurate. Design decisions, along with the rationale behind them, are documented and tracked over time so that the reasoning remains visible and auditable.
 
 This represents a mature, measured practice in which the security architecture is treated as a living asset rather than a one-time deliverable. Because artifacts are kept up to date and decisions are traceable, drift between the documented design and the running system is caught early, new threats can be reflected back into existing designs, and the organisation can continuously demonstrate that its systems meet their intended security objectives.
+
+```mermaid
+graph LR; Schedule-- periodic review -->Development-Team-- update -->Architecture-Artifacts-- tracked decisions -->Schedule;
+```
 
 ## Further reading
 

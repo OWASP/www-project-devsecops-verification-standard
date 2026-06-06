@@ -38,17 +38,29 @@ At Level 1 a dedicated tool is introduced to discover and enumerate the organisa
 
 The tool is run regularly and can be scheduled to refresh the inventory on an ongoing basis, so newly stood-up or decommissioned assets are reflected over time. The emphasis here is on visibility and coverage: the organisation now knows what it has exposed and can assess and monitor those assets, even if triage of the results still relies largely on human judgement.
 
+```mermaid
+graph LR; ASM-Tool-- on-demand discovery -->Assets-- manual triage -->Analyst;
+```
+
 ## Level 2 - Verify that discovered organisation's IT assets are properly classified and any identified possible attack vectors are automatically prioritised
 
 Level 2 builds on continuous discovery by adding automated classification and prioritisation. Discovered assets are enriched and categorised, for example by technology, ownership or business criticality, and the tooling automatically probes them for misconfigurations, exposed services and known vulnerabilities, turning a raw inventory into an actionable view of attack vectors.
 
 Rather than presenting every finding with equal weight, the pipeline ranks possible attack vectors so that the most serious exposures rise to the top. This continuous, automated flow means new assets are assessed as soon as they appear and the highest-risk issues are surfaced for attention first, a clear advance over Level 1 where discovery existed but interpretation and prioritisation were manual.
 
+```mermaid
+graph LR; ASM-Tool-- continuous discovery -->Assets-- auto classify -->Classify-- auto prioritise -->Ranked-Findings;
+```
+
 ## Level 3 - Verify that the findings are automatically recorded to a centralised issue tracker system and periodically review tool's effectiveness
 
 At Level 3 the attack surface management process is the same continuous, automated and prioritised pipeline as Level 2, with the addition that findings are automatically recorded into a centralised issue tracking system. Each exposure becomes a tracked item that can be assigned, remediated and verified alongside other security work, ensuring nothing discovered is quietly lost.
 
 Because findings are centralised, the programme can be measured: metrics such as time to remediate, recurrence of exposures and coverage of the known estate become visible and reportable. The effectiveness of the tooling and process is reviewed periodically, with detection rules, scoping and prioritisation tuned in response to what the data shows. This closes the loop from discovery through remediation to continuous improvement.
+
+```mermaid
+graph LR; ASM-Tool-- continuous discovery -->Assets-- classify and prioritise -->Ranked-Findings-- auto record -->Centralised-Issue-Tracker-- periodic review -->Metrics;
+```
 
 # Notable Tools 
 

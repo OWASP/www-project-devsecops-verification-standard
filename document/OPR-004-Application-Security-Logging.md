@@ -28,17 +28,29 @@ At level one the application deliberately logs security-relevant events. Followi
 
 Equal care is taken over what must never appear in logs: credentials, session tokens, API keys and sensitive personal data are excluded or masked at the point of logging. At this level review is still mostly manual and on demand, with developers or responders querying the logs when investigating a specific issue rather than monitoring them continuously, but the events being captured are meaningful and safe to retain.
 
+```mermaid
+graph LR; AuthN-AuthZ-Events-- writes logs -->Local-Logs; Validation-Failures-- writes logs -->Local-Logs; Local-Logs-- on-demand review -->Developer;
+```
+
 ## Level 2 - Verify implementation of alert and notification to development team for abuse and anomalies
 
 At level two application security logs are forwarded to a central platform where events from every service are aggregated, normalised and stored together, typically a SIEM or log analytics stack. This consolidated view lets the team reason about behaviour across the whole application rather than one instance at a time, and to spot patterns such as credential-stuffing, repeated authorisation failures, or a spike in input validation rejections that would be invisible in isolated logs.
 
 Detection rules built on this data are connected to alerting, so that abuse and anomalies automatically notify the responsible development team in near real time. The move from passively storing application events to actively alerting on suspicious patterns is the defining step at this level, turning the log stream into an early-warning system rather than a forensic archive consulted only after the fact.
 
+```mermaid
+graph LR; AuthN-AuthZ-Events-->Log-Shipper; Validation-Failures-->Log-Shipper; Log-Shipper-- aggregates -->SIEM-- detection rules -->Alerts-- notifies -->Team;
+```
+
 ## Level 3 - Verify that development team have ability to monitor and analyse application security events
 
 At level three application security logging is a measured and continuously refined discipline. Detections are correlated across events and with environment telemetry so that a meaningful attack narrative, for example a series of failed authorisations followed by a successful privilege change and an unusual data export, is recognised as a single incident. Coverage is tracked against the application's features and trust boundaries, so the team can show which security events are instrumented and can prioritise closing the gaps.
 
 Underpinning this are retention and integrity controls: logs are kept for a defined period and protected against tampering so they remain trustworthy evidence, while continuing to exclude secrets and sensitive personal data. The team also tunes detection content on an ongoing basis, reducing noisy or low-value alerts and adding coverage for new abuse cases as the application evolves, giving developers genuine, analyst-ready insight into how their application is being used and attacked.
+
+```mermaid
+graph LR; SIEM-- correlated detections -->Correlation-- measured coverage -->Centralised-Issue-Tracker; Centralised-Issue-Tracker-- continuous tuning -->SIEM;
+```
 
 # Notable Tools
 
