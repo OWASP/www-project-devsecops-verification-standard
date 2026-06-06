@@ -1,0 +1,89 @@
+id: DSOVS-DES-001
+code: DES-001
+title: Security Architecture Design Reviews
+phase: Design
+slug: DES-001-Secure-Architecture-Design-Reviews
+status: complete
+type: process
+
+summary: |
+  Secure Architecture Design Reviews are a type of security review that focuses on the development of secure architectures.
+
+  They involve analyzing the architecture and design of a software system to ensure that it meets the security goals and objectives of the organization.
+
+  These reviews are important in DevSecOps because they help to identify any weaknesses or potential vulnerabilities in the system, allowing the team to take corrective measures to improve the security posture of the system.
+
+  Secure Architecture Design Reviews can also help to ensure that the system adheres to best practices and industry standards for security.
+
+levels:
+  - level: 0
+    title: No security architecture design review performed
+    description: |
+      At this level there is no practice of reviewing architecture or design from a security perspective. Systems are built and changed without anyone deliberately examining how their structure, trust boundaries, data flows, or integration points might introduce risk.
+
+      Because security is never considered at the design stage, weaknesses tend to surface much later, during testing, audits, or after an incident, where they are far more expensive and disruptive to fix. The organisation has no shared understanding of the security assumptions underpinning its systems.
+    evidence: []
+
+  - level: 1
+    title: Verify that ad-hoc security architecture design review is performed and action items are created in the development team's backlog
+    description: |
+      At level one, security architecture design reviews begin to happen, but on an informal and reactive basis. Typically a security analyst is pulled in to look over a particular design when someone remembers to ask, or when a change feels high risk. The review examines the proposed architecture, identifies areas of concern, and records the resulting recommendations as action items in the development team's backlog so they are not lost.
+
+      This is a meaningful improvement over having no reviews at all, because at least some designs now receive security scrutiny and the findings are captured in a place the team already works from. However, coverage depends entirely on individuals choosing to initiate a review, so it remains inconsistent and many changes still ship without ever being examined.
+    evidence:
+      - At least one documented security architecture design review exists for a recent design or change.
+      - Review findings are captured as action items in the development team's backlog.
+      - Interview confirms who initiates reviews and on what trigger.
+    diagram: |
+      graph LR; Design-- ad-hoc review -->Security-Analyst-- findings -->Backlog;
+
+  - level: 2
+    title: Verify that security architecture design review is performed prior to development activity is finalised and action items are created in the development team's backlog
+    description: |
+      At level two, design review is no longer an occasional favour from a security analyst but a standard, expected activity that development teams perform themselves as part of building a feature. Reviews take place before the design is finalised and development is committed, so that security concerns can shape the architecture while changing it is still cheap. As with the previous level, the resulting action items are recorded in the team's backlog and tracked through to resolution.
+
+      The key advance is that responsibility shifts onto the teams who own the work and is built into the normal flow of delivery, rather than relying on a central specialist being available. This makes coverage far more consistent and timely, catches issues earlier in the lifecycle, and helps developers internalise secure design thinking as a routine part of their craft.
+    evidence:
+      - A documented process requires security design review before a design is finalised and development is committed.
+      - Reviews are performed by the owning development team rather than only a central specialist.
+      - Resulting action items are recorded in the backlog and tracked through to resolution.
+    diagram: |
+      graph LR; Feature-Design-- review before finalised -->Development-Team-- findings -->Backlog-- shapes -->Feature-Design;
+
+  - level: 3
+    title: Verify that all security features have been addressed in the design
+    description: |
+      At level three, design review is governed by a periodic review schedule that keeps architecture and design artifacts current as systems evolve. Rather than reviewing only at the point a feature is first designed, the organisation revisits its designs on a defined cadence to confirm that every relevant security feature, control, and trust assumption is still addressed and still accurate. Design decisions, along with the rationale behind them, are documented and tracked over time so that the reasoning remains visible and auditable.
+
+      This represents a mature, measured practice in which the security architecture is treated as a living asset rather than a one-time deliverable. Because artifacts are kept up to date and decisions are traceable, drift between the documented design and the running system is caught early, new threats can be reflected back into existing designs, and the organisation can continuously demonstrate that its systems meet their intended security objectives.
+    evidence:
+      - A documented periodic review schedule keeps architecture and design artifacts current.
+      - Design artifacts map each relevant security feature, control, and trust assumption to confirm coverage.
+      - Design decisions and their rationale are documented and tracked over time for auditability.
+    diagram: |
+      graph LR; Schedule-- periodic review -->Development-Team-- update -->Architecture-Artifacts-- tracked decisions -->Schedule;
+
+further_reading:
+  - url: https://owaspsamm.org/model/design/security-architecture/
+    note: "OWASP SAMM - Design: Security Architecture - the SAMM practice that defines maturity for designing software with secure architecture in mind, useful for benchmarking and planning improvements."
+  - url: https://owasp.org/www-project-application-security-verification-standard/
+    note: OWASP Application Security Verification Standard (ASVS) - V1 Architecture, Design and Threat Modeling - a set of verifiable requirements that give design reviews concrete criteria to check architectures against.
+  - url: https://csrc.nist.gov/projects/ssdf
+    note: NIST SP 800-218 Secure Software Development Framework (SSDF) - guidance whose "Protect the Software" and design-time practices map closely to reviewing architecture for security.
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Secure_Product_Design_Cheat_Sheet.html
+    note: OWASP Security Architecture Cheat Sheet - practical guidance and patterns to apply when conducting and acting on architecture design reviews.
+  - url: https://owasp.org/www-project-developer-guide/draft/design/web_app_checklist/define_security_requirements/
+    note: OWASP Security by Design Principles - foundational principles such as least privilege and defence in depth that reviewers use to evaluate a design.
+
+mappings:
+  owasp_samm:
+    - "Design > Security Architecture"
+    - "Design > Threat Assessment"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "PW.1 Design Software to Meet Security Requirements and Mitigate Security Risks"
+    - "PO.1 Define Security Requirements for Software Development"
+  iso_27001:
+    - "A.8.25 Secure development life cycle"
+    - "A.8.27 Secure system architecture and engineering principles"

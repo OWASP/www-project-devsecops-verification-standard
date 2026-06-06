@@ -1,0 +1,59 @@
+id: DSOVS-ORG-002
+code: ORG-002
+title: Security Training
+phase: Organisation
+slug: ORG-002-Security-Training
+status: complete
+type: process
+
+summary: |
+  The security training capability is focused on establishing a plan that can be measured and scale as the software project teams grow. The main objective is to foster continuous learning culture in which organisation will require invest personnel time to attend the training. The effectiveness of the training must be measurable and tailored to specific role of the personnel involved in the software lifecycle.
+
+levels:
+  - level: 0
+    title: No security training plan
+    description: |
+      There is no evident of formal training plan in the organisation for application security. The organisation does not provide sufficient investment in both personnel's time and training materials, either through instructor-led sessions or computer-based modules.
+    evidence: []
+
+  - level: 1
+    title: Verify at ad-hoc security training is conducted for all roles associated to development team members, operational support and end-users
+    description: |
+      There are some irregular application security training run within the organisation for the software project team. Although the training delivery can be instructor-led sessions or computer-based modules, there is no evident that training modules is tailored to personnel's role nor measured as individual KPI.
+    evidence:
+      - Records or attendance logs exist for at least one delivered security training session.
+      - Training materials (slides, recordings, or module links) are available and cover application security topics.
+      - Interview with staff confirms training has been offered to development, operations, and end-user roles.
+
+  - level: 2
+    title: Verify that scheduled repeatable role specific security training is conducted for development team members, operational support, and end-users
+    description: |
+      There is planned time schedule for personnel training that tailored to personnel specific roles. Although the training is run in regular set time basis there is no evident that the application security training is measured towards KPI or individual training goals.
+    evidence:
+      - A documented, recurring training schedule exists that maps modules to specific roles.
+      - Role-specific curricula or training paths are defined for developers, operational support, and end-users.
+      - Attendance records across multiple cycles show the schedule is repeatedly followed.
+      - Interview confirms training content differs by role.
+
+  - level: 3
+    title: Verify that security training is scheduled and measured as part of individual training plan or KPI
+    description: |
+      The application security training is tailored to personnel's role and measured towards individual KPI within the organisation. The training effectiveness is continuously measured and improved by organisation to align with organisation's risk appetite, application vulnerabilities and personnel career goals.
+    evidence:
+      - Individual training plans or KPIs include security training objectives and completion targets.
+      - Assessment or test results are captured to measure training effectiveness per individual.
+      - Metrics show training outcomes being reviewed and the programme adjusted over time (e.g. linked to vulnerability trends).
+      - Performance review records reference security training completion and outcomes.
+
+further_reading:
+  - url: https://owaspsamm.org/model/governance/education-and-guidance/
+    note: OWASP SAMM - Education & Guidance governance practice.
+
+mappings:
+  owasp_samm:
+    - "Governance > Education & Guidance"
+  nist_ssdf:
+    - "PO.2 Implement Roles and Responsibilities"
+    - "PO.3 Implement Supporting Toolchains"
+  iso_27001:
+    - "A.6.3 Information security awareness, education and training"

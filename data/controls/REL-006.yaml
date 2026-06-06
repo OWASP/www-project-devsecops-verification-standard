@@ -1,0 +1,164 @@
+id: DSOVS-REL-006
+code: REL-006
+title: Infrastructure-as-Code (IaC) Secure Deployment
+phase: Release/Deploy
+slug: REL-006-Infrastructure-as-Code-Secure-Deployment
+status: complete
+type: tool
+
+summary: |
+  Infrastructure-as-Code (IaC) scanning is a process by which security scans are conducted on source code written for cloud infrastructure.
+
+  It is used to detect any potential vulnerabilities or weaknesses in the code that could be exploited by malicious actors. The scans are conducted using automated tools that look for common issues such as unsecured credentials, insecure configurations and other security misconfigurations.
+
+  This is an important part of DevSecOps because it helps to ensure that the code is secure before it is deployed, allowing organizations to minimize the risks associated with their cloud infrastructures.
+
+levels:
+  - level: 0
+    title: Manual infrastructure provisioning or without version control
+    description: |
+      At this level of security maturity, there is no tooling in place to security-scan Infrastructure-as-Code before it is deployed. Infrastructure may be provisioned manually through cloud consoles or applied directly from configuration files that are never assessed for misconfigurations, meaning that insecure defaults, overly permissive access policies and exposed credentials can reach production entirely unchecked.
+    evidence: []
+
+  - level: 1
+    title: Verify that the infrastructure configuration files are version controlled and release automation process is in place
+    description: |
+      At this stage an IaC security scanner is available and is run against the infrastructure definitions, but only on a case-by-case basis. A developer or engineer typically invokes the tool manually against their Terraform, CloudFormation or Kubernetes manifests before a release, and the results may not be reported, recorded or acted upon in any consistent way. Coverage therefore depends entirely on individual discipline rather than on any enforced process.
+    evidence:
+      - Infrastructure configuration files are stored in version control.
+      - An IaC security scanner is installed and available to the team.
+      - Evidence of at least one scan report produced on demand against the infrastructure definitions.
+      - Interview confirms who runs the scan and when it is triggered before a release.
+    diagram: |
+      graph LR; Engineer-- Manual IaC Scan -->IaC-Definitions;
+
+  - level: 2
+    title: Verify that least privilege principle is implemented for deployment of infrastructure changes
+    description: |
+      Here, IaC security scanning is integrated directly into the build pipeline. Whenever infrastructure code is pushed, an automated scan is triggered against the Terraform, CloudFormation or Kubernetes manifests and the findings are reported back to the build. Crucially, the scan acts as a gate: a definition that contains high-severity misconfigurations causes the pipeline to fail, blocking the insecure deployment before any resources are provisioned. This ensures that misconfigurations such as public storage buckets, unencrypted volumes or overly broad IAM permissions are caught consistently rather than relying on manual review.
+    evidence:
+      - Pipeline configuration shows an IaC scanning stage that runs automatically on every push of infrastructure code.
+      - Build logs show the scan executing and reporting findings back to the build.
+      - A high-severity misconfiguration causes the pipeline to fail and blocks deployment.
+      - Deployment credentials and IAM roles used for provisioning follow least privilege.
+    diagram: |
+      graph LR;
+      Start-- code push -->CICD-Pipeline-- IaC Scan -->IaC-Definitions--Scan Results -->CICD-Pipeline; CICD-Pipeline-- Pass -->Deploy-Infrastructure; CICD-Pipeline-- Fail -->Blocked
+
+  - level: 3
+    title: Verify the chain of authorisation is implemented as part of the process of infrastructure changes deployment
+    description: |
+      Level 3 builds on Level 2 by automatically recording every identified misconfiguration in a centralised issue tracking system, where findings can be triaged, assigned and trended over time. The effectiveness of the IaC scanning is periodically reviewed so that rule sets, baselines and severity thresholds can be tuned, false positives suppressed and emerging misconfiguration patterns addressed. More mature organisations also provide teams with shared, organisation-specific policy packs and example CI/CD templates, making consistent IaC scanning easy to adopt across every project.
+    evidence:
+      - Misconfigurations are automatically recorded in a centralised issue tracker with severity and ownership.
+      - A documented schedule exists for reviewing scanner effectiveness and tuning rule sets, baselines and severity thresholds.
+      - Shared organisation-specific policy packs and example CI/CD templates are published for teams to adopt.
+      - Metrics show misconfigurations being triaged and remediated over time.
+    diagram: |
+      graph LR;
+      Start-- code push -->CICD-Pipeline-- IaC Scan -->IaC-Definitions--Scan Results -->Centralised-Issue-Tracker; CICD-Pipeline-- Pass -->Deploy-Infrastructure
+
+tools:
+  - name: Checkov
+    url: https://github.com/bridgecrewio/checkov
+    description: |
+      Checkov is an open-source static analysis tool for Infrastructure-as-Code. It scans Terraform, CloudFormation, Kubernetes, Helm, ARM templates and Serverless framework definitions against thousands of built-in policies to surface misconfigurations and compliance issues before deployment. Findings can be output as SARIF for native integration with code-scanning dashboards.
+    integrations:
+      - platform: github-actions
+        link: https://github.com/bridgecrewio/checkov-action
+        code: |
+          name: checkov
+          on:
+            push:
+            pull_request:
+            workflow_dispatch:
+
+          jobs:
+            scan:
+              runs-on: ubuntu-latest
+              permissions:
+                security-events: write
+              steps:
+                - uses: actions/checkout@v4
+
+                - name: Run Checkov
+                  uses: bridgecrewio/checkov-action@master
+                  with:
+                    directory: .
+                    framework: terraform
+                    output_format: sarif
+                    output_file_path: results.sarif
+
+                - name: Upload results to GitHub Security
+                  uses: github/codeql-action/upload-sarif@v3
+                  with:
+                    sarif_file: results.sarif
+      - platform: gitlab-ci
+        link: https://www.checkov.io/4.Integrations/GitLab%20CI.html
+        code: |
+          stages:
+            - iac-scan
+
+          checkov:
+            stage: iac-scan
+            image:
+              name: bridgecrew/checkov:latest
+              entrypoint: [""]
+            script:
+              - checkov --directory . --output junitxml | tee checkov.test.xml
+            artifacts:
+              reports:
+                junit: checkov.test.xml
+              paths:
+                - checkov.test.xml
+
+  - name: tfsec / Trivy config
+    url: https://github.com/aquasecurity/tfsec
+    description: |
+      tfsec is a fast static analysis scanner for Terraform that highlights potential misconfigurations and security issues with clear, actionable output. Its capabilities are now incorporated into [Trivy](https://github.com/aquasecurity/trivy), which extends configuration scanning across Terraform, CloudFormation, Kubernetes, Helm and Dockerfiles alongside its vulnerability scanning, making it a convenient single tool for IaC security checks in the pipeline.
+    integrations:
+      - platform: github-actions
+        link: https://github.com/aquasecurity/tfsec-action
+        code: |
+          name: tfsec
+          on:
+            push:
+            pull_request:
+
+          jobs:
+            tfsec:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+
+                - name: Run tfsec
+                  uses: aquasecurity/tfsec-action@v1.0.3
+                  with:
+                    working_directory: .
+      - platform: gitlab-ci
+        link: https://aquasecurity.github.io/trivy/latest/docs/coverage/iac/
+        code: |
+          stages:
+            - iac-scan
+
+          trivy-config:
+            stage: iac-scan
+            image:
+              name: aquasec/trivy:latest
+              entrypoint: [""]
+            script:
+              - trivy config --exit-code 1 --severity HIGH,CRITICAL --format table .
+
+mappings:
+  owasp_samm:
+    - "Implementation > Secure Deployment"
+    - "Verification > Security Testing"
+  owasp_asvs:
+    - "V14 Configuration"
+  nist_ssdf:
+    - "PW.7 Review and/or Analyze Human-Readable Code"
+    - "PW.9 Configure the Compilation, Interpreter, and Build Processes to Improve Executable Security"
+    - "RV.1 Identify and Confirm Vulnerabilities"
+  iso_27001:
+    - "A.8.8 Management of technical vulnerabilities"
+    - "A.8.9 Configuration management"

@@ -1,0 +1,178 @@
+id: DSOVS-REL-001
+code: REL-001
+title: Artifact Signing
+phase: Release/Deploy
+slug: REL-001-Artifact-Signing
+status: complete
+type: tool
+
+summary: |
+  Artifact signing is a security process that ensures the integrity of an artifact/binary that is released by a developer.
+
+  This is done by using cryptographic and digital signing techniques to ensure that the artifact has not been tampered with and no malicious code has been inserted into it
+
+  Artifact signing is important for DevSecOps because it allows organizations to quickly and easily verify the authenticity of their software or applications before allowing them to be deployed into production environments. More recently, Code Signing has gained in popularity due to Supply Chain Security attacks, and used as one method in the application of security to build pipelines.
+
+  It also provides a measure of assurance that their applications are secure and trustworthy, helping to build customer trust and loyalty.
+
+levels:
+  - level: 0
+    title: No package/code signing process defined
+    description: |
+      At this level, software deliverables are not digitally signed, leaving them vulnerable to unauthorized code access. There is no auditability or integrity assurance behind the software. Organizations operating at this level face significant security risks and lack the means to verify the authenticity of their code.
+    evidence: []
+
+  - level: 1
+    title: Basic code signing with self managed keys
+    description: |
+      In this stage, software deliverables are signed, but the tools and processes are fragmented. Developers may handle their own private keys without centralized control, which can lead to key misuse or compromise. While some level of security is introduced, it falls short of ensuring comprehensive code integrity, authenticity, non-falsifiability and is not tamper proof.
+    evidence:
+      - Released artifacts carry a verifiable digital signature that can be checked with a signing tool.
+      - A documented signing procedure exists, even if keys are managed by individual developers.
+      - Interview confirms which developers hold signing keys and how signatures are produced.
+
+  - level: 2
+    title: Centralized code signing with enhanced key security
+    description: |
+      Level 2 involves the use of a centralized platform for code signing policy, workflow, and auditability. It also emphasizes the protection of sensitive signing keys in a secure Hardware Security Module (HSM). However, at this stage, code signing is not yet fully integrated with CI/CD processes or workflows, and not all use cases are covered. While this level offers improved security, it still lacks the full automation and integration required for DevSecOps. Typically at this level, organisations leverage key manage solutions such as AWS KMS, HashiCorp Vault, etc.
+    evidence:
+      - Signing keys are stored in an HSM or managed key service (e.g. AWS KMS, HashiCorp Vault) rather than on developer machines.
+      - A centralized signing platform enforces signing policy and produces an audit log of signing operations.
+      - Access to signing keys is restricted and the access policy is documented.
+
+  - level: 3
+    title: Fully CI/CD integrated code signing and governance
+    description: |
+      At the highest level of this code signing maturity model, organizations have achieved full integration of code signing into their CI/CD processes. This means that all containers, artifacts, and software deliverables are signed. The implementation is seamlessly integrated with native signing tools and workflows, ensuring full auditability and governance over all signing processes. This level provides the highest level of security, code integrity, and authenticity, meeting the demands of modern DevSecOps practices. Typically at this level, organisations adopt keyless signing (a newer signing technique where you do not handle long-lived signing keys).
+    evidence:
+      - CI/CD pipeline configuration shows every container, artifact and deliverable is signed automatically as part of the build/release.
+      - Keyless / OIDC-based signing (e.g. Sigstore) is used so no long-lived signing keys are handled.
+      - Signature verification is enforced at deploy time and signing activity is fully auditable.
+
+tools:
+  - name: cosign
+    url: https://github.com/sigstore/cosign
+    description: |
+      cosign is an open source CLI utility for signing softwae artifacts, such as container images or blob files (i.e. bundled AWS Lambda code in a .zip file, or any type of software artifact)
+    integrations:
+      - platform: gitlab-ci
+        link: https://aquasecurity.github.io/trivy/v0.18.3/integrations/gitlab-ci/
+        code: |
+          container_scan:
+            stage: devsecops
+            script:
+              - trivy image --scanners vuln $IMAGE_NAME --format cyclonedx  > trivy-output-$DATE-cyclonedx.json
+            artifacts:
+              when: always
+              paths:
+                - trivy-output-$DATE-cyclonedx.json
+
+          generate_sbom:
+            stage: devsecops
+            script:
+              - syft $IMAGE_NAME -o cyclonedx-json  > sbom-$DATE.syft.json
+            artifacts:
+              when: always
+              paths:
+                  - sbom-$DATE.syft.json
+
+          signing_and_attestation:
+            stage: publish
+            id_tokens:
+              SIGSTORE_ID_TOKEN:
+                aud: sigstore
+            variables:
+              RUNNER_GENERATE_ARTIFACTS_METADATA: "true"
+            script:
+              - IMAGE_DIGEST=`docker inspect --format='{{index .RepoDigests 0}}' $IMAGE_NAME` # Grab image digest, rather than image tag
+              - cosign sign $IMAGE_DIGEST --key $COSIGN_KEY_NAME # Sign the container image
+              - cosign attest --key $COSIGN_KEY_NAME  --type vuln --predicate trivy-output-$DATE-cyclonedx.json $OCI_IMAGE_DIGEST # Sign and create an attestation for our Trivy scan
+              - cosign attest --key $COSIGN_KEY_NAME  --type cyclonedx --predicate sbom-$DATE.syft.json $OCI_IMAGE_DIGEST # Sign and create an attestation for our SBOM
+            needs:
+              - devsecops
+            artifacts:
+              when: always
+              paths:
+                - "artifacts*.json"
+      - platform: github-actions
+        link: https://github.com/aquasecurity/trivy-action
+        code: |
+          jobs:
+            build-image:
+              runs-on: ubuntu-latest
+
+              permissions:
+                contents: read
+                packages: write
+                id-token: write # needed for signing the images with GitHub OIDC Token
+
+              name: build-image
+              steps:
+                - uses: actions/checkout@v3.5.2
+                  with:
+                    fetch-depth: 1
+
+                - name: Install Cosign
+                  uses: sigstore/cosign-installer@v3.1.1
+
+                - name: Set up QEMU
+                  uses: docker/setup-qemu-action@v2.1.0
+
+                - name: Set up Docker Buildx
+                  uses: docker/setup-buildx-action@v2.5.0
+
+                - name: Login to GitHub Container Registry
+                  uses: docker/login-action@v2.1.0
+                  with:
+                    registry: ghcr.io
+                    username: ${{ github.actor }}
+                    password: ${{ secrets.GITHUB_TOKEN }}
+
+                - id: docker_meta
+                  uses: docker/metadata-action@v4.4.0
+                  with:
+                    images: ghcr.io/sigstore/sample-honk
+                    tags: type=sha,format=long
+
+                - name: Build and Push container images
+                  uses: docker/build-push-action@v4.0.0
+                  id: build-and-push
+                  with:
+                    platforms: linux/amd64,linux/arm/v7,linux/arm64
+                    push: true
+                    tags: ${{ steps.docker_meta.outputs.tags }}
+
+                # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+                - name: Sign image with a key
+                  run: |
+                    cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+                  env:
+                    TAGS: ${{ steps.docker_meta.outputs.tags }}
+                    COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+                    COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+                    DIGEST: ${{ steps.build-and-push.outputs.digest }}
+
+                - name: Sign the images with GitHub OIDC Token
+                  env:
+                    DIGEST: ${{ steps.build-and-push.outputs.digest }}
+                    TAGS: ${{ steps.docker_meta.outputs.tags }}
+                  run: cosign sign --yes "${TAGS}@${DIGEST}"
+
+further_reading:
+  - url: https://github.com/marketplace/actions/cosign-installer
+    note: cosign-installer GitHub Action (source of the GitHub Actions example).
+
+mappings:
+  owasp_samm:
+    - "Operations > Environment Management"
+  owasp_asvs:
+    - "V10 Malicious Code"
+  nist_ssdf:
+    - "PS.2 Provide a Mechanism for Verifying Software Release Integrity"
+    - "PO.3 Implement Supporting Toolchains"
+  iso_27001:
+    - "A.8.28 Secure coding"
+    - "A.8.30 Outsourced development"
+  other:
+    - "SLSA (Supply-chain Levels for Software Artifacts)"
+    - "SLSA Build L3 - provenance generated by a hardened build platform"

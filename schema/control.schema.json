@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://owasp.org/dsovs/schema/control.schema.json",
+  "title": "DSOVS Control",
+  "description": "Machine-readable source of truth for a single OWASP DevSecOps Verification Standard (DSOVS) control. The Markdown documents, the JSON API and the spreadsheet are all generated from these files, so this YAML - not the Markdown - is authoritative.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "code", "title", "phase", "slug", "status", "type", "summary", "levels"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Fully-qualified stable identifier.",
+      "pattern": "^DSOVS-[A-Z]+-[0-9]{3}$"
+    },
+    "code": {
+      "type": "string",
+      "description": "Short control code, e.g. CODE-008.",
+      "pattern": "^[A-Z]+-[0-9]{3}$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Human-readable control title, e.g. 'Container Security Scanning'.",
+      "minLength": 3
+    },
+    "phase": {
+      "type": "string",
+      "description": "Semantic SDLC phase. Design controls are rendered under the Requirements section of the Table of Contents to match the published structure.",
+      "enum": ["Organisation", "Requirements", "Design", "Code/Build", "Test", "Release/Deploy", "Operate/Monitor"]
+    },
+    "slug": {
+      "type": "string",
+      "description": "Markdown filename stem under document/, without extension, e.g. CODE-008-Container-Security-Scanning.",
+      "pattern": "^[A-Z]+-[0-9]{3}-[A-Za-z0-9-]+$"
+    },
+    "status": {
+      "type": "string",
+      "description": "Authoring status. 'complete' renders as a tick in the Table of Contents; 'draft' renders as the construction marker.",
+      "enum": ["complete", "draft"]
+    },
+    "type": {
+      "type": "string",
+      "description": "Control character. 'tool' controls render a Notable Tools section; 'process' controls render a Further reading section.",
+      "enum": ["tool", "process"]
+    },
+    "summary": {
+      "type": "string",
+      "description": "Control summary as Markdown prose. Paragraphs are separated by blank lines.",
+      "minLength": 20
+    },
+    "levels": {
+      "type": "array",
+      "description": "The four maturity levels, in order 0 to 3.",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["level", "title", "description"],
+        "properties": {
+          "level": {"type": "integer", "minimum": 0, "maximum": 3},
+          "title": {"type": "string", "minLength": 3, "description": "Level heading text, rendered after 'Level N - '. Must match the existing document verbatim."},
+          "description": {"type": "string", "minLength": 20, "description": "Level description as Markdown prose."},
+          "evidence": {
+            "type": "array",
+            "description": "Verification evidence an assessor can collect to confirm this level is met. Authoring guidance: 2-4 concrete, checkable items (artefacts, configuration, pipeline output, interview questions). May be empty for Level 0.",
+            "items": {"type": "string", "minLength": 5}
+          },
+          "diagram": {
+            "type": ["string", "null"],
+            "description": "Optional Mermaid diagram BODY only (no ```mermaid fences - the generator adds them), e.g. 'graph LR; A-- step -->B;'. null or omitted when the level has no diagram."
+          }
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "Notable tools for tool-type controls.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "url", "description"],
+        "properties": {
+          "name": {"type": "string"},
+          "url": {"type": "string", "format": "uri"},
+          "description": {"type": "string", "minLength": 10},
+          "integrations": {
+            "type": "array",
+            "description": "CI/CD usage examples for this tool.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["platform", "code"],
+              "properties": {
+                "platform": {"type": "string", "enum": ["github-actions", "gitlab-ci", "azure-devops", "cli", "config"]},
+                "label": {"type": "string", "description": "Display label, e.g. 'GitHub Actions'. Defaults are derived from platform when omitted."},
+                "icon": {"type": "string", "description": "Icon filename under document/images, e.g. github.svg. Derived from platform when omitted."},
+                "link": {"type": "string", "format": "uri", "description": "Optional href for the integration heading."},
+                "code": {"type": "string", "description": "Verbatim code/config sample. Rendered inside a fenced block."}
+              }
+            }
+          }
+        }
+      }
+    },
+    "further_reading": {
+      "type": "array",
+      "description": "Authoritative references for process-type controls (and optionally tool-type).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "note": {"type": "string", "description": "Short description of the resource."}
+        }
+      }
+    },
+    "mappings": {
+      "type": "object",
+      "description": "Cross-references to other frameworks. Best-effort; arrays may be empty or omitted.",
+      "additionalProperties": false,
+      "properties": {
+        "owasp_samm": {"type": "array", "items": {"type": "string"}},
+        "owasp_asvs": {"type": "array", "items": {"type": "string"}},
+        "nist_ssdf": {"type": "array", "items": {"type": "string"}},
+        "iso_27001": {"type": "array", "items": {"type": "string"}},
+        "other": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "credits": {
+      "type": "array",
+      "description": "External contributors/inspiration to acknowledge.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": {"type": "string"},
+          "url": {"type": "string", "format": "uri"}
+        }
+      }
+    }
+  }
+}

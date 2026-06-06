@@ -1,0 +1,151 @@
+id: DSOVS-REL-002
+code: REL-002
+title: Secure Artifact Management
+phase: Release/Deploy
+slug: REL-002-Secure-Artifact-Management
+status: complete
+type: tool
+
+summary: |
+  Secure Artifact Management is the practice of securing the artifacts produced throughout the software development lifecycle, such as build outputs, container images, packages, and binaries, from the moment they are created until they are deployed or retired.
+
+  It is important for organisations to have secure artifact management in place to ensure that the software being released is trustworthy, reliable, and up to date with current security standards. By storing artifacts in access-controlled, integrity-verified registries, teams can detect, control, and protect their software from tampering and unauthorised modification.
+
+  A mature approach links every released artifact back to the build that produced it, preserving provenance and a verifiable chain of custody. This prevents unauthorised changes that could introduce vulnerabilities, supports incident investigation and rollback, and helps organisations remain compliant with industry regulations and standards.
+
+levels:
+  - level: 0
+    title: No package management tool used for releases
+    description: |
+      At this level there is no dedicated repository or registry for release artifacts. Builds are distributed in an ad hoc manner, perhaps as files copied to shared drives, attached to tickets, or rebuilt directly on target hosts. Because artifacts are not stored in a controlled location, there is no reliable way to know which build is running in any given environment, who produced it, or whether it has been altered after the fact.
+
+      The absence of a managed store means there are no access controls, no integrity guarantees, and no audit trail. Organisations operating here face a high risk of deploying tampered or outdated artifacts and have little ability to reproduce or investigate a release once it has shipped.
+    evidence: []
+
+  - level: 1
+    title: Verify implementation of a centralised single storage location for release artifacts
+    description: |
+      At this stage the organisation has adopted a central repository or registry where release artifacts are published and retrieved, rather than scattering them across machines and shared folders. Developers push builds to a known location, and downstream consumers pull from that same place, giving teams a single authoritative source for each artifact.
+
+      While this consolidation brings basic order and accountability, the process is still largely manual and trust is implicit. Artifacts are stored, but their integrity is not yet systematically verified before use, and retention is managed on an as-needed basis. The registry provides a foundation, but its protections depend on individuals following the agreed conventions.
+    evidence:
+      - A central artifact repository or registry is provisioned and reachable by both publishers and consumers.
+      - Build artifacts are present in the registry and downstream deployments pull from that registry rather than from local files or shared drives.
+      - Interview confirms teams treat the registry as the single authoritative source for release artifacts.
+    diagram: |
+      graph LR; Build-- manual publish -->Artifact-Registry-- manual pull -->Deploy;
+
+  - level: 2
+    title: Verify implementation of artifact integrity check before release to any environment
+    description: |
+      At this level integrity verification is automated and built directly into the delivery pipeline. As artifacts are published and consumed, their checksums or digests are recorded and validated, so that any artifact promoted to a test, staging, or production environment is confirmed to be exactly the one produced by the trusted build, with no tampering in transit or at rest.
+
+      These checks are enforced rather than optional, typically combined with vulnerability scanning of images and packages as they enter the registry. By failing the pipeline when an integrity check or scan does not pass, the organisation ensures that only verified, known-good artifacts move forward, closing the gap between building software and releasing it.
+    evidence:
+      - Pipeline configuration records and validates artifact checksums or digests before promotion to any environment.
+      - Pipeline logs show an integrity check (and/or vulnerability scan) running automatically on publish or consumption.
+      - A failing integrity check or scan blocks the release rather than merely warning.
+      - Promoted artifacts can be shown to match the digest of the artifact produced by the trusted build.
+    diagram: |
+      graph LR;
+      Build-- publishes -->CICD-Pipeline-- integrity check and scan -->Artifact-Registry; Artifact-Registry-- Pass -->Deploy; Artifact-Registry-- Fail -->Blocked
+
+  - level: 3
+    title: Verify implementation to archiving process for artifacts
+    description: |
+      At the highest level of maturity the registry is centrally governed, access-controlled, and fully audited, and a defined archiving and retention process governs the entire lifecycle of every artifact. Released builds and their associated metadata, including provenance, signatures, and scan results, are retained according to policy so that any previously shipped version can be retrieved, verified, and redeployed when required.
+
+      Permissions are managed centrally with least-privilege access, and all push, pull, promotion, and deletion activity is logged for audit. Retention and immutability rules are continuously reviewed against compliance and operational needs, ensuring that the artifact store remains a trustworthy, traceable system of record that supports rollback, forensic investigation, and long-term reproducibility.
+    evidence:
+      - A documented archiving and retention policy governs how long artifacts and their metadata are kept and when they are retired.
+      - Provenance, signatures, and scan results are retained alongside artifacts so a previously shipped version can be retrieved, verified, and redeployed.
+      - Push, pull, promotion, and deletion activity is logged centrally for audit, with least-privilege access controls enforced.
+      - Retention and immutability rules are reviewed periodically against compliance and operational needs.
+    diagram: |
+      graph LR;
+      Build-- signs and publishes -->Governed-Registry-- access-controlled scan and integrity -->Deploy; Governed-Registry-- provenance and retention -->Centralised-Audit-Tracker
+
+tools:
+  - name: Harbor
+    url: https://github.com/goharbor/harbor
+    description: |
+      Harbor is an open source, CNCF-graduated registry that stores, signs, and scans container images and other OCI artifacts. It adds the policy and governance controls expected at higher maturity levels, including role-based access control, project-level permissions, vulnerability scanning via Trivy, image signing, replication, and configurable retention and immutability rules.
+
+      Harbor can block the pull or deployment of images that fail a vulnerability threshold, enforcing the integrity and quality gates described in Levels 2 and 3.
+    integrations:
+      - platform: github-actions
+        link: https://github.com/aquasecurity/trivy-action
+        code: |
+          jobs:
+            build-push-scan:
+              runs-on: ubuntu-latest
+              steps:
+                - uses: actions/checkout@v4
+
+                - name: Log in to Harbor
+                  uses: docker/login-action@v3
+                  with:
+                    registry: harbor.example.com
+                    username: ${{ secrets.HARBOR_USERNAME }}
+                    password: ${{ secrets.HARBOR_PASSWORD }}
+
+                - name: Build and push image
+                  uses: docker/build-push-action@v5
+                  with:
+                    push: true
+                    tags: harbor.example.com/team/app:${{ github.sha }}
+
+                # Harbor scans on push; this gate fails the build on HIGH/CRITICAL findings
+                - name: Verify image scan results
+                  uses: aquasecurity/trivy-action@master
+                  with:
+                    image-ref: harbor.example.com/team/app:${{ github.sha }}
+                    severity: HIGH,CRITICAL
+                    exit-code: "1"
+
+  - name: Sonatype Nexus Repository / JFrog Artifactory
+    url: https://github.com/sonatype/nexus-public
+    description: |
+      Sonatype Nexus Repository and JFrog Artifactory are widely used universal artifact repositories that manage release binaries, packages, and container images across many formats (Maven, npm, PyPI, Docker, and more). Both provide centralised storage, fine-grained access control, retention and cleanup policies, and integrity verification through recorded checksums, as well as integration with vulnerability scanning to gate insecure components before they are consumed.
+    integrations:
+      - platform: gitlab-ci
+        link: https://aquasecurity.github.io/trivy/v0.18.3/integrations/gitlab-ci/
+        code: |
+          publish_artifact:
+            stage: publish
+            script:
+              # Generate and record a checksum for integrity verification
+              - sha256sum build/app.jar > build/app.jar.sha256
+              # Publish the artifact and its checksum to Nexus
+              - |
+                curl --fail --user "$NEXUS_USER:$NEXUS_PASSWORD" \
+                  --upload-file build/app.jar \
+                  "https://nexus.example.com/repository/releases/com/example/app/$CI_COMMIT_TAG/app.jar"
+              - |
+                curl --fail --user "$NEXUS_USER:$NEXUS_PASSWORD" \
+                  --upload-file build/app.jar.sha256 \
+                  "https://nexus.example.com/repository/releases/com/example/app/$CI_COMMIT_TAG/app.jar.sha256"
+            rules:
+              - if: $CI_COMMIT_TAG
+
+further_reading:
+  - url: https://goharbor.io/docs/
+    note: Harbor documentation
+  - url: https://help.sonatype.com/repomanager3
+    note: Sonatype Nexus Repository
+  - url: https://jfrog.com/help/r/jfrog-artifactory-documentation
+    note: JFrog Artifactory
+
+mappings:
+  owasp_samm:
+    - "Operations > Secure Deployment"
+    - "Implementation > Secure Build"
+  owasp_asvs:
+    - "V14 Configuration"
+  nist_ssdf:
+    - "PS.1 Protect All Forms of Code from Unauthorized Access and Tampering"
+    - "PS.2 Provide a Mechanism for Verifying Software Release Integrity"
+    - "PO.5 Implement and Maintain Secure Environments for Software Development"
+  iso_27001:
+    - "A.8.4 Access to source code"
+    - "A.8.32 Change management"

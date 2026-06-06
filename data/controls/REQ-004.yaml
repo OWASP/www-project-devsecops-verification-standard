@@ -1,0 +1,84 @@
+id: DSOVS-REQ-004
+code: REQ-004
+title: Security Issues Tracking
+phase: Requirements
+slug: REQ-004-Security-Issues-Tracking
+status: complete
+type: process
+
+summary: |
+  Security issues tracking is focused on making sure that security defects and improvement work are managed with the same rigour and visibility as ordinary functional work. The objective is to ensure that vulnerabilities, weaknesses and remediation tasks are recorded, prioritised and resolved rather than lost or quietly deprioritised.
+
+  When security issues live in the same backlog and tooling the team already uses, they compete for attention alongside features and bugs, get scheduled in planning sessions, and remain visible to delivery and management. As the capability matures, the organisation moves from simply recording issues to dedicating time to fixing them and, ultimately, to measuring how quickly and how well security work is being completed.
+
+levels:
+  - level: 0
+    title: Security issues are reported separately from functional backlog
+    description: |
+      At this level security issues are captured in a different place from the team's normal functional backlog, for example in spreadsheets, email threads, or standalone reports produced after an assessment. They are disconnected from the day-to-day planning the team actually uses to decide what to work on next.
+
+      Because these issues sit outside the main workflow, they are easily forgotten, rarely prioritised against feature work, and often go unaddressed. There is no single, reliable view of which security problems exist or who is responsible for resolving them.
+    evidence: []
+
+  - level: 1
+    title: Verify that security issues are tracked in a centralised location and prioritised in the planning session
+    description: |
+      Security issues are now recorded in a single, centralised tracking system, ideally the same issue tracker the team uses for functional work, so that nothing is scattered across disconnected reports. This gives the organisation one authoritative place to see what security problems are outstanding.
+
+      Crucially, these issues are brought into regular planning sessions and prioritised alongside other work. Compared with Level 0, security defects are no longer invisible to delivery; they are triaged, ranked by risk, and scheduled, which dramatically reduces the chance that important issues are simply lost.
+    evidence:
+      - Security issues are recorded in a single centralised issue tracker with severity and ownership.
+      - Planning session notes or board views show security issues being triaged and prioritised alongside functional work.
+      - Interview confirms there is one authoritative view of outstanding security issues rather than scattered reports.
+    diagram: |
+      graph LR; Security-Issue-- logged in -->Central-Backlog-- prioritised in -->Planning-Session;
+
+  - level: 2
+    title: Verify that the pre-allocated time is dedicated to development team work on security remediation or improvements
+    description: |
+      Beyond simply tracking and prioritising issues, the team now reserves capacity specifically for security remediation and improvement. A defined portion of each iteration or release cycle is set aside so that fixing vulnerabilities and hardening the application is a planned, expected activity rather than something squeezed in only when time allows.
+
+      This is an advance on Level 1 because prioritisation alone does not guarantee that security work actually gets done when feature pressure is high. By pre-allocating time, the organisation makes a deliberate, sustained commitment to working through the security backlog and prevents remediation from being perpetually deferred.
+    evidence:
+      - A documented policy or capacity allocation reserves a defined portion of each iteration for security remediation.
+      - Sprint/iteration plans show security remediation items consistently scheduled within the reserved capacity.
+      - Interview confirms security work is treated as a planned, expected activity rather than ad-hoc.
+    diagram: |
+      graph LR; Central-Backlog-- prioritised -->Dedicated-Time-- delivers -->Remediation;
+
+  - level: 3
+    title: Verify that the security remediation or improvement efforts and speed are continuously monitored and measured
+    description: |
+      At the highest level the organisation continuously measures how its security remediation is performing. Metrics such as time to remediate, the age and volume of open issues, and trends in recurring vulnerability types are tracked over time and reviewed to understand whether the process is keeping pace with incoming risk.
+
+      Building on the dedicated time established at Level 2, these measurements turn remediation into a managed, data-driven activity. The insights feed back into planning and process improvements, allowing the team to set and tune service-level targets, identify bottlenecks, and steadily improve both the speed and the quality of security fixes.
+    evidence:
+      - Dashboards or reports track remediation metrics such as time-to-remediate, open issue age, and volume over time.
+      - Documented service-level targets (SLAs/SLOs) for remediation exist and are reviewed against actuals.
+      - Review records show metrics feeding back into planning and process improvements.
+    diagram: |
+      graph LR; Remediation-- measured by -->Metrics-- feedback -->Planning-Session-- tunes -->Remediation;
+
+further_reading:
+  - url: https://github.com/DefectDojo/django-DefectDojo
+    note: OWASP DefectDojo is an open-source vulnerability management platform for centralising, deduplicating and tracking security findings.
+  - url: https://owaspsamm.org/model/implementation/defect-management/
+    note: OWASP SAMM Defect Management practice describes how to track, prioritise and measure security defects across the lifecycle.
+  - url: https://csrc.nist.gov/Projects/ssdf
+    note: NIST Secure Software Development Framework (SSDF) sets out practices for identifying, tracking and remediating vulnerabilities throughout development.
+  - url: https://owasp.org/www-project-vulnerability-management-guide/
+    note: OWASP Vulnerability Management Guide offers practical guidance on running an effective issue tracking and remediation process.
+
+mappings:
+  owasp_samm:
+    - "Implementation > Defect Management"
+    - "Operations > Incident Management"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "RV.2 Assess, Prioritize, and Remediate Vulnerabilities"
+    - "RV.3 Analyze Vulnerabilities to Identify Their Root Causes"
+    - "PO.4 Implement and Maintain Secure Environments for Software Development"
+  iso_27001:
+    - "A.8.8 Management of technical vulnerabilities"
+    - "A.5.24 Information security incident management planning and preparation"

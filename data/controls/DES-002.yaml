@@ -1,0 +1,93 @@
+id: DSOVS-DES-002
+code: DES-002
+title: Threat Modelling
+phase: Design
+slug: DES-002-Threat-Modelling
+status: complete
+type: tool
+
+summary: |
+  Threat Modelling is a process of analyzing the threats that can potentially impact the security of an application before it is deployed.
+
+  It helps to identify potential risks, the security controls needed to protect the application, and the mitigation strategies that should be put in place.
+
+  Threat Modelling is an important part of DevSecOps because it ensures that security considerations are taken into account throughout the entire development process, enabling organizations to build applications in a secure way from the start and minimise the risk of exploitation.
+
+levels:
+  - level: 0
+    title: No threat modelling exercise performed
+    description: |
+      At this level the organisation never deliberately reasons about how an application might be attacked. There is no exercise to enumerate assets, trust boundaries, entry points, or the threats an adversary could use against them.
+
+      Without threat modelling, security controls are chosen reactively or by habit rather than in response to a structured understanding of risk. Whole classes of threat can go unconsidered until they are discovered in production or exploited by an attacker, when remediation is slowest and most costly.
+    evidence: []
+
+  - level: 1
+    title: Verify that ad-hoc threat modelling is performed by security analyst
+    description: |
+      At level one, threat modelling starts to take place, but informally and only when a security analyst is engaged to do it. The analyst examines a design, identifies plausible threats and the controls needed to address them, and shares the findings with the team, typically for a system or change that is felt to be especially sensitive.
+
+      This is a clear step forward from never modelling threats at all, because at least some applications now benefit from a deliberate, structured look at how they could be attacked. The limitation is that the practice depends on a specialist's availability and on someone remembering to ask, so it is applied unevenly and many features are still built with no threat analysis behind them.
+    evidence:
+      - At least one threat model artifact exists, produced by a security analyst for a specific system or change.
+      - The artifact records identified threats and the controls or mitigations recommended to address them.
+      - Interview confirms how a security analyst is engaged and which changes trigger a threat modelling exercise.
+    diagram: |
+      graph LR; Design-- ad-hoc engagement -->Security-Analyst-- identify threats -->Threat-Model-- findings -->Team;
+
+  - level: 2
+    title: Verify that threat modelling is performed by development team on features
+    description: |
+      At level two, threat modelling becomes part of the normal development flow and is carried out by the development teams themselves as they build features, rather than being outsourced to a security analyst. As a feature is designed, the team works through what could go wrong, what an attacker might target, and which mitigations belong in the design, capturing the resulting actions alongside their other work.
+
+      The important advance is one of ownership and scale: because the teams who understand the feature best perform the analysis as a routine activity, far more of the product gets modelled, threats are identified while the design can still be changed cheaply, and developers steadily build an instinct for thinking like an attacker. Security specialists can then focus on coaching and on the highest-risk areas rather than being a bottleneck.
+    evidence:
+      - Development teams produce threat models for features as part of the normal design workflow.
+      - Mitigation actions identified during threat modelling are captured in the team's backlog or tracking system.
+      - Interview with a development team confirms threat modelling is a routine activity they own rather than relying on a security analyst.
+      - Threat model artifacts exist across multiple teams or features, demonstrating coverage at scale.
+    diagram: |
+      graph LR; Feature-- identify threats -->Development-Team-- builds -->Threat-Model-- mitigations -->Backlog;
+
+  - level: 3
+    title: Verify that periodic review schedule is defined to keep the threat model artifacts current
+    description: |
+      At level three, threat models are treated as living artifacts maintained on a defined, periodic review schedule. Rather than being produced once when a feature is first built and then forgotten, models are revisited on a regular cadence and whenever the system changes meaningfully, so that assets, trust boundaries, threats, and mitigations stay aligned with the application as it actually exists.
+
+      This is a mature, measured practice in which threat modelling continuously informs the organisation's security posture. Keeping the artifacts current means newly emerging threats can be reflected back into existing designs, controls can be verified as still appropriate, and the organisation retains an accurate, auditable picture of the risks facing each system over its whole lifetime.
+    evidence:
+      - A documented periodic review schedule or cadence exists for revisiting threat model artifacts.
+      - Version history or revision records show threat models being updated over time and on system change.
+      - Metrics or reports demonstrate threat model coverage and freshness across systems.
+      - Updated mitigations from reviews are tracked through to remediation in the backlog or issue tracker.
+    diagram: |
+      graph LR; Schedule-- periodic review -->Development-Team-- update -->Threat-Model-- refreshed mitigations -->Backlog; Threat-Model-- next cadence -->Schedule;
+
+tools:
+  - name: OWASP Threat Dragon
+    url: https://github.com/OWASP/threat-dragon
+    description: |
+      Threat Dragon is an OWASP project providing a free, open-source threat modelling tool. It lets teams draw data-flow diagrams, identify threats against the elements in them, and record mitigations, with the model stored as a versionable file so it can live alongside the code it describes.
+  - name: pytm
+    url: https://github.com/izar/pytm
+    description: |
+      pytm is a Pythonic framework for threat modelling as code. The system, its boundaries, and its dataflows are described in Python, and pytm generates data-flow diagrams, sequence diagrams, and a report of applicable threats, which makes threat models easy to keep under version control and to update as the design evolves.
+
+further_reading:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html
+    note: A concise, practical guide to running a threat modelling exercise and what good output looks like.
+  - url: https://owaspsamm.org/model/design/threat-assessment/
+    note: The SAMM practice describing maturity levels for threat assessment, useful for measuring and planning improvement.
+  - url: https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats
+    note: The widely used STRIDE methodology for categorising threats (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege).
+
+mappings:
+  owasp_samm:
+    - "Design > Threat Assessment"
+  owasp_asvs:
+    - "V1 Architecture, Design and Threat Modeling"
+  nist_ssdf:
+    - "PW.1 Design Software to Meet Security Requirements and Mitigate Security Risks"
+  iso_27001:
+    - "A.8.27 Secure system architecture and engineering principles"
+    - "A.8.25 Secure development life cycle"

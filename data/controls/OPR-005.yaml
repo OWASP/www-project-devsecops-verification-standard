@@ -1,0 +1,97 @@
+id: DSOVS-OPR-005
+code: OPR-005
+title: Vulnerability Disclosure
+phase: Operate/Monitor
+slug: OPR-005-Responsible-Disclosure
+status: complete
+type: tool
+
+summary: |
+  Responsible disclosure is a practice of reporting security vulnerabilities to software vendors in order to give them a chance to address the issue before it is made public.
+
+  This can help ensure that vulnerabilities are addressed quickly and efficiently, preventing potential malicious exploitation of them.
+
+  Responsible disclosure is important for secure software development because it allows developers to be proactive in addressing any security weaknesses before they are exploited.
+
+  It also ensures that users are protected from potential attacks by ensuring that applications remain secure.
+
+levels:
+  - level: 0
+    title: No vulnerability disclosure policy
+    description: |
+      At this level of security maturity, there are no defined ways to receive security vulnerabilities.
+    evidence: []
+
+  - level: 1
+    title: Vulnerability disclosure policy exists
+    description: |
+      At level one, the product has a defined responsible disclosure policy with clear instructions on how to send vulnerability reports, as well as a clear definition of scope.
+
+      Typically this will be security e-mail such as (security@company.com) and will processed manually by internal teams.
+    evidence:
+      - A published vulnerability disclosure policy with clear reporting instructions and a defined scope.
+      - A monitored intake channel (e.g. security@company.com or a security.txt file) exists and is reachable.
+      - Interview confirms which internal team processes incoming reports.
+
+  - level: 2
+    title: Vulnerability disclosures are managed and tracked using software
+    description: |
+      Responsible vulnerabity disclosure enables external security researchers to report vulnerabilities that they have discovered in software.
+
+      It is important for these vulnerabilities to be stored and tracked the same way as internally found vulnerabilities, in order to ensure that they do not slip through the gaps.
+
+      This helps ensure that all issues are managed accordingly and that the vulnerabilities reported from external sources make their way into the secure software development lifecycle.
+
+      By properly tracking and managing these issues with issue tracking software, developers can ensure that any potential security threats are addressed quickly and effectively.
+
+      This helps ensure that applications remain secure and that users can trust the software they are using.
+    evidence:
+      - Externally reported vulnerabilities are recorded in the same issue tracker as internally found vulnerabilities.
+      - Tracked issues carry severity, ownership and remediation status and feed into the SDLC.
+      - Sample records show externally reported issues being triaged and resolved over time.
+
+  - level: 3
+    title: A Coordinated Vulnerability Disclosure program exists
+    description: |
+      A coordinated vulnerability disclosure program is critical for the maturity of a secure software development lifecycle.
+
+      This program helps ensure that any vulnerabilities discovered in software are addressed quickly and effectively, while also helping to build trust between software users and developers.
+
+      By providing an organized and standardized framework for vulnerability disclosure, firms can demonstrate their commitment to security and provide transparency around the process.
+
+      Additionally, by coordinating with other organizations, firms can benefit from the expertise and knowledge of others. This helps ensure that all vulnerabilities are managed accordingly and that secure software development is the priority.
+    evidence:
+      - A documented coordinated vulnerability disclosure program with defined timelines and researcher communication.
+      - Public transparency around the process (e.g. published policy, advisories or a bug bounty platform).
+      - Evidence of coordination with external parties or researchers on past disclosures.
+
+tools:
+  - name: SECURITY.TXT
+    url: https://github.com/securitytxt/security-txt
+    description: |
+      security.txt provides a way for websites to define security policies. The security.txt file sets clear guidelines for security researchers on how to report security issues. security.txt is the equivalent of robots.txt, but for security issues.
+    integrations:
+      - platform: config
+        code: |
+          Contact: mailto:security@example.com
+          Expires: 2026-12-31T23:59:00.000Z
+          Encryption: https://example.com/pgp-key.txt
+          Acknowledgments: https://example.com/hall-of-fame.html
+          Policy: https://example.com/security-policy.html
+          Preferred-Languages: en
+
+mappings:
+  owasp_samm:
+    - "Operations > Issue Management"
+  nist_ssdf:
+    - "RV.1 Identify and Confirm Vulnerabilities"
+    - "RV.3 Analyze Vulnerabilities to Identify Their Root Causes"
+  iso_27001:
+    - "A.5.7 Threat intelligence"
+    - "A.8.8 Management of technical vulnerabilities"
+
+credits:
+  - name: EdOverflow
+    url: https://github.com/EdOverflow
+  - name: Katie Moussouris
+    url: https://twitter.com/k8em0
