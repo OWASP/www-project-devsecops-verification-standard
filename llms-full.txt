@@ -1204,7 +1204,7 @@ Verification evidence:
 - A documented schedule exists for reviewing the DAST tool's effectiveness and tuning its configuration.
 - Reusable CI/CD templates or organisation-specific configuration guidance (e.g. proxy settings or OAS files) are provided to teams.
 
-Notable tools: OWASP ZAP (https://github.com/zaproxy/zaproxy), Nuclei (https://github.com/projectdiscovery/nuclei)
+Notable tools: ZAP by Checkmarx (https://github.com/zaproxy/zaproxy), Nuclei (https://github.com/projectdiscovery/nuclei)
 
 Framework mappings: owasp_samm: Verification > Security Testing; owasp_asvs: V1 Architecture, Design and Threat Modeling, V14 Configuration; nist_ssdf: PW.8 Test Executable Code to Identify Vulnerabilities, RV.1 Identify and Confirm Vulnerabilities; iso_27001: A.8.8 Management of technical vulnerabilities, A.8.29 Security testing in development and acceptance
 
@@ -1311,7 +1311,7 @@ Verification evidence:
 - Evidence of retesting shows that remediated findings were re-verified and confirmed fixed.
 - Programme metrics (e.g. time-to-remediate, recurring issue classes) are produced from the tracker and reviewed.
 
-Notable tools: Metasploit (https://www.metasploit.com/), OWASP ZAP (https://github.com/zaproxy/zaproxy)
+Notable tools: Metasploit (https://www.metasploit.com/), ZAP by Checkmarx (https://github.com/zaproxy/zaproxy)
 
 Framework mappings: owasp_samm: Verification > Security Testing; owasp_asvs: V1 Architecture, Design and Threat Modeling; nist_ssdf: PW.8 Test Executable Code to Identify Vulnerabilities and Verify Compliance with Security Requirements, RV.1 Identify and Confirm Vulnerabilities on an Ongoing Basis; iso_27001: A.8.8 Management of technical vulnerabilities, A.8.29 Security testing in development and acceptance
 

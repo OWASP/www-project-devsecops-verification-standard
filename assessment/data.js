@@ -1982,9 +1982,9 @@ window.DSOVS_DATA = {
       ],
       "tools": [
         {
-          "name": "OWASP ZAP",
+          "name": "ZAP by Checkmarx",
           "url": "https://github.com/zaproxy/zaproxy",
-          "description": "The OWASP Zed Attack Proxy (ZAP) is one of the world's most popular free security tools and is actively maintained by a dedicated international team of volunteers. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. It's also a great tool for experienced pentesters to use for manual security testing.",
+          "description": "The Zed Attack Proxy (ZAP) is one of the world's most popular free security tools and is actively maintained by a dedicated international team of volunteers. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. It's also a great tool for experienced pentesters to use for manual security testing.",
           "integrations": [
             {
               "platform": "github-actions",
@@ -2187,9 +2187,9 @@ window.DSOVS_DATA = {
           "description": "Metasploit is a widely used exploitation framework that assists a tester in developing and executing exploit code against a target. It aids a skilled practitioner rather than replacing the judgement and attacker mindset that a penetration test depends on."
         },
         {
-          "name": "OWASP ZAP",
+          "name": "ZAP by Checkmarx",
           "url": "https://github.com/zaproxy/zaproxy",
-          "description": "OWASP ZAP (Zed Attack Proxy) is an open source web application security testing proxy commonly used to assist a tester in intercepting, inspecting and manipulating application traffic during a manual assessment."
+          "description": "ZAP (Zed Attack Proxy) is an open source web application security testing proxy commonly used to assist a tester in intercepting, inspecting and manipulating application traffic during a manual assessment."
         }
       ],
       "further_reading": [

@@ -72,10 +72,10 @@ tools:
     url: https://www.metasploit.com/
     description: |
       Metasploit is a widely used exploitation framework that assists a tester in developing and executing exploit code against a target. It aids a skilled practitioner rather than replacing the judgement and attacker mindset that a penetration test depends on.
-  - name: OWASP ZAP
+  - name: ZAP by Checkmarx
     url: https://github.com/zaproxy/zaproxy
     description: |
-      OWASP ZAP (Zed Attack Proxy) is an open source web application security testing proxy commonly used to assist a tester in intercepting, inspecting and manipulating application traffic during a manual assessment.
+      ZAP (Zed Attack Proxy) is an open source web application security testing proxy commonly used to assist a tester in intercepting, inspecting and manipulating application traffic during a manual assessment.
 
 mappings:
   owasp_samm:

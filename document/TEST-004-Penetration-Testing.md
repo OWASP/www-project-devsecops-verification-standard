@@ -61,4 +61,4 @@ Apart from official OWASP Projects, the tools in this section have been chosen o
 
 If you have a suggestion for a notable tool please [💡 Suggest a Tool](https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/ideas) 
 
-It is worth stressing that this control is fundamentally about human expertise, not tooling. Frameworks such as [Metasploit](https://www.metasploit.com/) and [OWASP ZAP](https://github.com/zaproxy/zaproxy) are commonly used to assist a tester, but they are aids to a skilled practitioner rather than a substitute for one. The value of a penetration test comes from the judgement, creativity and attacker mindset of the person wielding the tools.
+It is worth stressing that this control is fundamentally about human expertise, not tooling. Frameworks such as [Metasploit](https://www.metasploit.com/) and [ZAP](https://github.com/zaproxy/zaproxy) are commonly used to assist a tester, but they are aids to a skilled practitioner rather than a substitute for one. The value of a penetration test comes from the judgement, creativity and attacker mindset of the person wielding the tools.
