@@ -53,9 +53,9 @@ Apart from official OWASP Projects, the tools in this section have been chosen o
 
 If you have a suggestion for a notable tool please [💡 Suggest a Tool](https://github.com/OWASP/www-project-devsecops-verification-standard/discussions/categories/ideas) 
 
-## [OWASP ZAP](https://github.com/zaproxy/zaproxy)
+## [ZAP by Checkmarx](https://github.com/zaproxy/zaproxy)
 
-The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by a dedicated international team of volunteers. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. It's also a great tool for experienced pentesters to use for manual security testing.
+The Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by a dedicated international team of volunteers. It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications. It's also a great tool for experienced pentesters to use for manual security testing.
 
 <a href="https://github.com/zaproxy/zaproxy"><img src="images/github.svg" width="20px"> GitHub Actions
 
